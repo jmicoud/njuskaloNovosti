@@ -84,6 +84,7 @@ public class dohvatiActivity extends AppCompatActivity {
                         }
                         catch(Exception ex)
                         {
+                            //Log.d(ex.getMessage().toString());
 
                         }
 
@@ -157,7 +158,7 @@ public class dohvatiActivity extends AppCompatActivity {
         for(int i=0; i<valStr.length(); i++)
         {
 
-           if((valStr.substring(i,1)=="n") && ((valStr.substring(i+1,1)=="a") && (valStr.substring(i+2,1)=="m") && (valStr.substring(i+3,1)=="e")))
+           if((valStr.substring(i,1).equals("n")) && (valStr.substring(i+1,1).equals("a")) && ((valStr.substring(i+2,1).equals("m")) && (valStr.substring(i+3,1).equals("e"))))
            {
 
                id=valStr.substring(i+5,1) + valStr.substring(i+6,1) + valStr.substring(i+7,1) + valStr.substring(i+8,1) + valStr.substring(i+9,1) + valStr.substring(i+10,1) + valStr.substring(i+11,1) + valStr.substring(i+12,1);
