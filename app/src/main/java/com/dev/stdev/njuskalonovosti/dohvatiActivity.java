@@ -9,6 +9,8 @@ import android.widget.Toast;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -56,8 +58,6 @@ public class dohvatiActivity extends AppCompatActivity {
             String ctls = "search_ads";
             String sorts = "new";
 
-            int a;
-
             toast = Toast.makeText(this, "0", Toast.LENGTH_SHORT);
             //toast.show();
 
@@ -73,7 +73,7 @@ public class dohvatiActivity extends AppCompatActivity {
                     if (response.isSuccessful()) {
 
                         try {
-                            Log.d("RESPONSA", response.body().string());
+                            //Log.d("RESPONSA", response.body().string());
 
                             String msg =  response.body().string();
                             //int lnt = msg.length();
@@ -88,7 +88,7 @@ public class dohvatiActivity extends AppCompatActivity {
 
                         }
 
-                        toast.show();
+                        //toast.show();
                         // tasks available
                     } else {
                         // error response, no access to resource?
@@ -104,9 +104,7 @@ public class dohvatiActivity extends AppCompatActivity {
         }
         catch (Exception e)
         {
-            //Log.d("RESPONSE", response.message());
-            toast = Toast.makeText(this, e.getMessage().toString(), Toast.LENGTH_SHORT);
-            toast.show();
+            Log.d("RESPONSE",  e.getMessage().toString());
         }
 
     }
@@ -126,7 +124,7 @@ public class dohvatiActivity extends AppCompatActivity {
 
 
 
-    public int parseRespIntoDatabase(String resp)
+    public void parseRespIntoDatabase(String resp)
     {
 
         //int locSt = resp.indexOf("Njuškalo oglasi");
@@ -135,15 +133,17 @@ public class dohvatiActivity extends AppCompatActivity {
         i = resp.indexOf("data-ad-id");
         n = i;
 
+
+
         while(i >= 0) {
-            //System.out.println(i);
+
             i = resp.indexOf("data-ad-id", i+1);
-            parseAllValues(resp.substring(i, (n-i-1)));
+
+            parseAllValues(resp.substring(n, i));
             n = i;
 
-        }
 
-        return (1);
+        }
 
     }
 
@@ -152,25 +152,35 @@ public class dohvatiActivity extends AppCompatActivity {
     {
         flatData flat = new flatData();
 
-        String id;
+        String id, link, dtm, prize, description;
+
+            id=substringBetween(valStr, "ad-id=\"","\"").trim();
+
+            link = substringBetween(valStr, "\" class=\"link\" href=\"", "\">");
+            link = "http://www.njuskalo.hr" + link;
+
+            dtm = substringBetween(valStr,"datetime=\"","\" pubdate=").trim();
+            prize = substringBetween(valStr,"price price--eur\">"," <span class=\"currency").trim();
+            description = substringBetween(valStr,"<div class=\"entity-description-main\">","<br />").trim();
+
+            flat.setId(id);
+            flat.setDescription(description);
+            flat.setDtm(dtm);
+            flat.setLink(link);
+            flat.setPrize(prize);
 
 
-        for(int i=0; i<valStr.length(); i++)
-        {
-
-           if((valStr.substring(i,1).equals("n")) && (valStr.substring(i+1,1).equals("a")) && ((valStr.substring(i+2,1).equals("m")) && (valStr.substring(i+3,1).equals("e"))))
-           {
-
-               id=valStr.substring(i+5,1) + valStr.substring(i+6,1) + valStr.substring(i+7,1) + valStr.substring(i+8,1) + valStr.substring(i+9,1) + valStr.substring(i+10,1) + valStr.substring(i+11,1) + valStr.substring(i+12,1);
-
-           }
-
-        }
-
-
+            Log.d("ID", id);
+            Log.d("LINK", link);
+            Log.d("PRIZE", prize);
+            Log.d("DESCRIPTION", description);
+            Log.d("DTM", dtm);
+            Log.d("NEWLINE", "-----------------------------------");
 
 
     }
+
+
 
 
     public static String substringBetween(String str, String open, String close) {
