@@ -1,9 +1,15 @@
 package com.dev.stdev.njuskalonovosti;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
@@ -104,7 +110,7 @@ public class dohvatiActivity extends AppCompatActivity {
         }
         catch (Exception e)
         {
-            Log.d("RESPONSE",  e.getMessage().toString());
+            Log.d("ERROR",  e.getMessage().toString());
         }
 
     }
@@ -176,6 +182,16 @@ public class dohvatiActivity extends AppCompatActivity {
             Log.d("DESCRIPTION", description);
             Log.d("DTM", dtm);
             Log.d("NEWLINE", "-----------------------------------");
+
+            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.dohvatiLayout);
+
+            TextView tv = new TextView(this);
+            tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            String showStr = id + "\n" + link + "\n" + prize + "\n" + description + "\n" + dtm + "\n\n";
+            tv.setText(showStr);
+            Linkify.addLinks(tv, Linkify.WEB_URLS);
+            tv.setLinkTextColor(Color.parseColor("#2f6699"));
+            linearLayout.addView(tv);
 
 
     }
