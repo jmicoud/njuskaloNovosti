@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.R.attr.id;
 
 
 /**
@@ -97,7 +96,7 @@ public class dbClass extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
-        // return contact list
+        // return apartments list
         return fldataList;
     }
 
