@@ -3,8 +3,12 @@ package com.dev.stdev.njuskalonovosti;
 //import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static android.R.attr.id;
 
@@ -67,6 +71,34 @@ public class dbClass extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NOVI_STANOVI,null,null);
         db.close();
+    }
+
+
+    // Getting All Apartments
+    public List<flatData> getAllApartments() {
+        List<flatData> fldataList = new ArrayList<flatData>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                flatData fld = new flatData();
+                fld.setId(cursor.getString(0));
+                fld.setLink(cursor.getString(1));
+                fld.setDescription(cursor.getString(2));
+                fld.setPrize(cursor.getString(3));
+                fld.setDtm(cursor.getString(4));
+                // Adding contact to list
+                fldataList.add(fld);
+            } while (cursor.moveToNext());
+        }
+
+        // return contact list
+        return fldataList;
     }
 
 }
