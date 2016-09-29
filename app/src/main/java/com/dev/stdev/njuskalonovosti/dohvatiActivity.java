@@ -1,8 +1,10 @@
 package com.dev.stdev.njuskalonovosti;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.BaseColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.text.method.LinkMovementMethod;
@@ -12,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +33,8 @@ import retrofit2.http.QueryMap;
 public class dohvatiActivity extends AppCompatActivity {
 
     Toast toast;
-
+    private ArrayList<flatData> flDatArrayList = new ArrayList<flatData>();
+    dbClass db = new dbClass(this);
     private String lnk = "";
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -84,7 +88,16 @@ public class dohvatiActivity extends AppCompatActivity {
                             String msg =  response.body().string();
                             //int lnt = msg.length();
 
+                            //Clean arraylist of apartments
+                            flDatArrayList.clear();
+
                             parseRespIntoDatabase(msg);
+
+                            //maybe another thread
+                            for(int i=0; i<flDatArrayList.size(); i++)
+                            {
+                                db.addApartment(flDatArrayList.get(i));
+                            }
 
 
                         }
@@ -175,6 +188,8 @@ public class dohvatiActivity extends AppCompatActivity {
             flat.setLink(link);
             flat.setPrize(prize);
 
+            //Add flat to array List
+            flDatArrayList.add(flat);
 
             Log.d("ID", id);
             Log.d("LINK", link);
@@ -187,7 +202,7 @@ public class dohvatiActivity extends AppCompatActivity {
 
             TextView tv = new TextView(this);
             tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            String showStr = id + "\n" + link + "\n" + prize + "\n" + description + "\n" + dtm + "\n\n";
+            String showStr = "ID: " + id + "\n" + "LINK: " + link + "\n" + "PRIZE: " + prize + "\n" + "DESC: " + description + "\n" + rebrandDate(dtm) + "\n\n";
             tv.setText(showStr);
             Linkify.addLinks(tv, Linkify.WEB_URLS);
             tv.setLinkTextColor(Color.parseColor("#2f6699"));
@@ -214,8 +229,25 @@ public class dohvatiActivity extends AppCompatActivity {
     }
 
 
+    public String rebrandDate(String dt)
+    {
+        String dtm;
 
+        //2016-09-28T15:38:10+02:00
+        String dtmSpl[] = dt.split("T");
+        String dtSplTm[] = dtmSpl[1].split("+");
+        dtm = dtmSpl + ", " + dtSplTm[0];
+
+        return (dtm);
     }
+
+
+
+
+
+
+
+}
 
 
 
