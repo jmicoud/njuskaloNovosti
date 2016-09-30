@@ -25,11 +25,11 @@ public class dbClass extends SQLiteOpenHelper {
     //Database table
     private static final String TABLE_NOVI_STANOVI = "novistanovi";
     //Database columns
-    private static final String COLUMN_ID =   "id";
-    private static final String COLUMN_LINK =  "link";
-    private static final String COLUMN_DESCRIPTION =  "description";
-    private static final String COLUMN_PRIZE =  "prize";
-    private static final String COLUMN_DATETM =  "datetm";
+    private static final String COLUMN_ID = "id";
+    private static final String COLUMN_LINK = "link";
+    private static final String COLUMN_DESCRIPTION = "description";
+    private static final String COLUMN_PRIZE = "prize";
+    private static final String COLUMN_DATETM = "datetm";
 
 
     public dbClass(Context context) {
@@ -38,15 +38,15 @@ public class dbClass extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_CONTACTS_TABLE ="CREATE TABLE"+TABLE_NOVI_STANOVI +"("+COLUMN_ID +"TEXT,"+COLUMN_LINK +"TEXT,"+COLUMN_DESCRIPTION +"TEXT" + COLUMN_PRIZE +"TEXT" + COLUMN_DATETM +"TEXT" +")";
-        db.execSQL(CREATE_CONTACTS_TABLE);
+        String CREATE_APARTMENTS_TABLE = "CREATE TABLE" + TABLE_NOVI_STANOVI + "(" + COLUMN_ID + "TEXT," + COLUMN_LINK + "TEXT," + COLUMN_DESCRIPTION + "TEXT" + COLUMN_PRIZE + "TEXT" + COLUMN_DATETM + "TEXT" + ")";
+        db.execSQL(CREATE_APARTMENTS_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-    // Drop older table if existed
+        // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOVI_STANOVI);
-    // Creating tables again
+        // Creating tables again
         onCreate(db);
     }
 
@@ -68,7 +68,7 @@ public class dbClass extends SQLiteOpenHelper {
     // Deleting single contact
     public void deleteAllApartments() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NOVI_STANOVI,null,null);
+        db.delete(TABLE_NOVI_STANOVI, null, null);
         db.close();
     }
 
@@ -77,7 +77,7 @@ public class dbClass extends SQLiteOpenHelper {
     public List<flatData> getAllApartments() {
         List<flatData> fldataList = new ArrayList<flatData>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_CONTACTS;
+        String selectQuery = "SELECT  * FROM " + TABLE_NOVI_STANOVI;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -99,6 +99,17 @@ public class dbClass extends SQLiteOpenHelper {
         // return apartments list
         return fldataList;
     }
+
+
+    public boolean isApartmentsTableEmpty() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String count = "SELECT count(*) FROM " + TABLE_NOVI_STANOVI;
+        Cursor mcursor = db.rawQuery(count, null);
+        mcursor.moveToFirst();
+        int icount = mcursor.getInt(0);
+        return icount <= 0;
+    }
+
 
 }
 

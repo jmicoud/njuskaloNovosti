@@ -1,10 +1,12 @@
 package com.dev.stdev.njuskalonovosti;
 
+import java.io.Serializable;
+
 /**
  * Created by IW568 on 9/28/2016.
  */
 
-public class flatData {
+public class flatData implements Serializable {
 
     private String id;
     private String prize;
