@@ -104,7 +104,7 @@ public class dohvatiActivity extends AppCompatActivity {
             //    String serviceJsonString = intent.getStringExtra("RETSTRING");
 
 
-            Log.d("TU SAM U Receiveru","evo me");
+            //Log.d("TU SAM U Receiveru","evo me");
 
             //if (intent.get("FLAT_BRD")!=null) {
                 //Bundle bundle = intent.getExtras();
@@ -127,7 +127,7 @@ public class dohvatiActivity extends AppCompatActivity {
 
                 TextView tv = new TextView(getApplicationContext());
                 tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                String showStr = "ID: " + flD.getId() + "\n" + "LINK: " + flD.getLink() + "\n" + "PRIZE: " + flD.getPrize() + "\n" + "DESC: " + flD.getDescription() + "\n" + flD.getDtm() + "\n\n";
+                String showStr = "ID: " + flD.getId() + "\n" + "LINK: " + flD.getLink() + "\n" + "PRIZE: " + flD.getPrize() + "\n" + "DESC: " + flD.getDescription() + "\n" + rebrandDate(flD.getDtm()) + "\n\n";
                 tv.setText(showStr);
                 Linkify.addLinks(tv, Linkify.WEB_URLS);
                 tv.setLinkTextColor(Color.parseColor("#2f6699"));
