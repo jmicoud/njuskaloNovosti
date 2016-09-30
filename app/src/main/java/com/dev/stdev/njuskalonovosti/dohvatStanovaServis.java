@@ -22,6 +22,7 @@ public class dohvatStanovaServis extends IntentService {
      * @param name Used to name the worker thread, important only for debugging.
      */
 
+    private dbClass db = new dbClass(this);
 
 
     public dohvatStanovaServis() {
@@ -161,41 +162,14 @@ public class dohvatStanovaServis extends IntentService {
         fl.setPrize(prize);
         fl.setDescription(description);
 
-        //serialize object
-        //try {
-            //ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            //ObjectOutputStream out = new ObjectOutputStream(bos);
-            //out.writeObject(fl);
-            //out.close();
+
+        sendBroadcastMessage("FLAT_BRD", fl);
+
+        if(db.isApartmentsTableEmpty()==false)
+        {
 
 
-            //bundle.putSerializable("FLAT_OBJECT", fl);
-            //intent.putExtras(bundle);
-
-            sendBroadcastMessage("FLAT_BRD", fl);
-       // }
-      //  catch(Exception e)
-      //  {
-//
-
-        //}
-
-            Log.d("ID", fl.getId());
-            Log.d("LINK", fl.getLink());
-            Log.d("PRIZE", fl.getPrize());
-            Log.d("DESCRIPTION", fl.getDescription());
-            Log.d("DTM", fl.getDtm());
-            Log.d("NEWLINE", "-----------------------------------");
-
-            /*LinearLayout linearLayout = (LinearLayout) findViewById(R.id.dohvatiLayout);
-
-            TextView tv = new TextView(this);
-            tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            String showStr = "ID: " + id + "\n" + "LINK: " + link + "\n" + "PRIZE: " + prize + "\n" + "DESC: " + description + "\n" + dtm + "\n\n";
-            tv.setText(showStr);
-            Linkify.addLinks(tv, Linkify.WEB_URLS);
-            tv.setLinkTextColor(Color.parseColor("#2f6699"));
-            linearLayout.addView(tv);*/
+        }
 
 
     }
