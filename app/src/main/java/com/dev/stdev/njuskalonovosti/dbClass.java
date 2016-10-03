@@ -24,12 +24,16 @@ public class dbClass extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "stanovi";
     //Database table
     private static final String TABLE_NOVI_STANOVI = "novistanovi";
+    private static final String TABLE_PRETRAGE = "pretrage";
     //Database columns
     private static final String COLUMN_ID = "id";
+    private static final String COLUMN_GENID = "generalid";
     private static final String COLUMN_LINK = "link";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_PRIZE = "prize";
     private static final String COLUMN_DATETM = "datetm";
+    private static final String COLUMN_PRETRAGE = "pretrage";
+    private static final String COLUMN_TIP = "tip";
 
 
     public dbClass(Context context) {
@@ -38,22 +42,27 @@ public class dbClass extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_APARTMENTS_TABLE = "CREATE TABLE" + TABLE_NOVI_STANOVI + "(" + COLUMN_ID + "TEXT," + COLUMN_LINK + "TEXT," + COLUMN_DESCRIPTION + "TEXT" + COLUMN_PRIZE + "TEXT" + COLUMN_DATETM + "TEXT" + ")";
+        String CREATE_APARTMENTS_TABLE = "CREATE TABLE" + TABLE_NOVI_STANOVI + "(" + COLUMN_GENID + "TEXT," + COLUMN_ID + "TEXT," + COLUMN_LINK + "TEXT," + COLUMN_DESCRIPTION + "TEXT" + COLUMN_PRIZE + "TEXT" + COLUMN_DATETM + "TEXT" + ")";
         db.execSQL(CREATE_APARTMENTS_TABLE);
+
+        String CREATE_PRETRAGE_TABLE = "CREATE TABLE" + TABLE_PRETRAGE + "(" + COLUMN_GENID + "TEXT," + COLUMN_PRETRAGE + "TEXT" + COLUMN_TIP + "TEXT" + ")";
+        db.execSQL(CREATE_PRETRAGE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOVI_STANOVI);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRETRAGE);
         // Creating tables again
         onCreate(db);
     }
 
 
-    public void addApartment(flatData flat) {
+    public void addApartment(flatData flat, String generalId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(COLUMN_GENID, generalId);
         values.put(COLUMN_ID, flat.getId());
         values.put(COLUMN_LINK, flat.getLink());
         values.put(COLUMN_DESCRIPTION, flat.getDescription());
@@ -65,19 +74,26 @@ public class dbClass extends SQLiteOpenHelper {
     }
 
 
-    // Deleting single contact
+    // Deleting apartment
     public void deleteAllApartments() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NOVI_STANOVI, null, null);
         db.close();
     }
 
+    // Deleting pretrage
+    public void deleteAllPretrage() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_PRETRAGE, null, null);
+        db.close();
+    }
 
-    // Getting All Apartments
-    public List<flatData> getAllApartments() {
+
+    // Getting All Apartments by generalid
+    public List<flatData> getAllApartments(String generalid) {
         List<flatData> fldataList = new ArrayList<flatData>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_NOVI_STANOVI;
+        String selectQuery = "SELECT  * FROM " + TABLE_NOVI_STANOVI + " WHERE " + COLUMN_GENID + "=" + generalid;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -96,6 +112,7 @@ public class dbClass extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        db.close();
         // return apartments list
         return fldataList;
     }
@@ -107,6 +124,7 @@ public class dbClass extends SQLiteOpenHelper {
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);
+        db.close();
         return icount <= 0;
     }
 
