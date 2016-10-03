@@ -112,7 +112,7 @@ public class glavnaActivity extends AppCompatActivity {
                 List<String> list;
 
                 list = new ArrayList<String>();
-                list.add(prt.getGeneralId()+","+prt.getPretraga());
+                list.add(prt.getPretraga()); //prt.getGeneralId()+","+prt.getPretraga()
                 adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 sp.setAdapter(adapter);
