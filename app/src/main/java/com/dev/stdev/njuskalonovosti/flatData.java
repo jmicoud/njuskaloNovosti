@@ -13,6 +13,17 @@ public class flatData implements Serializable {
     private String description;
     private String link;
     private String dtm;
+    private String isNewApartment;
+
+    public String getIsNewApartment() {
+        return isNewApartment;
+    }
+
+    public void setIsNewApartment(String isNewApartment) {
+        this.isNewApartment = isNewApartment;
+    }
+
+
 
 
     public String getPrize() {

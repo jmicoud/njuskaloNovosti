@@ -126,6 +126,12 @@ public class dohvatiActivity extends AppCompatActivity {
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.dohvatiLayout);
 
                 TextView tv = new TextView(getApplicationContext());
+
+                if(flD.getIsNewApartment().equals("1")) //new flats are in light green color
+                {
+                    tv.setBackgroundColor(Color.parseColor("#90EE90"));
+                }
+
                 tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                 String showStr = "ID: " + flD.getId() + "\n" + "LINK: " + flD.getLink() + "\n" + "PRIZE: " + flD.getPrize() + "\n" + "DESC: " + flD.getDescription() + "\n" + rebrandDate(flD.getDtm()) + "\n\n";
                 tv.setText(showStr);

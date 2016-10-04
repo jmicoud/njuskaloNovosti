@@ -74,6 +74,18 @@ public class dbClass extends SQLiteOpenHelper {
     }
 
 
+    public void addPretraga(pretrageClass pretraga) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_GENID, pretraga.getGeneralId());
+        values.put(COLUMN_PRETRAGE, pretraga.getPretraga());
+        values.put(COLUMN_TIP, pretraga.getTip());
+
+        // Inserting Row
+        db.insert(TABLE_PRETRAGE, null, values);
+        db.close(); // Closing database connection
+    }
+
     // Deleting apartment
     public void deleteAllApartments() {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -118,9 +130,48 @@ public class dbClass extends SQLiteOpenHelper {
     }
 
 
+    // Getting All Apartments by generalid
+    public List<pretrageClass> getAllPretrage() {
+        List<pretrageClass> prdataList = new ArrayList<pretrageClass>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                pretrageClass prt = new pretrageClass();
+                prt.setGeneralId(cursor.getString(0));
+                prt.setPretraga(cursor.getString(1));
+                prt.setTip(cursor.getString(2));
+
+                // Adding contact to list
+                prdataList.add(prt);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        // return apartments list
+        return prdataList;
+    }
+
+
+
     public boolean isApartmentsTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
         String count = "SELECT count(*) FROM " + TABLE_NOVI_STANOVI;
+        Cursor mcursor = db.rawQuery(count, null);
+        mcursor.moveToFirst();
+        int icount = mcursor.getInt(0);
+        db.close();
+        return icount <= 0;
+    }
+
+    public boolean isPretrageTableEmpty() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String count = "SELECT count(*) FROM " + TABLE_PRETRAGE;
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -22,7 +24,7 @@ public class dohvatStanovaServis extends IntentService {
      * @param name Used to name the worker thread, important only for debugging.
      */
 
-    private dbClass db = new dbClass(this);
+    private dbClass db = new dbClass(getApplicationContext());
 
 
     public dohvatStanovaServis() {
@@ -43,7 +45,7 @@ public class dohvatStanovaServis extends IntentService {
     }
 
 
-    public void doGetApartments(String upit) {
+    public void doGetApartments(final String upit) {
 
         try {
 
@@ -70,7 +72,7 @@ public class dohvatStanovaServis extends IntentService {
                             String msg =  response.body().string();
                             //int lnt = msg.length();
 
-                            parseRespIntoDatabase(msg);
+                            parseRespIntoDatabase(msg, upit);
 
 
                         }
@@ -116,7 +118,7 @@ public class dohvatStanovaServis extends IntentService {
 
 
 
-    public void parseRespIntoDatabase(String resp)
+    public void parseRespIntoDatabase(String resp, String upit)
     {
         //int locSt = resp.indexOf("Njuškalo oglasi");
         int i, n;
@@ -131,7 +133,7 @@ public class dohvatStanovaServis extends IntentService {
 
             i = resp.indexOf("data-ad-id", i+1);
 
-            parseAllValues(resp.substring(n, i));
+            parseAllValues(resp.substring(n, i), upit);
             n = i;
 
         }
@@ -140,7 +142,7 @@ public class dohvatStanovaServis extends IntentService {
     }
 
 
-    public void parseAllValues(String valStr)
+    public void parseAllValues(String valStr, String upit)
     {
 
         flatData fl = new flatData();
@@ -163,17 +165,92 @@ public class dohvatStanovaServis extends IntentService {
         fl.setDescription(description);
 
 
-        sendBroadcastMessage("FLAT_BRD", fl);
-
-        if(db.isApartmentsTableEmpty()==false)
+        if(db.isPretrageTableEmpty()==false)
         {
+            //is this existing search
+            boolean isNs = false;
+            String tempGenId = "";
+            List<pretrageClass> lP = db.getAllPretrage();
+            for(int i=0; i<lP.size(); i++)
+            {
+                if (upit.equals(lP.get(i).getPretraga()))
+                {
+                    isNs = true; //there is existing search, exit loop
+                    tempGenId = lP.get(i).getGeneralId();
+                    break;
+                }
+            }
 
+
+            if(isNs=false) //this is new search
+            {
+
+                //dohvati zadnju pretragu jer ima
+              pretrageClass prTm = lP.get(lP.size()-1);
+              int newGeneralId = Integer.parseInt(prTm.getGeneralId()) + 1; //zadnji plus 1 je id za novu pretragu
+              pretrageClass prNew = new pretrageClass();
+              prNew.setGeneralId(Integer.toString(newGeneralId));
+              prNew.setPretraga(upit);
+              prNew.setTip("0"); //not alarm search
+              db.addPretraga(prNew);
+
+              fl.setIsNewApartment("1"); //this isnew apartment becouse it is new search so value is 1
+
+              db.addApartment(fl,Integer.toString(newGeneralId)); //add apartment to database, novistanovi table
+
+                //dodaj novu pretragu - geerirajnovi general id, pretraži stanove na temelju novog id-a, nema ih naravno jer je nova pretraga, ddaj fld.isnew..
+            }
+            else //isNs=true
+            {
+                //pretraži stanove na temelju general id-a pretrage, usporedi jesu li novi na temelju id-a dodaj nove stanove u bazu i vrati natrag nove plus prepoznate stare(dio istih)
+                List<flatData> flLs = db.getAllApartments(tempGenId);
+
+                boolean nwFlat = false;
+                for(int i=0; i<flLs.size(); i++)
+                {
+                    if(id.equals(flLs.get(i).getId())) //there is same flat in database for this search
+                    {
+                        nwFlat = true;
+                        break;
+                    }
+                }
+
+                if(nwFlat==false) //new apartment recognized
+                {
+                    fl.setIsNewApartment("1");
+                    db.addApartment(fl,tempGenId);
+                }
+                else
+                {
+                    fl.setIsNewApartment("0");
+                }
+
+
+            }
 
         }
+        else //Pretrage table is empty
+        {
+
+        }
+
+        sendBroadcastMessage("FLAT_BRD", fl);
+
+
 
 
     }
 
+
+    public String genNewGenId()
+    {
+        String retStr="";
+
+
+
+        return (retStr);
+
+    }
 
 
     public static String substringBetween(String str, String open, String close) {

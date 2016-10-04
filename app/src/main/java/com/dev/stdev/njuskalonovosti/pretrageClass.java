@@ -1,10 +1,12 @@
 package com.dev.stdev.njuskalonovosti;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 3.10.2016..
  */
 
-public class pretrageClass {
+public class pretrageClass implements Serializable {
 
     public String getGeneralId() {
         return generalId;
