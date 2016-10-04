@@ -4,13 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/glavnaLayout">
 
     <EditText android:id="@+id/edit_message"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:hint="@string/edit_message" />
 
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner" />
 
     <Button
         android:layout_marginTop="60dp"
@@ -24,7 +30,8 @@
         android:layout_marginTop="60dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_konfiguracija"
-        android:id="@+id/button" />
+        android:text="@string/buttonKonf"
+        android:id="@+id/buttonKonf"
+        android:onClick="konfiguriraj" />
 
 </LinearLayout>
