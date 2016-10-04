@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/konfiguracijaLayout">
+
+    <EditText android:id="@+id/editKonfiguracija"
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/editKonfiguracija" />
+
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerKonfiguracija"
+        android:entries="@array/timeArray" />
+
+
+
+    <Button
+        android:layout_marginTop="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_Konfiguracija"
+        android:id="@+id/buttonKonfiguracija" />
+
+</LinearLayout>
