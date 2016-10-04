@@ -2,5 +2,6 @@
     <string name="app_name">Novi Stanovi Njuskalo</string>
     <string name="edit_message">Unesi pretragu..</string>
     <string name="button_dohvati">Dohvati..</string>
-    <string name="button_konfiguracija">Konfiguracija..</string>
+    <string name="buttonKonfiguracija">Napravi</string>
+    <string name="editKonfiguracija">Upit..</string>
 </resources>
