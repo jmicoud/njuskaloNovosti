@@ -2,6 +2,18 @@
     <string name="app_name">Novi Stanovi Njuskalo</string>
     <string name="edit_message">Unesi pretragu..</string>
     <string name="button_dohvati">Dohvati..</string>
-    <string name="buttonKonfiguracija">Napravi</string>
+    <string name="button_Konfiguracija">Napravi</string>
+    <string name="buttonListaAlarma">Lista Alarma</string>
+    <string name="buttonKonf">Konfiguracija</string>
     <string name="editKonfiguracija">Upit..</string>
+
+
+    <string-array name="timeArray">
+        <item>15m</item>
+        <item>1h</item>
+        <item>3h</item>
+        <item>6h</item>
+        <item>12h</item>
+    </string-array>
+
 </resources>
