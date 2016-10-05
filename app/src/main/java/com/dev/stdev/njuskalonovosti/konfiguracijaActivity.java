@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class activity_konfiguracija extends AppCompatActivity {
+public class konfiguracijaActivity extends AppCompatActivity {
 
     public final static String MESSAGE = "MESSAGE";
 

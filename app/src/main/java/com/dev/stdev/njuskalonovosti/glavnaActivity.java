@@ -4,11 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -152,7 +149,7 @@ public class glavnaActivity extends AppCompatActivity {
 
         //search string must not be empty
         if(message!="") {
-            Intent intent = new Intent(this, activity_konfiguracija.class);
+            Intent intent = new Intent(this, konfiguracijaActivity.class);
             intent.putExtra(EXTRA_MESSAGE, message);
             startActivity(intent);
         }
