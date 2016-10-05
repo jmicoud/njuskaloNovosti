@@ -3,6 +3,7 @@
     package="com.dev.stdev.njuskalonovosti">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -17,11 +18,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".dohvatiActivity"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <activity android:name=".dohvatiActivity" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <service
+            android:name=".dohvatiSvePretrageServis"
+            android:exported="false" />
+
+        <activity android:name=".konfiguracijaActivity" />
+        <activity android:name=".listaAlarmaActivity" />
+
+        <service
+            android:name=".dohvatiListuAlarmaServis"
+            android:exported="false"></service>
+        <service
+            android:name=".dohvatStanovaServis"
+            android:exported="false"></service>
     </application>
 
 </manifest>
