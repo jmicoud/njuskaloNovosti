@@ -82,6 +82,8 @@ public class dohvatiActivity extends AppCompatActivity {
         srvc.putExtra("LINK",message.toString());
         startService((srvc));
 
+        Log.d("U servisu","SERVIS");
+
     }
 
 

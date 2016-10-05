@@ -42,18 +42,18 @@ public class dbClass extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_APARTMENTS_TABLE = "CREATE TABLE" + TABLE_NOVI_STANOVI + "(" + COLUMN_GENID + "TEXT," + COLUMN_ID + "TEXT," + COLUMN_LINK + "TEXT," + COLUMN_DESCRIPTION + "TEXT" + COLUMN_PRIZE + "TEXT" + COLUMN_DATETM + "TEXT" + ")";
+        String CREATE_APARTMENTS_TABLE = "CREATE TABLE" + TABLE_NOVI_STANOVI + "(" + COLUMN_GENID + "TEXT," + COLUMN_ID + "TEXT," + COLUMN_LINK + "TEXT," + COLUMN_DESCRIPTION + "TEXT" + COLUMN_PRIZE + "TEXT" + COLUMN_DATETM + "TEXT" + ");";
         db.execSQL(CREATE_APARTMENTS_TABLE);
 
-        String CREATE_PRETRAGE_TABLE = "CREATE TABLE" + TABLE_PRETRAGE + "(" + COLUMN_GENID + "TEXT," + COLUMN_PRETRAGE + "TEXT" + COLUMN_TIP + "TEXT" + ")";
+        String CREATE_PRETRAGE_TABLE = "CREATE TABLE" + TABLE_PRETRAGE + "(" + COLUMN_GENID + "TEXT," + COLUMN_PRETRAGE + "TEXT" + COLUMN_TIP + "TEXT" + ");";
         db.execSQL(CREATE_PRETRAGE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOVI_STANOVI);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRETRAGE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOVI_STANOVI + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRETRAGE + ";");
         // Creating tables again
         onCreate(db);
     }
@@ -105,7 +105,7 @@ public class dbClass extends SQLiteOpenHelper {
     public List<flatData> getAllApartments(String generalid) {
         List<flatData> fldataList = new ArrayList<flatData>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_NOVI_STANOVI + " WHERE " + COLUMN_GENID + "=" + generalid;
+        String selectQuery = "SELECT  * FROM " + TABLE_NOVI_STANOVI + " WHERE " + COLUMN_GENID + "=" + generalid +";";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -134,7 +134,7 @@ public class dbClass extends SQLiteOpenHelper {
     public List<pretrageClass> getAllPretrage() {
         List<pretrageClass> prdataList = new ArrayList<pretrageClass>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE;
+        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + ";";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -161,7 +161,7 @@ public class dbClass extends SQLiteOpenHelper {
 
     public boolean isApartmentsTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
-        String count = "SELECT count(*) FROM " + TABLE_NOVI_STANOVI;
+        String count = "SELECT count(*) FROM " + TABLE_NOVI_STANOVI + ";";
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);
@@ -171,7 +171,7 @@ public class dbClass extends SQLiteOpenHelper {
 
     public boolean isPretrageTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
-        String count = "SELECT count(*) FROM " + TABLE_PRETRAGE;
+        String count = "SELECT count(*) FROM " + TABLE_PRETRAGE + ";";
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);

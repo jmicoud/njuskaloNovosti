@@ -33,6 +33,7 @@ public class glavnaActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String message = intent.getStringExtra(glavnaActivity.EXTRA_MESSAGE);
+    //}
 
         //Register receiver from service
         bRec = new glavnaActivity.bReceiver();

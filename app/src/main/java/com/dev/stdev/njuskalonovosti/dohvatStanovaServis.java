@@ -55,6 +55,7 @@ public class dohvatStanovaServis extends IntentService {
             //toast = Toast.makeText(this, "0", Toast.LENGTH_SHORT);
             //toast.show();
 
+            //Log.d("PRIJE","Prija");
 
             NjuskaloService service = NjuskaloService.retrofit.create(NjuskaloService.class);
             Call<ResponseBody> call = service.getTask(ctls,upit,sorts);
