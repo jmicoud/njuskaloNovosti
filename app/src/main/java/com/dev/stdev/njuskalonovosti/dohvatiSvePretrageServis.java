@@ -18,7 +18,7 @@ import java.util.List;
 public class dohvatiSvePretrageServis extends IntentService {
 
 
-    private dbClass db = new dbClass(getApplicationContext());
+    private dbClass db = new dbClass(this);
     private List<pretrageClass> pretrageLista;
 
     public dohvatiSvePretrageServis() {
