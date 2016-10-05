@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +53,8 @@ public class dbClass extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOVI_STANOVI + ";");
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRETRAGE + ";");
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOVI_STANOVI);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRETRAGE);
         // Creating tables again
         onCreate(db);
     }
@@ -105,20 +106,24 @@ public class dbClass extends SQLiteOpenHelper {
     public List<flatData> getAllApartments(String generalid) {
         List<flatData> fldataList = new ArrayList<flatData>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_NOVI_STANOVI + " WHERE " + COLUMN_GENID + "=" + generalid +";";
+
+        //Log.d("get","get apatment at"+generalid);
+        String selectQuery = "SELECT * FROM " + TABLE_NOVI_STANOVI + " WHERE " + COLUMN_GENID + "=" + generalid;
+
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
+        //Log.d("get","getapatmentafter");
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
                 flatData fld = new flatData();
-                fld.setId(cursor.getString(0));
-                fld.setLink(cursor.getString(1));
-                fld.setDescription(cursor.getString(2));
-                fld.setPrize(cursor.getString(3));
-                fld.setDtm(cursor.getString(4));
+                fld.setId(cursor.getString(1));
+                fld.setLink(cursor.getString(2));
+                fld.setDescription(cursor.getString(3));
+                fld.setPrize(cursor.getString(4));
+                fld.setDtm(cursor.getString(5));
                 // Adding contact to list
                 fldataList.add(fld);
             } while (cursor.moveToNext());
@@ -134,7 +139,7 @@ public class dbClass extends SQLiteOpenHelper {
     public List<pretrageClass> getAllPretrage() {
         List<pretrageClass> prdataList = new ArrayList<pretrageClass>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + ";";
+        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -161,7 +166,7 @@ public class dbClass extends SQLiteOpenHelper {
 
     public boolean isApartmentsTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
-        String count = "SELECT count(*) FROM " + TABLE_NOVI_STANOVI + ";";
+        String count = "SELECT count(*) FROM " + TABLE_NOVI_STANOVI;
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);
@@ -171,7 +176,7 @@ public class dbClass extends SQLiteOpenHelper {
 
     public boolean isPretrageTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
-        String count = "SELECT count(*) FROM " + TABLE_PRETRAGE + ";";
+        String count = "SELECT count(*) FROM " + TABLE_PRETRAGE;
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);

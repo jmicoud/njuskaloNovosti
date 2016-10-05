@@ -29,7 +29,7 @@ public class dohvatiSvePretrageServis extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
 
-            Log.d("U servisu dohvati","U servisu dohvati");
+            //Log.d("U servisu dohvati","U servisu dohvati");
 
             pretrageLista = db.getAllPretrage();
 

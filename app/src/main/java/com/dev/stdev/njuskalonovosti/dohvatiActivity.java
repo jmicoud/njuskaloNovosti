@@ -121,19 +121,19 @@ public class dohvatiActivity extends AppCompatActivity {
                 //Do something with the string
 
 
-                Log.d("ID", flD.getId());
-                Log.d("LINK", flD.getLink());
-                Log.d("PRIZE", flD.getPrize());
-                Log.d("DESCRIPTION", flD.getDescription());
-                Log.d("DTM", flD.getDtm());
-                Log.d("ISNEW", flD.getIsNewApartment());
-                Log.d("NEWLINE", "-----------------------------------");
+                //Log.d("ID", flD.getId());
+                //Log.d("LINK", flD.getLink());
+                //Log.d("PRIZE", flD.getPrize());
+                //Log.d("DESCRIPTION", flD.getDescription());
+                //Log.d("DTM", flD.getDtm());
+                //Log.d("ISNEW", flD.getIsNewApartment());
+                //Log.d("NEWLINE", "-----------------------------------");
 
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.dohvatiLayout);
 
                 TextView tv = new TextView(getApplicationContext());
 
-                if(flD.getIsNewApartment()=="1") //new flats are in light green color
+                if(flD.getIsNewApartment().equals("1")) //new flats are in light green color
                 {
                     tv.setBackgroundColor(Color.parseColor("#90EE90"));
                 }

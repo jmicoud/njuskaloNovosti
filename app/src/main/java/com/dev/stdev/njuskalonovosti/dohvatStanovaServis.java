@@ -37,7 +37,7 @@ public class dohvatStanovaServis extends IntentService {
         //String dataString = workIntent.getDataString();
         if (intent != null) {
 
-            Log.d("U servisu dohvati stae", "U SERVISU DOHVATI ST");
+            //Log.d("U servisu dohvati stae", "U SERVISU DOHVATI ST");
 
             String lnk = intent.getStringExtra("LINK");
 
@@ -170,9 +170,12 @@ public class dohvatStanovaServis extends IntentService {
         fl.setPrize(prize);
         fl.setDescription(description);
 
+        int newGeneralId;
 
-        //if(db.isPretrageTableEmpty()==false)
-       // {
+        if(db.isPretrageTableEmpty()==false)
+        {
+
+            //Log.d("size", "PRETRAGANOTEMPTY");
             //is this existing search
             boolean isNs = false;
             String tempGenId = "";
@@ -182,18 +185,28 @@ public class dohvatStanovaServis extends IntentService {
                 if (upit.equals(lP.get(i).getPretraga()))
                 {
                     isNs = true; //there is existing search, exit loop
+                    //Log.d("EXISTING","YES");
                     tempGenId = lP.get(i).getGeneralId();
                     break;
                 }
             }
 
 
-            if(isNs=false) //this is new search
+            //Log.d("size", "PRETRAGASIZE: " + Integer.toString(lP.size()));
+
+            if(isNs==false) //this is new search
             {
 
+              //Log.d("NEWSEARCH", "NEWSEARCH");
+
+              pretrageClass prTm;
+
+              prTm = lP.get(lP.size()-1);//take last an generate +1 id for new one
+              newGeneralId = Integer.parseInt(prTm.getGeneralId()) + 1; //zadnji plus 1 je id za novu pretragu
+
+              //Log.d("Zadnji","zadnji"+ Integer.toString(newGeneralId));
                 //dohvati zadnju pretragu jer ima
-              pretrageClass prTm = lP.get(lP.size()-1);
-              int newGeneralId = Integer.parseInt(prTm.getGeneralId()) + 1; //zadnji plus 1 je id za novu pretragu
+
               pretrageClass prNew = new pretrageClass();
               prNew.setGeneralId(Integer.toString(newGeneralId));
               prNew.setPretraga(upit);
@@ -211,11 +224,16 @@ public class dohvatStanovaServis extends IntentService {
                 //pretraži stanove na temelju general id-a pretrage, usporedi jesu li novi na temelju id-a dodaj nove stanove u bazu i vrati natrag nove plus prepoznate stare(dio istih)
                 List<flatData> flLs = db.getAllApartments(tempGenId);
 
+                //Log.d("BROJSTANOVA","BROJ STANOVA: "+flLs.size());
+
                 boolean nwFlat = false;
                 for(int i=0; i<flLs.size(); i++)
                 {
+                    //Log.d("IDES",id + "," + flLs.get(i).getId());
+
                     if(id.equals(flLs.get(i).getId())) //there is same flat in database for this search
                     {
+                        //Log.d("FLATEXIST","FLATEXIST: " + id);
                         nwFlat = true;
                         break;
                     }
@@ -229,16 +247,30 @@ public class dohvatStanovaServis extends IntentService {
                 else
                 {
                     fl.setIsNewApartment("0");
+
                 }
 
 
             }
 
-        //}
-        //else //Pretrage table is empty
-       // {
+        }
+        else //Pretrage table is empty
+        {
+            newGeneralId = 1000; //set initial generalid to 1000
 
-        //}
+            //dohvati zadnju pretragu jer ima
+
+            pretrageClass prNew = new pretrageClass();
+            prNew.setGeneralId(Integer.toString(newGeneralId));
+            prNew.setPretraga(upit);
+            prNew.setTip("0"); //not alarm search
+            db.addPretraga(prNew);
+
+            fl.setIsNewApartment("1"); //this isnew apartment becouse it is new search so value is 1
+
+            db.addApartment(fl,Integer.toString(newGeneralId)); //add apartment to database, novistanovi table
+
+        }
 
         sendBroadcastMessage("FLAT_BRD", fl);
 

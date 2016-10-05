@@ -26,6 +26,8 @@ public class glavnaActivity extends AppCompatActivity {
     public final static String MESSAGE_GA = "MESSAGE_GA";
     private bReceiver bRec;
 
+    private List<String> list = new ArrayList<String>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,10 +103,10 @@ public class glavnaActivity extends AppCompatActivity {
             //Do something with the string
 
 
-            Log.d("ID", prt.getGeneralId());
-            Log.d("PRETRAGA", prt.getPretraga());
-            Log.d("TIP", prt.getTip());
-            Log.d("NEWLINE", "-----------------------------------");
+            //Log.d("ID", prt.getGeneralId());
+            //Log.d("PRETRAGA", prt.getPretraga());
+            //Log.d("TIP", prt.getTip());
+            //Log.d("NEWLINE", "-----------------------------------");
 
             LinearLayout linearLayout = (LinearLayout) findViewById(R.id.glavnaLayout);
 
@@ -114,9 +116,7 @@ public class glavnaActivity extends AppCompatActivity {
             if(prt.getTip().equals("0")) {
 
                 ArrayAdapter<String> adapter;
-                List<String> list;
 
-                list = new ArrayList<String>();
                 list.add(prt.getPretraga()); //prt.getGeneralId()+","+prt.getPretraga()
                 adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
