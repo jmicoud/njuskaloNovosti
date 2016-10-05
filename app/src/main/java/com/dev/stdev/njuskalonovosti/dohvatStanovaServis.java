@@ -272,7 +272,7 @@ public class dohvatStanovaServis extends IntentService {
 
     private void sendBroadcastMessage(String intentFilterName, flatData f) {
 
-        Log.d("Šaljem Intent","Šaljem Intent");
+       // Log.d("Šaljem Intent","Šaljem Intent");
 
         Intent intent = new Intent(intentFilterName);
         intent.putExtra("FLAT_OBJECT", f);

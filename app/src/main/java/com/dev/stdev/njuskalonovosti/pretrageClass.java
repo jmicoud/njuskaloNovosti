@@ -36,6 +36,16 @@ public class pretrageClass implements Serializable {
     private String pretraga;
     private String tip;
 
+    public String getInterval() {
+        return interval;
+    }
+
+    public void setInterval(String interval) {
+        this.interval = interval;
+    }
+
+    private String interval;
+
 
 
 }

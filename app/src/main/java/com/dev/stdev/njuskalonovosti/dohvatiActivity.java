@@ -43,6 +43,7 @@ public class dohvatiActivity extends AppCompatActivity {
 
 
     private bReceiver bRec;
+    Intent srvc;
 
     //IntentFilter progressfilter = new IntentFilter("FLAT_BRD");
     //registerReceiver(bReceiver,progressfilter);
@@ -75,8 +76,9 @@ public class dohvatiActivity extends AppCompatActivity {
         registerReceiver(bRec,filter);
 
 
-        //Start Service
-        Intent srvc = new Intent(this, dohvatStanovaServis.class);
+        //Start Service, du background job in service
+        //Intent srvc = new Intent(this, dohvatStanovaServis.class);
+        srvc = new Intent(this, dohvatStanovaServis.class);
         srvc.putExtra("LINK",message.toString());
         startService((srvc));
 
@@ -139,6 +141,8 @@ public class dohvatiActivity extends AppCompatActivity {
                 tv.setLinkTextColor(Color.parseColor("#2f6699"));
                 linearLayout.addView(tv);
 
+                //stop service after finish
+                stopService(srvc);
 
                 // }
             //}

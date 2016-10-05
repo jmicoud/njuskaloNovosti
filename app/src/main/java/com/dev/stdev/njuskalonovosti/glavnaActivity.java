@@ -140,6 +140,40 @@ public class glavnaActivity extends AppCompatActivity {
 
     }
 
+
+
+
+    public void konfiguriraj(View view) {
+        // Do something in response to button
+
+        EditText editText = (EditText) findViewById(R.id.edit_message);
+        String message = editText.getText().toString();
+
+        //search string must not be empty
+        if(message!="") {
+            Intent intent = new Intent(this, activity_konfiguracija.class);
+            intent.putExtra(EXTRA_MESSAGE, message);
+            startActivity(intent);
+        }
+
+    }
+
+    public void ListaAlarma(View view) {
+        // Do something in response to button
+
+        String message = "DOHVATI_LISTU_ALARMA";
+
+        //search string must not be empty
+        if(message!="") {
+            Intent intent = new Intent(this, listaAlarmaActivity.class);
+            intent.putExtra(EXTRA_MESSAGE, message);
+            startActivity(intent);
+        }
+
+    }
+
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
