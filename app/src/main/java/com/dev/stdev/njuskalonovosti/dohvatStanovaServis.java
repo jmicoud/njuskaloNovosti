@@ -24,24 +24,29 @@ public class dohvatStanovaServis extends IntentService {
      * @param name Used to name the worker thread, important only for debugging.
      */
 
-    private dbClass db = new dbClass(getApplicationContext());
+    private dbClass db = new dbClass(this);
 
 
     public dohvatStanovaServis() {
-        super("getNewApartmentsService");
+        super("dohvatStanovaServis");
     }
 
     @Override
-    protected void onHandleIntent(Intent workIntent) {
+    protected void onHandleIntent(Intent intent) {
         // Gets data from the incoming Intent
         //String dataString = workIntent.getDataString();
+        if (intent != null) {
 
-        String lnk = workIntent.getStringExtra("LINK");
+            Log.d("U servisu dohvati stae", "U SERVISU DOHVATI ST");
 
-        doGetApartments(lnk);
+            String lnk = intent.getStringExtra("LINK");
 
-        // Do work here, based on the contents of dataString
+            Log.d("LINK", lnk);
 
+            doGetApartments(lnk);
+
+            // Do work here, based on the contents of dataString
+        }
     }
 
 
@@ -166,8 +171,8 @@ public class dohvatStanovaServis extends IntentService {
         fl.setDescription(description);
 
 
-        if(db.isPretrageTableEmpty()==false)
-        {
+        //if(db.isPretrageTableEmpty()==false)
+       // {
             //is this existing search
             boolean isNs = false;
             String tempGenId = "";
@@ -229,11 +234,11 @@ public class dohvatStanovaServis extends IntentService {
 
             }
 
-        }
-        else //Pretrage table is empty
-        {
+        //}
+        //else //Pretrage table is empty
+       // {
 
-        }
+        //}
 
         sendBroadcastMessage("FLAT_BRD", fl);
 
@@ -243,7 +248,7 @@ public class dohvatStanovaServis extends IntentService {
     }
 
 
-    public String genNewGenId()
+   /* public String genNewGenId()
     {
         String retStr="";
 
@@ -251,7 +256,7 @@ public class dohvatStanovaServis extends IntentService {
 
         return (retStr);
 
-    }
+    }*/
 
 
     public static String substringBetween(String str, String open, String close) {

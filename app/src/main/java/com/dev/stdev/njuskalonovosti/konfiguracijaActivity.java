@@ -18,7 +18,7 @@ public class konfiguracijaActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra(glavnaActivity.EXTRA_MESSAGE);
+        String message = intent.getStringExtra(glavnaActivity.MESSAGE_GK);
 
         TextView tv = (TextView)findViewById(R.id.editKonfiguracija);
         tv.setText(message);

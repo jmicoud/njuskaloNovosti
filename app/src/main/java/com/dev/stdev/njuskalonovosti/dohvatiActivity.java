@@ -41,7 +41,7 @@ public class dohvatiActivity extends AppCompatActivity {
 
     //Toast toast;
 
-
+    //public final static String MESSAGE_D = "MESSAGED";
     private bReceiver bRec;
     Intent srvc;
 
@@ -62,7 +62,7 @@ public class dohvatiActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dohvati);
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra(glavnaActivity.EXTRA_MESSAGE);
+        String message = intent.getStringExtra(glavnaActivity.MESSAGE_GD);
 
         //this.lnk = "http://www.njuskalo.hr/index.php?ctl=search_ads&keywords=" + message + "&sort=new";
         //this.lnk = message;
@@ -75,14 +75,15 @@ public class dohvatiActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("FLAT_BRD");
         registerReceiver(bRec,filter);
 
+        //Log.d("PRIJENOSDOH",message);
 
         //Start Service, du background job in service
         //Intent srvc = new Intent(this, dohvatStanovaServis.class);
         srvc = new Intent(this, dohvatStanovaServis.class);
-        srvc.putExtra("LINK",message.toString());
+        srvc.putExtra("LINK",message);
         startService((srvc));
 
-        Log.d("U servisu","SERVIS");
+        //Log.d("U servisu","SERVIS");
 
     }
 
@@ -125,13 +126,14 @@ public class dohvatiActivity extends AppCompatActivity {
                 Log.d("PRIZE", flD.getPrize());
                 Log.d("DESCRIPTION", flD.getDescription());
                 Log.d("DTM", flD.getDtm());
+                Log.d("ISNEW", flD.getIsNewApartment());
                 Log.d("NEWLINE", "-----------------------------------");
 
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.dohvatiLayout);
 
                 TextView tv = new TextView(getApplicationContext());
 
-                if(flD.getIsNewApartment().equals("1")) //new flats are in light green color
+                if(flD.getIsNewApartment()=="1") //new flats are in light green color
                 {
                     tv.setBackgroundColor(Color.parseColor("#90EE90"));
                 }

@@ -10,7 +10,6 @@ import android.os.Bundle;
 public class listaAlarmaActivity extends AppCompatActivity {
 
     private bReceiver bRec;
-    public final static String MESSAGE = "MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,7 +17,7 @@ public class listaAlarmaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_lista_alarma);
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra(MESSAGE);
+        String message = intent.getStringExtra(glavnaActivity.MESSAGE_GA);
 
         //Register receiver from service
         bRec = new bReceiver();
@@ -30,7 +29,7 @@ public class listaAlarmaActivity extends AppCompatActivity {
 
             //Start Service
             Intent srvc = new Intent(this, dohvatiListuAlarmaServis.class);
-            srvc.putExtra("GETALARMLIST", message.toString());
+            srvc.putExtra("GETALARMLIST", message);
             startService((srvc));
 
         }
@@ -39,7 +38,7 @@ public class listaAlarmaActivity extends AppCompatActivity {
 
             //Start Service
             Intent srvc = new Intent(this, dohvatiListuAlarmaServis.class);
-            srvc.putExtra("SETALARM", message.toString());
+            srvc.putExtra("SETALARM", message);
             startService((srvc));
         }
 

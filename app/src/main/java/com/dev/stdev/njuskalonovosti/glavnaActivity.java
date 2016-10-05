@@ -20,7 +20,10 @@ import java.util.List;
 
 public class glavnaActivity extends AppCompatActivity {
 
-    public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
+    public final static String MESSAGE_GD = "MESSAGE_GD";
+    public final static String MESSAGE_GK = "MESSAGE_GK";
+    public final static String MESSAGE_GS = "MESSAGE_GS";
+    public final static String MESSAGE_GA = "MESSAGE_GA";
     private bReceiver bRec;
 
     @Override
@@ -28,21 +31,25 @@ public class glavnaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_glavna);
 
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(glavnaActivity.EXTRA_MESSAGE);
+        //Intent intent = getIntent();
+        //String message = intent.getStringExtra(glavnaActivity.EXTRA_MESSAGE);
     //}
 
+
+        //Log.d("Prije receivera","prije receivera");
         //Register receiver from service
         bRec = new glavnaActivity.bReceiver();
         IntentFilter filter = new IntentFilter("PRETRAGE_RESP");
         registerReceiver(bRec,filter);
 
+        //Log.d("Prije servisa","poslije receivera");
 
         //Start Service
         Intent srvc = new Intent(this, dohvatiSvePretrageServis.class);
-        srvc.putExtra("PRETRAGA",message.toString());
+        srvc.putExtra("PRETRAGA",MESSAGE_GS);
         startService((srvc));
 
+        //Log.d("Poslije servisa","poslije servisa");
 
         //------------------spinner select value------------------------------------
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
@@ -75,7 +82,7 @@ public class glavnaActivity extends AppCompatActivity {
 
 
     //private BroadcastReceiver bReceiver = new BroadcastReceiver() {
-    private class bReceiver extends BroadcastReceiver {
+   private class bReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             //if(intent.getStringExtra("RETSTRNG").equals("")) {
@@ -129,10 +136,11 @@ public class glavnaActivity extends AppCompatActivity {
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String message = editText.getText().toString();
 
+        //Log.d("PORUKALINK",message);
         //search string must not be empty
         if(message!="") {
             Intent intent = new Intent(this, dohvatiActivity.class);
-            intent.putExtra(EXTRA_MESSAGE, message);
+            intent.putExtra(MESSAGE_GD, message);
             startActivity(intent);
         }
 
@@ -150,7 +158,7 @@ public class glavnaActivity extends AppCompatActivity {
         //search string must not be empty
         if(message!="") {
             Intent intent = new Intent(this, konfiguracijaActivity.class);
-            intent.putExtra(EXTRA_MESSAGE, message);
+            intent.putExtra(MESSAGE_GK, message);
             startActivity(intent);
         }
 
@@ -164,7 +172,7 @@ public class glavnaActivity extends AppCompatActivity {
         //search string must not be empty
         if(message!="") {
             Intent intent = new Intent(this, listaAlarmaActivity.class);
-            intent.putExtra(EXTRA_MESSAGE, message);
+            intent.putExtra(MESSAGE_GA, message);
             startActivity(intent);
         }
 
