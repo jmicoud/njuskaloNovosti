@@ -34,4 +34,13 @@
         android:id="@+id/buttonKonf"
         android:onClick="konfiguriraj" />
 
+    <Button
+        android:layout_marginTop="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonListaAlarma"
+        android:id="@+id/buttonListaAlarma"
+        android:visibility="gone"
+        android:onClick="ListaAlarma" />
+
 </LinearLayout>
