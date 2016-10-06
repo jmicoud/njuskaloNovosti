@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,15 +17,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.system.Os.remove;
-
 public class glavnaActivity extends AppCompatActivity {
 
     public final static String MESSAGE_GD = "MESSAGE_GD";
     public final static String MESSAGE_GK = "MESSAGE_GK";
     public final static String MESSAGE_GS = "MESSAGE_GS";
     public final static String MESSAGE_GA = "MESSAGE_GA";
+    public final static String MESSAGE_GAL = "MESSAGE_GAL";
+    public final static String MESSAGE_RGAL = "MESSAGE_RGAL";
     public final static String MESSAGE_BS = "MESSAGE_BS";
+    public final static String MESSAGE_PA = "MESSAGE_PA";
 
     private bReceiver bRec;
 
@@ -50,11 +50,16 @@ public class glavnaActivity extends AppCompatActivity {
 
         //Log.d("Prije servisa","poslije receivera");
 
-        //Start Service
+        //Start GET ALL SEARCHES Service
         Intent srvc = new Intent(this, dohvatiSvePretrageServis.class);
         srvc.putExtra("PRETRAGA",MESSAGE_GS);
         startService((srvc));
 
+
+        //Start ALARM START Service
+        Intent srva = new Intent(this, alarmiServis.class);
+        srva.putExtra("POKRENIALARME",MESSAGE_PA);
+        startService((srva));
         //Log.d("Poslije servisa","poslije servisa");
 
         //------------------spinner select value------------------------------------

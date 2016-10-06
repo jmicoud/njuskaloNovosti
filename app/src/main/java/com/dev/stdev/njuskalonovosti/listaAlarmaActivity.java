@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 public class listaAlarmaActivity extends AppCompatActivity {
 
@@ -16,31 +17,21 @@ public class listaAlarmaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alarma);
 
-        Intent intent = getIntent();
-        String message = intent.getStringExtra(glavnaActivity.MESSAGE_GA);
+        //Intent intent = getIntent();
+        //String message = intent.getStringExtra(glavnaActivity.MESSAGE_GA);
 
         //Register receiver from service
         bRec = new bReceiver();
         IntentFilter filter = new IntentFilter("ALARM_BRD");
         registerReceiver(bRec, filter);
 
-        if(message.equals("DOHVATI_LISTU_ALARMA")) //samo dohvati listu alarma i prikaži
-        {
+        //send intent to get alarm list to alarmiServis
+        sendBroadcastMessage(glavnaActivity.MESSAGE_GAL,glavnaActivity.MESSAGE_GAL);
 
-            //Start Service
-            Intent srvc = new Intent(this, dohvatiListuAlarmaServis.class);
-            srvc.putExtra("GETALARMLIST", message);
-            startService((srvc));
-
-        }
-        else //set and start alarm
-        {
-
-            //Start Service
-            Intent srvc = new Intent(this, dohvatiListuAlarmaServis.class);
-            srvc.putExtra("SETALARM", message);
-            startService((srvc));
-        }
+        //Start ALARM START Service
+        //Intent srva = new Intent(this, alarmiServis.class);
+        //srva.putExtra("POKRENIALARME",MESSAGE_PA);
+        //startService((srva));
 
     }
 
@@ -53,19 +44,18 @@ public class listaAlarmaActivity extends AppCompatActivity {
 
 
 
-            flatData flD = (flatData) intent.getSerializableExtra("ALARM_OBJECT");
+            alarmClass ald = (alarmClass) intent.getSerializableExtra("ALARM_OBJECT");
 
 
 
             //Do something with the string
 
 
-           /* Log.d("ID", flD.getId());
-            Log.d("LINK", flD.getLink());
-            Log.d("PRIZE", flD.getPrize());
-            Log.d("DESCRIPTION", flD.getDescription());
-            Log.d("DTM", flD.getDtm());
-            Log.d("NEWLINE", "-----------------------------------");*/
+            Log.d("GENERALID", ald.getGeneralid());
+            Log.d("INTERVAL", ald.getInterval());
+            Log.d("PRIZE", ald.getAlarmid());
+
+            Log.d("NEWLINE", "-----------------------------------");
 
            /* LinearLayout linearLayout = (LinearLayout) findViewById(R.id.dohvatiLayout);
 
@@ -87,6 +77,16 @@ public class listaAlarmaActivity extends AppCompatActivity {
             // }
             //}
         }
+    }
+
+
+    private void sendBroadcastMessage(String intentFilterName, String s) {
+
+        //Log.d("Šaljem Intent","Šaljem Intent");
+
+        Intent intent = new Intent(intentFilterName);
+        intent.putExtra(glavnaActivity.MESSAGE_GAL, s);
+        sendBroadcast(intent);
     }
 
 

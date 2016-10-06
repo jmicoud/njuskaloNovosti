@@ -24,8 +24,10 @@ public class dbClass extends SQLiteOpenHelper {
     //Database Name
     private static final String DATABASE_NAME = "stanovi";
     //Database table
-    private static final String TABLE_NOVI_STANOVI = "novistanovi";
+    private static final String TABLE_ALARMI = "alarmi";
     private static final String TABLE_PRETRAGE = "pretrage";
+    private static final String TABLE_NOVI_STANOVI = "novistanovi";
+
     //Database columns
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_GENID = "generalid";
@@ -35,6 +37,8 @@ public class dbClass extends SQLiteOpenHelper {
     private static final String COLUMN_DATETM = "datetm";
     private static final String COLUMN_PRETRAGE = "pretrage";
     private static final String COLUMN_TIP = "tip";
+    private static final String COLUMN_INTERVAL = "interval";
+    private static final String COLUMN_ALARM_ID = "interval";
 
 
     public dbClass(Context context) {
@@ -48,6 +52,9 @@ public class dbClass extends SQLiteOpenHelper {
 
         String CREATE_PRETRAGE_TABLE = "CREATE TABLE " + TABLE_PRETRAGE + "(" + COLUMN_GENID + " TEXT," + COLUMN_PRETRAGE + " TEXT," + COLUMN_TIP + " TEXT" + ");";
         db.execSQL(CREATE_PRETRAGE_TABLE);
+
+        String CREATE_ALARMI_TABLE = "CREATE TABLE " + TABLE_ALARMI + "(" + COLUMN_GENID + " TEXT," + COLUMN_INTERVAL + " TEXT," + COLUMN_ALARM_ID + " TEXT" + ");";
+        db.execSQL(CREATE_APARTMENTS_TABLE);
     }
 
     @Override
@@ -85,6 +92,27 @@ public class dbClass extends SQLiteOpenHelper {
         // Inserting Row
         db.insert(TABLE_PRETRAGE, null, values);
         db.close(); // Closing database connection
+    }
+
+
+    public void addAlarm(alarmClass alarm) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_GENID, alarm.getGeneralid());
+        values.put(COLUMN_INTERVAL, alarm.getInterval());
+        values.put(COLUMN_ALARM_ID, alarm.getAlarmid());
+
+        // Inserting Row
+        db.insert(TABLE_ALARMI, null, values);
+        db.close(); // Closing database connection
+    }
+
+
+    // Deleting alarm
+    public void deleteAlarm(String generalid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_ALARMI, COLUMN_GENID + "=" + generalid, null);
+        db.close();
     }
 
     // Deleting apartment
@@ -132,6 +160,38 @@ public class dbClass extends SQLiteOpenHelper {
         db.close();
         // return apartments list
         return fldataList;
+    }
+
+
+    // Getting All Alarms
+    public List<alarmClass> getAllAlarms() {
+        List<alarmClass> alList = new ArrayList<alarmClass>();
+        // Select All Query
+
+        //Log.d("get","get apatment at"+generalid);
+        String selectQuery = "SELECT * FROM " + TABLE_ALARMI;
+
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        //Log.d("get","getapatmentafter");
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                alarmClass ac = new alarmClass();
+                ac.setGeneralid(cursor.getString(0));
+                ac.setInterval(cursor.getString(1));
+                ac.setAlarmid(cursor.getString(2));
+
+                // Adding contact to list
+                alList.add(ac);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        // return apartments list
+        return alList;
     }
 
 
