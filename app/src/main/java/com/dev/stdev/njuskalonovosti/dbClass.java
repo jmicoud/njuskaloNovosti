@@ -88,16 +88,16 @@ public class dbClass extends SQLiteOpenHelper {
     }
 
     // Deleting apartment
-    public void deleteAllApartments() {
+    public void deleteApartment(String generalid) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NOVI_STANOVI, null, null);
+        db.delete(TABLE_NOVI_STANOVI, COLUMN_GENID + "=" + generalid, null);
         db.close();
     }
 
-    // Deleting pretrage
-    public void deleteAllPretrage() {
+    // Deleting pretrage on pretraga
+    public void deletePretraga(String pretraga) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_PRETRAGE, null, null);
+        db.delete(TABLE_PRETRAGE, COLUMN_PRETRAGE + "=" + pretraga, null);
         db.close();
     }
 
@@ -135,7 +135,34 @@ public class dbClass extends SQLiteOpenHelper {
     }
 
 
-    // Getting All Apartments by generalid
+    // Getting All pretrage
+    public List<pretrageClass> getPretragaByPretraga(String pretraga) {
+        List<pretrageClass> prdataList = new ArrayList<pretrageClass>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_PRETRAGE + "=" + pretraga;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                pretrageClass prt = new pretrageClass();
+                prt.setGeneralId(cursor.getString(0));
+                prt.setPretraga(cursor.getString(1));
+                prt.setTip(cursor.getString(2));
+
+                // Adding contact to list
+                prdataList.add(prt);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        // return apartments list
+        return prdataList;
+    }
+
+    // Getting All pretrage
     public List<pretrageClass> getAllPretrage() {
         List<pretrageClass> prdataList = new ArrayList<pretrageClass>();
         // Select All Query

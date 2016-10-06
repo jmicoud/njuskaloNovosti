@@ -18,12 +18,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.system.Os.remove;
+
 public class glavnaActivity extends AppCompatActivity {
 
     public final static String MESSAGE_GD = "MESSAGE_GD";
     public final static String MESSAGE_GK = "MESSAGE_GK";
     public final static String MESSAGE_GS = "MESSAGE_GS";
     public final static String MESSAGE_GA = "MESSAGE_GA";
+    public final static String MESSAGE_BS = "MESSAGE_BS";
+
     private bReceiver bRec;
 
     private List<String> list = new ArrayList<String>();
@@ -129,7 +133,7 @@ public class glavnaActivity extends AppCompatActivity {
 
 
 
-    /** Called when the user clicks the Send button */
+    /** Called when the user clicks the Dohvati button */
     public void dohvati(View view) {
         // Do something in response to button
 
@@ -146,6 +150,27 @@ public class glavnaActivity extends AppCompatActivity {
 
     }
 
+
+    public void brisipretragu(View view)
+    {
+
+        Spinner spinner = (Spinner)findViewById(R.id.spinner);
+        String text = spinner.getSelectedItem().toString(); //dohvati oznacenu pretragu
+
+        if(text!="") {
+
+
+            //isprazni listu
+            Spinner sp = (Spinner) findViewById(R.id.spinner);
+            sp.setAdapter(null);
+
+            //Start Service
+            Intent srvc = new Intent(this, brisiPretraguServis.class);
+            srvc.putExtra(MESSAGE_BS, text);
+            startService((srvc));
+        }
+
+    }
 
 
 
