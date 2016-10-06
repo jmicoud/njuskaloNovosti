@@ -97,7 +97,7 @@ public class dbClass extends SQLiteOpenHelper {
     // Deleting pretrage on pretraga
     public void deletePretraga(String pretraga) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_PRETRAGE, COLUMN_PRETRAGE + "=" + pretraga, null);
+        db.delete(TABLE_PRETRAGE, COLUMN_PRETRAGE + "='" + pretraga + "'", null);
         db.close();
     }
 
@@ -139,7 +139,7 @@ public class dbClass extends SQLiteOpenHelper {
     public List<pretrageClass> getPretragaByPretraga(String pretraga) {
         List<pretrageClass> prdataList = new ArrayList<pretrageClass>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_PRETRAGE + "=" + pretraga;
+        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_PRETRAGE + "='" + pretraga + "'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

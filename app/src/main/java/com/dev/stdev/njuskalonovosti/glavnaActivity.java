@@ -162,7 +162,12 @@ public class glavnaActivity extends AppCompatActivity {
 
             //isprazni listu
             Spinner sp = (Spinner) findViewById(R.id.spinner);
-            sp.setAdapter(null);
+            ArrayAdapter<String> adapter;
+
+            list.clear();; //prt.getGeneralId()+","+prt.getPretraga()
+            adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            sp.setAdapter(adapter);
 
             //Start Service
             Intent srvc = new Intent(this, brisiPretraguServis.class);
