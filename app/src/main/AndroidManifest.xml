@@ -35,14 +35,19 @@
         <activity android:name=".listaAlarmaActivity" />
 
         <service
-            android:name=".dohvatiListuAlarmaServis"
-            android:exported="false" />
-        <service
             android:name=".dohvatStanovaServis"
             android:exported="false" />
         <service
             android:name=".brisiPretraguServis"
-            android:exported="false"></service>
+            android:exported="false" />
+        <service
+            android:name=".alarmiServis"
+            android:exported="false" />
+
+        <receiver
+            android:name=".alarmReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>
