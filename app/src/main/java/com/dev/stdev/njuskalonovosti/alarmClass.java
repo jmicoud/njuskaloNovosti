@@ -24,17 +24,17 @@ public class alarmClass implements Serializable{
         this.interval = interval;
     }
 
-    public String getAlarmid() {
+    /*public String getAlarmid() {
         return alarmid;
-    }
+    }*/
 
-    public void setAlarmid(String alarmid) {
+    /*public void setAlarmid(String alarmid) {
         this.alarmid = alarmid;
-    }
+    }*/
 
     private String generalid;
     private String interval;
-    private String alarmid;
+    //private String alarmid;
 
 
 

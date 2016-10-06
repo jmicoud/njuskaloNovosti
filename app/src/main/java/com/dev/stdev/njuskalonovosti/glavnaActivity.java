@@ -27,6 +27,9 @@ public class glavnaActivity extends AppCompatActivity {
     public final static String MESSAGE_RGAL = "MESSAGE_RGAL";
     public final static String MESSAGE_BS = "MESSAGE_BS";
     public final static String MESSAGE_PA = "MESSAGE_PA";
+    public final static String MESSAGE_PNA = "MESSAGE_PNA";
+    public final static String MESSAGE_STRA = "MESSAGE_STRA";
+    public final static String MESSAGE_STPA = "MESSAGE_STPA";
 
     private bReceiver bRec;
 

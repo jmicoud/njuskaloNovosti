@@ -38,7 +38,7 @@ public class dbClass extends SQLiteOpenHelper {
     private static final String COLUMN_PRETRAGE = "pretrage";
     private static final String COLUMN_TIP = "tip";
     private static final String COLUMN_INTERVAL = "interval";
-    private static final String COLUMN_ALARM_ID = "interval";
+    //private static final String COLUMN_ALARM_ID = "interval";
 
 
     public dbClass(Context context) {
@@ -53,8 +53,8 @@ public class dbClass extends SQLiteOpenHelper {
         String CREATE_PRETRAGE_TABLE = "CREATE TABLE " + TABLE_PRETRAGE + "(" + COLUMN_GENID + " TEXT," + COLUMN_PRETRAGE + " TEXT," + COLUMN_TIP + " TEXT" + ");";
         db.execSQL(CREATE_PRETRAGE_TABLE);
 
-        String CREATE_ALARMI_TABLE = "CREATE TABLE " + TABLE_ALARMI + "(" + COLUMN_GENID + " TEXT," + COLUMN_INTERVAL + " TEXT," + COLUMN_ALARM_ID + " TEXT" + ");";
-        db.execSQL(CREATE_APARTMENTS_TABLE);
+        String CREATE_ALARMI_TABLE = "CREATE TABLE " + TABLE_ALARMI + "(" + COLUMN_GENID + " TEXT," + COLUMN_INTERVAL + " TEXT" + ");";
+        db.execSQL(CREATE_ALARMI_TABLE);
     }
 
     @Override
@@ -100,7 +100,6 @@ public class dbClass extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_GENID, alarm.getGeneralid());
         values.put(COLUMN_INTERVAL, alarm.getInterval());
-        values.put(COLUMN_ALARM_ID, alarm.getAlarmid());
 
         // Inserting Row
         db.insert(TABLE_ALARMI, null, values);
@@ -182,7 +181,7 @@ public class dbClass extends SQLiteOpenHelper {
                 alarmClass ac = new alarmClass();
                 ac.setGeneralid(cursor.getString(0));
                 ac.setInterval(cursor.getString(1));
-                ac.setAlarmid(cursor.getString(2));
+                //ac.setAlarmid(cursor.getString(2));
 
                 // Adding contact to list
                 alList.add(ac);

@@ -17,8 +17,22 @@ public class listaAlarmaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_alarma);
 
-        //Intent intent = getIntent();
+        Intent intent = getIntent();
+        String action = intent.getAction();
         //String message = intent.getStringExtra(glavnaActivity.MESSAGE_GA);
+
+        if (action.equalsIgnoreCase(glavnaActivity.MESSAGE_STRA)) //stvori novi alarm
+        {
+            //stvori novi alarm
+            String messa = intent.getStringExtra(glavnaActivity.MESSAGE_STRA);
+            sendBroadcastMessage(glavnaActivity.MESSAGE_PNA, messa);
+
+        }
+        else if (action.equalsIgnoreCase(glavnaActivity.MESSAGE_GA)) //prikazi alarme
+        {
+            sendBroadcastMessage(glavnaActivity.MESSAGE_PNA,glavnaActivity.MESSAGE_GAL);
+
+        }
 
         //Register receiver from service
         bRec = new bReceiver();
@@ -26,7 +40,7 @@ public class listaAlarmaActivity extends AppCompatActivity {
         registerReceiver(bRec, filter);
 
         //send intent to get alarm list to alarmiServis
-        sendBroadcastMessage(glavnaActivity.MESSAGE_GAL,glavnaActivity.MESSAGE_GAL);
+        //sendBroadcastMessage(glavnaActivity.MESSAGE_GAL,glavnaActivity.MESSAGE_GAL);
 
         //Start ALARM START Service
         //Intent srva = new Intent(this, alarmiServis.class);
@@ -42,37 +56,39 @@ public class listaAlarmaActivity extends AppCompatActivity {
             //if(intent.getStringExtra("RETSTRNG").equals("")) {
             //    String serviceJsonString = intent.getStringExtra("RETSTRING");
 
+            String action = intent.getAction();
 
-
-            alarmClass ald = (alarmClass) intent.getSerializableExtra("ALARM_OBJECT");
-
-
-
-            //Do something with the string
-
-
-            Log.d("GENERALID", ald.getGeneralid());
-            Log.d("INTERVAL", ald.getInterval());
-            Log.d("PRIZE", ald.getAlarmid());
-
-            Log.d("NEWLINE", "-----------------------------------");
-
-           /* LinearLayout linearLayout = (LinearLayout) findViewById(R.id.dohvatiLayout);
-
-            TextView tv = new TextView(getApplicationContext());
-
-            if(flD.getIsNewApartment().equals("1")) //new flats are in light green color
+            if (action.equalsIgnoreCase(glavnaActivity.MESSAGE_RGAL)) //vratio se alarm za prikaz serijaliziran
             {
-                tv.setBackgroundColor(Color.parseColor("#90EE90"));
-            }
 
-            tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            String showStr = "ID: " + flD.getId() + "\n" + "LINK: " + flD.getLink() + "\n" + "PRIZE: " + flD.getPrize() + "\n" + "DESC: " + flD.getDescription() + "\n" + rebrandDate(flD.getDtm()) + "\n\n";
-            tv.setText(showStr);
-            Linkify.addLinks(tv, Linkify.WEB_URLS);
-            tv.setLinkTextColor(Color.parseColor("#2f6699"));
-            linearLayout.addView(tv);*/
+                    alarmClass ald = (alarmClass) intent.getSerializableExtra("ALARM_OBJECT");
 
+
+                    //Do something with the string
+
+
+                    Log.d("GENERALID", ald.getGeneralid());
+                    Log.d("INTERVAL", ald.getInterval());
+                    //Log.d("PRIZE", ald.getAlarmid());
+
+                    Log.d("NEWLINE", "-----------------------------------");
+
+                   /* LinearLayout linearLayout = (LinearLayout) findViewById(R.id.dohvatiLayout);
+
+                    TextView tv = new TextView(getApplicationContext());
+
+                    if(flD.getIsNewApartment().equals("1")) //new flats are in light green color
+                    {
+                        tv.setBackgroundColor(Color.parseColor("#90EE90"));
+                    }
+
+                    tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    String showStr = "ID: " + flD.getId() + "\n" + "LINK: " + flD.getLink() + "\n" + "PRIZE: " + flD.getPrize() + "\n" + "DESC: " + flD.getDescription() + "\n" + rebrandDate(flD.getDtm()) + "\n\n";
+                    tv.setText(showStr);
+                    Linkify.addLinks(tv, Linkify.WEB_URLS);
+                    tv.setLinkTextColor(Color.parseColor("#2f6699"));
+                    linearLayout.addView(tv);*/
+          }
 
             // }
             //}
@@ -85,7 +101,7 @@ public class listaAlarmaActivity extends AppCompatActivity {
         //Log.d("Šaljem Intent","Šaljem Intent");
 
         Intent intent = new Intent(intentFilterName);
-        intent.putExtra(glavnaActivity.MESSAGE_GAL, s);
+        intent.putExtra(intentFilterName, s);
         sendBroadcast(intent);
     }
 

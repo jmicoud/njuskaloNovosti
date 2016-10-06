@@ -31,7 +31,8 @@ public class alarmiServis extends IntentService {
             }
             else if(action.equalsIgnoreCase(glavnaActivity.MESSAGE_PNA)) //pokreni novi alarm
             {
-               //pokreni novi alarm
+               String alDat = intent.getStringExtra(glavnaActivity.MESSAGE_PNA);
+               pokreniNoviAlarm(alDat);
 
             }
             else if(action.equalsIgnoreCase(glavnaActivity.MESSAGE_GAL)) //prikaži alarme
@@ -40,17 +41,41 @@ public class alarmiServis extends IntentService {
                 //prikazi alarme
                prikazialarme();
             }
-            else if(action.equalsIgnoreCase(glavnaActivity.MESSAGE_STA)) //zaustavi alarm
+            else if(action.equalsIgnoreCase(glavnaActivity.MESSAGE_STPA)) //zaustavi alarm
             {
 
-                //prikazi alarme
-                prikazialarme();
+                //zaustavi alarm
+                String ala = intent.getStringExtra(glavnaActivity.MESSAGE_STPA);
+                zaustaviAlarm(ala);
             }
             //String pokal = intent.getStringExtra(glavnaActivity.MESSAGE_PA);
 
         }
     }
 
+
+
+    public void zaustaviAlarm(String al)
+    {
+
+
+
+    }
+
+
+    public void pokreniNoviAlarm(String alarmdata)
+    {
+
+        String[] parts = alarmdata.split("##");
+
+        String pretraga = parts[0];
+        String intervl = parts[1];
+        String tipPretrage = "1";
+
+
+
+
+    }
 
     public void pokreniAlarme()
     {
@@ -62,7 +87,7 @@ public class alarmiServis extends IntentService {
 
             alarmClass alr = al.get(i);
             int intrvl = 1000 * Integer.parseInt(alr.getInterval()); //interval is in seconds in database but alarm demands miliseconds
-            int alarmid = Integer.parseInt(alr.getAlarmid());
+            int alarmid = Integer.parseInt(alr.getGeneralid());
 
             Intent intent = new Intent(this, alarmReceiver.class);
             PendingIntent pi = PendingIntent.getActivity(this, alarmid, intent, 0);
