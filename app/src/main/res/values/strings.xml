@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">Novi Stanovi Njuskalo</string>
     <string name="edit_message">Unesi pretragu..</string>
-    <string name="button_dohvati">Dohvati..</string>
+    <string name="dohvatiButton">Dohvati..</string>
     <string name="button_Konfiguracija">Napravi</string>
     <string name="buttonListaAlarma">Lista Alarma</string>
     <string name="buttonKonf">Konfiguracija</string>
     <string name="editKonfiguracija">Upit..</string>
+    <string name="brisiOdabranuPretraguButton">Brisi Pretragu</string>
 
 
     <string-array name="timeArray">
