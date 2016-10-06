@@ -34,6 +34,16 @@ public class alarmClass implements Serializable{
 
     private String generalid;
     private String interval;
+
+    public String getPretraga() {
+        return pretraga;
+    }
+
+    public void setPretraga(String pretraga) {
+        this.pretraga = pretraga;
+    }
+
+    private String pretraga;
     //private String alarmid;
 
 

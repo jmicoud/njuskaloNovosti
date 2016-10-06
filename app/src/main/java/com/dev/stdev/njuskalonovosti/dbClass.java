@@ -194,6 +194,37 @@ public class dbClass extends SQLiteOpenHelper {
     }
 
 
+
+
+
+
+    // Getting All pretrage
+    public List<pretrageClass> getPretragaByGenID(String genid) {
+        List<pretrageClass> prdataList = new ArrayList<pretrageClass>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_GENID + "='" + genid + "'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToFirst()) {
+            do {
+                pretrageClass prt = new pretrageClass();
+                prt.setGeneralId(cursor.getString(0));
+                prt.setPretraga(cursor.getString(1));
+                prt.setTip(cursor.getString(2));
+
+                // Adding contact to list
+                prdataList.add(prt);
+            } while (cursor.moveToNext());
+        }
+
+        db.close();
+        // return apartments list
+        return prdataList;
+    }
+
     // Getting All pretrage
     public List<pretrageClass> getPretragaByPretraga(String pretraga) {
         List<pretrageClass> prdataList = new ArrayList<pretrageClass>();

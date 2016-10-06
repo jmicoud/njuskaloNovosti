@@ -59,7 +59,9 @@ public class alarmiServis extends IntentService {
     {
 
 
-
+        //---------------refresh alarm list in listaAlarmaactivity---------------
+        prikazialarme();
+        //-------------------------------------------------------------------
     }
 
 
@@ -67,13 +69,64 @@ public class alarmiServis extends IntentService {
     {
 
         String[] parts = alarmdata.split("##");
+        alarmClass alc = new alarmClass();
+        pretrageClass ptr = new pretrageClass();
 
         String pretraga = parts[0];
         String intervl = parts[1];
         String tipPretrage = "1";
 
+        alc.setInterval(intervl);
+        ptr.setPretraga(pretraga);
+        ptr.setTip(tipPretrage);
+
+        int newGeneralId;
+
+        if(db.isPretrageTableEmpty()==false)
+        {
 
 
+                List<pretrageClass> lP = db.getAllPretrage();
+
+                pretrageClass prTm;
+
+                prTm = lP.get(lP.size()-1);//take last an generate +1 id for new one
+                newGeneralId = Integer.parseInt(prTm.getGeneralId()) + 1; //zadnji plus 1 je id za novu pretragu
+
+                ptr.setGeneralId(Integer.toString(newGeneralId));
+                db.addPretraga(ptr);
+
+                alc.setGeneralid(Integer.toString(newGeneralId));
+                db.addAlarm(alc);
+
+                //dodaj novu pretragu - geerirajnovi general id, pretraži stanove na temelju novog id-a, nema ih naravno jer je nova pretraga, ddaj fld.isnew..
+
+
+
+        }
+        else //Pretrage table is empty
+        {
+            newGeneralId = 1000; //set initial generalid to 1000
+
+            //dohvati zadnju pretragu jer ima
+
+            ptr.setGeneralId(Integer.toString(newGeneralId));
+            db.addPretraga(ptr);
+
+            alc.setGeneralid(Integer.toString(newGeneralId));
+            db.addAlarm(alc);
+
+        }
+
+        //create new alarm
+        Intent intent = new Intent(this, alarmReceiver.class);
+        PendingIntent pi = PendingIntent.getActivity(this, newGeneralId, intent, 0);
+        AlarmManager am = (AlarmManager)getSystemService(Activity.ALARM_SERVICE);
+        am.set(AlarmManager.RTC_WAKEUP, (Integer.parseInt(intervl) * 1000) ,pi);
+
+        //---------------show new alarm/refresh alarm list in listaAlarmaactivity---------------
+        prikazialarme();
+        //-------------------------------------------------------------------
 
     }
 
@@ -107,6 +160,8 @@ public class alarmiServis extends IntentService {
         for(int i=0; i<alarmiLista.size(); i++)
         {
             alarmClass al = alarmiLista.get(i);
+            List<pretrageClass> p = db.getPretragaByGenID(al.getGeneralid()); //only one in list
+            al.setPretraga(p.get(0).getPretraga()); //we are doing this so that pretraga string can be shown in activity
             sendBroadcastMessage(glavnaActivity.MESSAGE_RGAL, al);
         }
 

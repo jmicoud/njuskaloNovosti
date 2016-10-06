@@ -66,10 +66,9 @@ public class listaAlarmaActivity extends AppCompatActivity {
 
                     //Do something with the string
 
-
                     Log.d("GENERALID", ald.getGeneralid());
                     Log.d("INTERVAL", ald.getInterval());
-                    //Log.d("PRIZE", ald.getAlarmid());
+                    Log.d("PRETRAGA", ald.getPretraga());
 
                     Log.d("NEWLINE", "-----------------------------------");
 
