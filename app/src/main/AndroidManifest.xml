@@ -36,9 +36,12 @@
 
         <service
             android:name=".dohvatiListuAlarmaServis"
-            android:exported="false"></service>
+            android:exported="false" />
         <service
             android:name=".dohvatStanovaServis"
+            android:exported="false" />
+        <service
+            android:name=".brisiPretraguServis"
             android:exported="false"></service>
     </application>
 
