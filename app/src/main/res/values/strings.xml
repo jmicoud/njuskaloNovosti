@@ -10,6 +10,7 @@
 
 
     <string-array name="timeArray">
+        <item>5</item>
         <item>900</item>
         <item>3600</item>
         <item>10800</item>
