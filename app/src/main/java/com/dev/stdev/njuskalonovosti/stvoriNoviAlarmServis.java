@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.SystemClock;
 
 import java.util.List;
 
@@ -87,7 +88,7 @@ public class stvoriNoviAlarmServis extends IntentService {
         intent.putExtra(glavnaActivity.MESSAGE_ALARM,Integer.toString(newGeneralId));
         PendingIntent pi = PendingIntent.getActivity(this, newGeneralId, intent, 0);
         AlarmManager am = (AlarmManager)getSystemService(Activity.ALARM_SERVICE);
-        am.set(AlarmManager.RTC_WAKEUP, (Integer.parseInt(intervl) * 1000) ,pi);
+        am.setRepeating(AlarmManager.ELAPSED_REALTIME,SystemClock.elapsedRealtime()+(Integer.parseInt(intervl) * 1000), (Integer.parseInt(intervl) * 1000) ,pi);
 
         //---------------show new alarm/refresh alarm list in listaAlarmaactivity---------------
         prikazialarme();
