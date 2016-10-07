@@ -1,5 +1,8 @@
 package com.dev.stdev.njuskalonovosti;
 
+import android.app.AlarmManager;
+import android.app.IntentService;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -17,29 +20,23 @@ import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public class alarmReceiver extends BroadcastReceiver {
+public class alarmServis extends IntentService {
 
 
-    public alarmReceiver() {
+    public alarmServis() {
+        super("alarmServis");
     }
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    protected void onHandleIntent(Intent intent) {
+        if (intent != null) {
 
-        Log.d("INTENT HERE", "INTENT HERE");
-        if (intent != null)
-        {
             String alarmGeneralId = intent.getStringExtra(glavnaActivity.MESSAGE_ALARM);
             //dbClass db = new dbClass(context);
-            Log.d("Alarm TRIGERED: ", alarmGeneralId);
-
-            //Toast.makeText(context, ("Alarm Trigered" + alarmGeneralId), Toast.LENGTH_SHORT).show();
+            Log.d("Alarm TRIGERED: ", ""+alarmGeneralId);
 
         }
 
-        // TODO: This method is called when the BroadcastReceiver is receiving
-        // an Intent broadcast.
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 
 

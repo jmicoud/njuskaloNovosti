@@ -52,7 +52,7 @@ public class glavnaActivity extends AppCompatActivity {
         IntentFilter filter = new IntentFilter("PRETRAGE_RESP");
         registerReceiver(bRec,filter);
 
-        //Log.d("Prije servisa","poslije receivera");
+
 
         //Start GET ALL SEARCHES Service
         Intent srvc = new Intent(this, dohvatiSvePretrageServis.class);

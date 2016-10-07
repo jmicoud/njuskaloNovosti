@@ -1,21 +1,14 @@
 package com.dev.stdev.njuskalonovosti;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.SystemClock;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -36,6 +29,7 @@ public class pokreniAlarmNakonStartaApServis extends IntentService {
     }
 
 
+
     public void pokreniAlarme()
     {
 
@@ -48,15 +42,20 @@ public class pokreniAlarmNakonStartaApServis extends IntentService {
             long intrvl = SystemClock.elapsedRealtime() + 1000 * Integer.parseInt(alr.getInterval()); //interval is in seconds in database but alarm demands miliseconds
             int alarmid = Integer.parseInt(alr.getGeneralid());
 
-            Log.d("ALARM ",Integer.toString(alarmid) + ", " + intrvl);
+            Log.d("ALARM ",Integer.toString(alarmid) + ", " + (1000 * Integer.parseInt(alr.getInterval())));
 
-            Intent intent = new Intent(this, alarmReceiver.class);
+            //sendBroadcastMessage("ALARMREC","ALARMREC");
+
+            startService(new Intent(getBaseContext(), alarmServis.class));
+
+            //Calendar cal = Calendar.getInstance();
+            //cal.add(Calendar.SECOND, 10);
+
+            Intent intent = new Intent(this, alarmServis.class);
             intent.putExtra(glavnaActivity.MESSAGE_ALARM, Integer.toString(alarmid));
-            PendingIntent pi = PendingIntent.getActivity(this, alarmid, intent, 0);
-            AlarmManager am = (AlarmManager)getSystemService(Activity.ALARM_SERVICE);
-            //am.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, intrvl ,pi);
-            am.setRepeating(AlarmManager.ELAPSED_REALTIME, SystemClock.elapsedRealtime() + 1000 * Integer.parseInt(alr.getInterval()), (Integer.parseInt(alr.getInterval()) * 1000) ,pi);
-
+            PendingIntent pintent = PendingIntent.getService(this, alarmid, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), (Integer.parseInt(alr.getInterval()) * 1000), pintent);
 
         }
 
@@ -64,6 +63,14 @@ public class pokreniAlarmNakonStartaApServis extends IntentService {
 
 
 
+    private void sendBroadcastMessage(String intentFilterName, String f) {
+
+        //Log.d("Šaljem Intent","Šaljem Intent");
+
+        Intent intent = new Intent(intentFilterName);
+        intent.putExtra(glavnaActivity.MESSAGE_ALARM, f);
+        sendBroadcast(intent);
+    }
 
 
 

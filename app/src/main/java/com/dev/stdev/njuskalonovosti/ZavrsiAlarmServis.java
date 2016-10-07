@@ -39,7 +39,7 @@ public class zavrsiAlarmServis extends IntentService {
 
         int alarmidn = Integer.parseInt(al);
 
-        Intent intent = new Intent(this, alarmReceiver.class);
+        Intent intent = new Intent(this, alarmServis.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), alarmidn, intent, 0);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
