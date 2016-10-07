@@ -44,12 +44,6 @@
         <service
             android:name=".pokreniAlarmNakonStartaApServis"
             android:exported="false" />
-
-        <receiver
-            android:name=".alarmReceiver"
-            android:enabled="true"
-            android:exported="true" />
-
         <service
             android:name=".zavrsiAlarmServis"
             android:exported="false" />
@@ -58,6 +52,9 @@
             android:exported="false" />
         <service
             android:name=".stvoriNoviAlarmServis"
+            android:exported="false"></service>
+        <service
+            android:name=".alarmServis"
             android:exported="false"></service>
     </application>
 
