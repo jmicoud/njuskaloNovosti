@@ -22,6 +22,7 @@ import retrofit2.http.Query;
 
 public class alarmServis extends IntentService {
 
+    dbClass db = new dbClass(this);
 
     public alarmServis() {
         super("alarmServis");
@@ -41,12 +42,12 @@ public class alarmServis extends IntentService {
 
 
 
-    public void doGetApartments(final String generalid, final Context context) {
+    public void doGetApartments(final String generalid) {
 
         try {
 
-            dbClass dba = new dbClass(context);
-            List<pretrageClass> pr = dba.getPretragaByGenID(generalid); //samo jedna pretraga se uvijek vraća
+
+            List<pretrageClass> pr = db.getPretragaByGenID(generalid); //samo jedna pretraga se uvijek vraća
 
             final String upit = pr.get(0).getPretraga(); //samo jedna pretraga se uvijek vraća
 
@@ -74,7 +75,7 @@ public class alarmServis extends IntentService {
                             String msg =  response.body().string();
                             //int lnt = msg.length();
 
-                            parseRespIntoDatabase(msg, upit, context, generalid);
+                            parseRespIntoDatabase(msg, upit, generalid);
 
 
                         }
@@ -120,7 +121,7 @@ public class alarmServis extends IntentService {
 
 
 
-    public void parseRespIntoDatabase(String resp, String upit, Context context, String generalid)
+    public void parseRespIntoDatabase(String resp, String upit, String generalid)
     {
         //int locSt = resp.indexOf("Njuškalo oglasi");
         int i, n;
@@ -137,7 +138,7 @@ public class alarmServis extends IntentService {
 
             i = resp.indexOf("data-ad-id", i+1);
 
-            flRf = parseAllValues(resp.substring(n, i), upit, context, generalid);
+            flRf = parseAllValues(resp.substring(n, i), upit, generalid);
 
             if(flRf.getIsNewApartment().equals("1")) //only if new apartment put it in list becouse tat list we will send on email
             {
@@ -169,7 +170,7 @@ public class alarmServis extends IntentService {
 
     }
 
-    public flatData parseAllValues(String valStr, String upit, Context context, String generalid)
+    public flatData parseAllValues(String valStr, String upit, String generalid)
     {
         flatData fl = new flatData();
         //Bundle bundle = new Bundle();
@@ -189,9 +190,6 @@ public class alarmServis extends IntentService {
         fl.setLink(link);
         fl.setPrize(prize);
         fl.setDescription(description);
-
-
-        dbClass db = new dbClass(context);
 
 
                 //pretraži stanove na temelju general id-a pretrage, usporedi jesu li novi na temelju id-a dodaj nove stanove u bazu i vrati natrag nove plus prepoznate stare(dio istih)
