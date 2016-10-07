@@ -10,11 +10,11 @@
 
 
     <string-array name="timeArray">
-        <item>15m</item>
-        <item>1h</item>
-        <item>3h</item>
-        <item>6h</item>
-        <item>12h</item>
+        <item>900</item>
+        <item>3600</item>
+        <item>10800</item>
+        <item>21600</item>
+        <item>43200</item>
     </string-array>
 
 </resources>
