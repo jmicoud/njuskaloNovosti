@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -27,7 +28,7 @@ public class listaAlarmaActivity extends AppCompatActivity {
         if (intent != null) {
 
             String action = intent.getAction();
-            Log.d("ACTON",action);
+            //Log.d("ACTON",action);
 
             if (action.equalsIgnoreCase(glavnaActivity.MESSAGE_STRA)) //stvori novi alarm
             {
@@ -64,13 +65,13 @@ public class listaAlarmaActivity extends AppCompatActivity {
 
                     //Do something with the string
 
-                    Log.d("GENERALID", ald.getGeneralid());
-                    Log.d("INTERVAL", ald.getInterval());
-                    Log.d("PRETRAGA", ald.getPretraga());
+                    //Log.d("GENERALID", ald.getGeneralid());
+                    //Log.d("INTERVAL", ald.getInterval());
+                    //Log.d("PRETRAGA", ald.getPretraga());
 
-                    Log.d("NEWLINE", "-----------------------------------");
+                    //Log.d("NEWLINE", "-----------------------------------");
 
-                    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.alarmLayout);
+                    final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.alarmLayout);
 
                     TextView tv = new TextView(getApplicationContext());
 
@@ -79,10 +80,13 @@ public class listaAlarmaActivity extends AppCompatActivity {
                     int btId = Integer.parseInt(ald.getGeneralid());
                     myButton.setId(btId);
                     myButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    //myButton.setRight(10);
 
                     myButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             //button id is id of alarm
+
+                            linearLayout.removeAllViews();
 
                             Intent srvc = new Intent(getApplicationContext(), zavrsiAlarmServis.class);
                             srvc.putExtra(glavnaActivity.MESSAGE_STPA,Integer.toString(myButton.getId()));
@@ -94,6 +98,7 @@ public class listaAlarmaActivity extends AppCompatActivity {
                     String showStr = "GENID: " + ald.getGeneralid() + "\n" + "INTERVAL: " + ald.getInterval() + "\n" + "PRETRAGA: " + ald.getPretraga() + "\n\n";
                     tv.setText(showStr);
 
+                    linearLayout.addView(myButton);
                     linearLayout.addView(tv);
 
         }
