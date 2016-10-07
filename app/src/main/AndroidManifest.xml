@@ -41,13 +41,23 @@
             android:name=".brisiPretraguServis"
             android:exported="false" />
         <service
-            android:name=".alarmiServis"
+            android:name=".pokreniAlarmNakonStartaApServis"
             android:exported="false" />
 
         <receiver
             android:name=".alarmReceiver"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
+
+        <service
+            android:name=".zavrsiAlarmServis"
+            android:exported="false" />
+        <service
+            android:name=".dohvatiAlarmeServis"
+            android:exported="false" />
+        <service
+            android:name=".stvoriNoviAlarmServis"
+            android:exported="false"></service>
     </application>
 
 </manifest>
