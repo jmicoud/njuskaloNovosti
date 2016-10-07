@@ -30,7 +30,7 @@ public class pokreniAlarmNakonStartaApServis extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
 
-            pokreniAlarme();
+            //pokreniAlarme();
 
         }
     }

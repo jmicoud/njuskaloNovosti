@@ -24,42 +24,33 @@ public class listaAlarmaActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-
         if (intent != null) {
 
             String action = intent.getAction();
-            String message = intent.getStringExtra(glavnaActivity.MESSAGE_GA);
-            //String name = intent.get
-
-            Log.d("ACTON",action + "," +message);
+            Log.d("ACTON",action);
 
             if (action.equalsIgnoreCase(glavnaActivity.MESSAGE_STRA)) //stvori novi alarm
             {
                 //stvori novi alarm
                 //Log.d("MESSAGE_STRA","Message_STRA");
                 String messa = intent.getStringExtra(glavnaActivity.MESSAGE_STRA);
-                sendBroadcastMessage(glavnaActivity.MESSAGE_PNA, messa);
+                Intent srvc = new Intent(this, stvoriNoviAlarmServis.class);
+                srvc.putExtra(glavnaActivity.MESSAGE_PNA,messa);
+                startService((srvc));
 
             } else if (action.equalsIgnoreCase(glavnaActivity.MESSAGE_GA)) //prikazi alarme
             {
-                sendBroadcastMessage(glavnaActivity.MESSAGE_GAL, glavnaActivity.MESSAGE_GAL);
+                Intent srvc = new Intent(this, dohvatiAlarmeServis.class);
+                srvc.putExtra(glavnaActivity.MESSAGE_GAL,glavnaActivity.MESSAGE_GAL);
+                startService((srvc));
 
             }
 
             //Register receiver from service
             bRec = new bReceiver();
-            //IntentFilter filter = new IntentFilter("ALARM_BRD");
             IntentFilter filter = new IntentFilter(glavnaActivity.MESSAGE_RGAL);
             registerReceiver(bRec, filter);
-            //registerReceiver(bRec, filter1);
 
-            //send intent to get alarm list to pokreniAlarmNakonStartaApServis
-            //sendBroadcastMessage(glavnaActivity.MESSAGE_GAL,glavnaActivity.MESSAGE_GAL);
-
-            //Start ALARM START Service
-            //Intent srva = new Intent(this, pokreniAlarmNakonStartaApServis.class);
-            //srva.putExtra("POKRENIALARME",MESSAGE_PA);
-            //startService((srva));
         }
     }
 
@@ -67,16 +58,9 @@ public class listaAlarmaActivity extends AppCompatActivity {
     private class bReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            //if(intent.getStringExtra("RETSTRNG").equals("")) {
-            //    String serviceJsonString = intent.getStringExtra("RETSTRING");
 
-            String action = intent.getAction();
-
-            if (action.equalsIgnoreCase(glavnaActivity.MESSAGE_RGAL)) //vratio se alarm za prikaz serijaliziran
-            {
 
                     alarmClass ald = (alarmClass) intent.getSerializableExtra(glavnaActivity.MESSAGE_RGAL);
-
 
                     //Do something with the string
 
@@ -99,7 +83,10 @@ public class listaAlarmaActivity extends AppCompatActivity {
                     myButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
                             //button id is id of alarm
-                            sendBroadcastMessage(glavnaActivity.MESSAGE_STPA, Integer.toString(myButton.getId()));
+
+                            Intent srvc = new Intent(getApplicationContext(), zavrsiAlarmServis.class);
+                            srvc.putExtra(glavnaActivity.MESSAGE_STPA,Integer.toString(myButton.getId()));
+                            startService((srvc));
                         }
                     });
 
@@ -108,11 +95,7 @@ public class listaAlarmaActivity extends AppCompatActivity {
                     tv.setText(showStr);
 
                     linearLayout.addView(tv);
-                    linearLayout.addView(myButton);
-          }
 
-            // }
-            //}
         }
     }
 
@@ -126,14 +109,6 @@ public class listaAlarmaActivity extends AppCompatActivity {
         intent.putExtra(intentFilterName, s);
         sendBroadcast(intent);
     }
-
-
-   /* private void zaustavi()
-    {
-
-
-
-    }*/
 
 
     @Override
