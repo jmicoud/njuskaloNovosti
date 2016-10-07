@@ -182,7 +182,7 @@ public class dohvatStanovaServis extends IntentService {
             List<pretrageClass> lP = db.getAllPretrage();
             for(int i=0; i<lP.size(); i++)
             {
-                if (upit.equals(lP.get(i).getPretraga()))
+                if ((upit.equals(lP.get(i).getPretraga())) && ((lP.get(i).getTip())!="1")) //don't take in consideration alarm searches
                 {
                     isNs = true; //there is existing search, exit loop
                     //Log.d("EXISTING","YES");

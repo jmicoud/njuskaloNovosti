@@ -58,6 +58,17 @@ public class alarmiServis extends IntentService {
     public void zaustaviAlarm(String al)
     {
 
+        //delete alarm and its dependencies from database
+        db.deleteAlarm(al);
+        db.deleteApartment(al);
+        db.deletePretragaByGenId(al);
+
+        int alarmidn = Integer.parseInt(al);
+
+        Intent intent = new Intent(this, alarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), alarmidn, intent, 0);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
 
         //---------------refresh alarm list in listaAlarmaactivity---------------
         prikazialarme();

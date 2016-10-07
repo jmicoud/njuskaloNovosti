@@ -128,6 +128,13 @@ public class dbClass extends SQLiteOpenHelper {
         db.close();
     }
 
+    // Deleting pretrage on pretraga
+    public void deletePretragaByGenId(String generalid) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_PRETRAGE, COLUMN_GENID + "='" + generalid + "'", null);
+        db.close();
+    }
+
 
     // Getting All Apartments by generalid
     public List<flatData> getAllApartments(String generalid) {

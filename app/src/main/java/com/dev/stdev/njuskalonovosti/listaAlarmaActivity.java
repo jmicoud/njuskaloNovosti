@@ -6,7 +6,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class listaAlarmaActivity extends AppCompatActivity {
 
@@ -72,21 +77,29 @@ public class listaAlarmaActivity extends AppCompatActivity {
 
                     Log.d("NEWLINE", "-----------------------------------");
 
-                   /* LinearLayout linearLayout = (LinearLayout) findViewById(R.id.dohvatiLayout);
+                    LinearLayout linearLayout = (LinearLayout) findViewById(R.id.alarmLayout);
 
                     TextView tv = new TextView(getApplicationContext());
 
-                    if(flD.getIsNewApartment().equals("1")) //new flats are in light green color
-                    {
-                        tv.setBackgroundColor(Color.parseColor("#90EE90"));
-                    }
+                    final Button myButton = new Button(getApplicationContext());
+                    myButton.setText("Zaustavi");
+                    int btId = Integer.parseInt(ald.getGeneralid());
+                    myButton.setId(btId);
+                    myButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                    myButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            //button id is id of alarm
+                            sendBroadcastMessage(glavnaActivity.MESSAGE_STPA, Integer.toString(myButton.getId()));
+                        }
+                    });
 
                     tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    String showStr = "ID: " + flD.getId() + "\n" + "LINK: " + flD.getLink() + "\n" + "PRIZE: " + flD.getPrize() + "\n" + "DESC: " + flD.getDescription() + "\n" + rebrandDate(flD.getDtm()) + "\n\n";
+                    String showStr = "GENID: " + ald.getGeneralid() + "\n" + "INTERVAL: " + ald.getInterval() + "\n" + "PRETRAGA: " + ald.getPretraga() + "\n\n";
                     tv.setText(showStr);
-                    Linkify.addLinks(tv, Linkify.WEB_URLS);
-                    tv.setLinkTextColor(Color.parseColor("#2f6699"));
-                    linearLayout.addView(tv);*/
+
+                    linearLayout.addView(tv);
+                    linearLayout.addView(myButton);
           }
 
             // }
@@ -104,6 +117,13 @@ public class listaAlarmaActivity extends AppCompatActivity {
         sendBroadcast(intent);
     }
 
+
+    private void zaustavi()
+    {
+
+
+
+    }
 
 
     @Override
