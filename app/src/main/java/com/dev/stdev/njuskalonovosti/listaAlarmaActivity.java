@@ -28,21 +28,21 @@ public class listaAlarmaActivity extends AppCompatActivity {
         if (intent != null) {
 
             String action = intent.getAction();
-            //String message = intent.getStringExtra(glavnaActivity.MESSAGE_GA);
+            String message = intent.getStringExtra(glavnaActivity.MESSAGE_GA);
             //String name = intent.get
 
-           // Log.d("ACTON",action + "," +message);
+            Log.d("ACTON",action + "," +message);
 
             if (action.equalsIgnoreCase(glavnaActivity.MESSAGE_STRA)) //stvori novi alarm
             {
                 //stvori novi alarm
-                Log.d("MESSAGE_STRA","Message_STRA");
+                //Log.d("MESSAGE_STRA","Message_STRA");
                 String messa = intent.getStringExtra(glavnaActivity.MESSAGE_STRA);
                 sendBroadcastMessage(glavnaActivity.MESSAGE_PNA, messa);
 
             } else if (action.equalsIgnoreCase(glavnaActivity.MESSAGE_GA)) //prikazi alarme
             {
-                sendBroadcastMessage(glavnaActivity.MESSAGE_PNA, glavnaActivity.MESSAGE_GAL);
+                sendBroadcastMessage(glavnaActivity.MESSAGE_GAL, glavnaActivity.MESSAGE_GAL);
 
             }
 
@@ -53,11 +53,11 @@ public class listaAlarmaActivity extends AppCompatActivity {
             registerReceiver(bRec, filter);
             //registerReceiver(bRec, filter1);
 
-            //send intent to get alarm list to alarmiServis
+            //send intent to get alarm list to pokreniAlarmNakonStartaApServis
             //sendBroadcastMessage(glavnaActivity.MESSAGE_GAL,glavnaActivity.MESSAGE_GAL);
 
             //Start ALARM START Service
-            //Intent srva = new Intent(this, alarmiServis.class);
+            //Intent srva = new Intent(this, pokreniAlarmNakonStartaApServis.class);
             //srva.putExtra("POKRENIALARME",MESSAGE_PA);
             //startService((srva));
         }

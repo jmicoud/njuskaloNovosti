@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -62,9 +61,9 @@ public class glavnaActivity extends AppCompatActivity {
 
 
         //Start ALARM START Service
-        Intent srva = new Intent(this, alarmiServis.class);
-        srva.setAction("ja");
-        srva.putExtra("ju","ju");
+        Intent srva = new Intent(this, pokreniAlarmNakonStartaApServis.class);
+        //srva.setAction("ja");
+        //srva.putExtra("ju","ju");
         startService((srva));
         //Log.d("Poslije Alarm servisa","poslije Alarm servisa");
 
