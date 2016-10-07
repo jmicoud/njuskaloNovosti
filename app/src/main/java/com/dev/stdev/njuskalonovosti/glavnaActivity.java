@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -59,11 +60,13 @@ public class glavnaActivity extends AppCompatActivity {
         startService((srvc));
 
 
+
         //Start ALARM START Service
         Intent srva = new Intent(this, alarmiServis.class);
-        srva.putExtra("POKRENIALARME",MESSAGE_PA);
+        srva.setAction("ja");
+        srva.putExtra("ju","ju");
         startService((srva));
-        //Log.d("Poslije servisa","poslije servisa");
+        //Log.d("Poslije Alarm servisa","poslije Alarm servisa");
 
         //------------------spinner select value------------------------------------
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
@@ -205,14 +208,15 @@ public class glavnaActivity extends AppCompatActivity {
     public void ListaAlarma(View view) {
         // Do something in response to button
 
-        String message = "DOHVATI_LISTU_ALARMA";
+        //String message = "DOHVATI_LISTU_ALARMA";
 
         //search string must not be empty
-        if(message!="") {
+       // if(message!="") {
             Intent intent = new Intent(this, listaAlarmaActivity.class);
-            intent.putExtra(MESSAGE_GA, message);
+            intent.setAction(MESSAGE_GA);
+            intent.putExtra(MESSAGE_GA, MESSAGE_GA);
             startActivity(intent);
-        }
+        //}
 
     }
 

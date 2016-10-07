@@ -31,7 +31,7 @@ public class konfiguracijaActivity extends AppCompatActivity {
     public void stvorialarm(View view) {
         // Do something in response to button
 
-        EditText editText = (EditText) findViewById(R.id.edit_message);
+        EditText editText = (EditText) findViewById(R.id.editKonfiguracija);
         String message = editText.getText().toString();
 
         Spinner spinnerKonf=(Spinner) findViewById(R.id.spinnerKonfiguracija);
@@ -42,6 +42,7 @@ public class konfiguracijaActivity extends AppCompatActivity {
         //search string must not be empty
         if(message!="") {
             Intent intent = new Intent(this, listaAlarmaActivity.class);
+            intent.setAction(glavnaActivity.MESSAGE_STRA);
             intent.putExtra(glavnaActivity.MESSAGE_STRA, messageCo);
             startActivity(intent);
         }

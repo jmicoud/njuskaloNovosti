@@ -4,13 +4,23 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v7.widget.LinearLayoutCompat;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.List;
 
 
 public class alarmiServis extends IntentService {
 
+    private bReceiver bRec;
     private dbClass db = new dbClass(this);
     private List<alarmClass> alarmiLista;
 
@@ -22,13 +32,24 @@ public class alarmiServis extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
 
+            bRec = new bReceiver();
+            IntentFilter filter = new IntentFilter(glavnaActivity.MESSAGE_PNA);
+            registerReceiver(bRec, filter);
+           /* IntentFilter filter1 = new IntentFilter(glavnaActivity.MESSAGE_GAL);
+            registerReceiver(bRec, filter1);
+            IntentFilter filter2 = new IntentFilter(glavnaActivity.MESSAGE_STPA);
+            registerReceiver(bRec, filter2);*/
+
             String action=intent.getAction();
 
-            if(action.equalsIgnoreCase(glavnaActivity.MESSAGE_PA)) //pokreni postojeće alarme nakon pokretanja aplikacije
-            {
+            Log.d("ACTION",action);
+
+            //db = new dbClass(this);
+            //if(action.equalsIgnoreCase(glavnaActivity.MESSAGE_PA)) //pokreni postojeće alarme nakon pokretanja aplikacije
+            //{
                //pokreni alarme nakon starta
-                pokreniAlarme();
-            }
+                //pokreniAlarme();
+           /* }
             else if(action.equalsIgnoreCase(glavnaActivity.MESSAGE_PNA)) //pokreni novi alarm
             {
                String alDat = intent.getStringExtra(glavnaActivity.MESSAGE_PNA);
@@ -47,12 +68,51 @@ public class alarmiServis extends IntentService {
                 //zaustavi alarm
                 String ala = intent.getStringExtra(glavnaActivity.MESSAGE_STPA);
                 zaustaviAlarm(ala);
-            }
+            }*/
             //String pokal = intent.getStringExtra(glavnaActivity.MESSAGE_PA);
 
         }
     }
 
+
+
+
+    private class bReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            String action=intent.getAction();
+
+            Log.d("ACTION",action);
+
+            /*if(action.equalsIgnoreCase(glavnaActivity.MESSAGE_PA)) //pokreni postojeće alarme nakon pokretanja aplikacije
+            {
+                //pokreni alarme nakon starta
+                pokreniAlarme();
+            }
+            else*/
+            if(action.equalsIgnoreCase(glavnaActivity.MESSAGE_PNA)) //pokreni novi alarm
+            {
+                String alDat = intent.getStringExtra(glavnaActivity.MESSAGE_PNA);
+                pokreniNoviAlarm(alDat);
+
+            }
+            else if(action.equalsIgnoreCase(glavnaActivity.MESSAGE_GAL)) //prikaži alarme
+            {
+
+                //prikazi alarme
+                prikazialarme();
+            }
+            else if(action.equalsIgnoreCase(glavnaActivity.MESSAGE_STPA)) //zaustavi alarm
+            {
+
+                //zaustavi alarm
+                String ala = intent.getStringExtra(glavnaActivity.MESSAGE_STPA);
+                zaustaviAlarm(ala);
+            }
+
+        }
+    }
 
 
     public void zaustaviAlarm(String al)
@@ -183,8 +243,16 @@ public class alarmiServis extends IntentService {
         //Log.d("Šaljem Intent","Šaljem Intent");
 
         Intent intent = new Intent(intentFilterName);
-        intent.putExtra("ALARM_OBJECT", al);
+        intent.setAction(intentFilterName);
+        intent.putExtra(intentFilterName, al);
         sendBroadcast(intent);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(bRec);
     }
 
 

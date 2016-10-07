@@ -47,21 +47,23 @@ public class dbClass extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        String CREATE_ALARMI_TABLE = "CREATE TABLE " + TABLE_ALARMI + "(" + COLUMN_GENID + " TEXT," + COLUMN_INTERVAL + " TEXT" + ");";
+        db.execSQL(CREATE_ALARMI_TABLE);
+
         String CREATE_APARTMENTS_TABLE = "CREATE TABLE " + TABLE_NOVI_STANOVI + "(" + COLUMN_GENID + " TEXT," + COLUMN_ID + " TEXT," + COLUMN_LINK + " TEXT," + COLUMN_DESCRIPTION + " TEXT," + COLUMN_PRIZE + " TEXT," + COLUMN_DATETM + " TEXT" + ");";
         db.execSQL(CREATE_APARTMENTS_TABLE);
 
         String CREATE_PRETRAGE_TABLE = "CREATE TABLE " + TABLE_PRETRAGE + "(" + COLUMN_GENID + " TEXT," + COLUMN_PRETRAGE + " TEXT," + COLUMN_TIP + " TEXT" + ");";
         db.execSQL(CREATE_PRETRAGE_TABLE);
-
-        String CREATE_ALARMI_TABLE = "CREATE TABLE " + TABLE_ALARMI + "(" + COLUMN_GENID + " TEXT," + COLUMN_INTERVAL + " TEXT" + ");";
-        db.execSQL(CREATE_ALARMI_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ALARMI);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOVI_STANOVI);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRETRAGE);
+
         // Creating tables again
         onCreate(db);
     }
@@ -163,6 +165,7 @@ public class dbClass extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
         // return apartments list
         return fldataList;
@@ -175,7 +178,7 @@ public class dbClass extends SQLiteOpenHelper {
         // Select All Query
 
         //Log.d("get","get apatment at"+generalid);
-        String selectQuery = "SELECT * FROM " + TABLE_ALARMI;
+        String selectQuery = "SELECT  * FROM " + TABLE_ALARMI;
 
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -195,6 +198,7 @@ public class dbClass extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
         // return apartments list
         return alList;
@@ -227,6 +231,7 @@ public class dbClass extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
         // return apartments list
         return prdataList;
@@ -254,6 +259,7 @@ public class dbClass extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
         // return apartments list
         return prdataList;
@@ -281,6 +287,7 @@ public class dbClass extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
         // return apartments list
         return prdataList;
