@@ -42,7 +42,6 @@
         android:layout_height="wrap_content"
         android:text="@string/buttonKonf"
         android:id="@+id/buttonKonf"
-        android:visibility="gone"
         android:onClick="konfiguriraj" />
 
     <Button
@@ -51,7 +50,9 @@
         android:layout_height="wrap_content"
         android:text="@string/buttonListaAlarma"
         android:id="@+id/buttonListaAlarma"
-        android:visibility="gone"
         android:onClick="ListaAlarma" />
+
+
+    <!-- android:visibility="gone" -->
 
 </LinearLayout>
