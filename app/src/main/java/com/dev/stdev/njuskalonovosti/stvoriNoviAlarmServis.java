@@ -84,6 +84,7 @@ public class stvoriNoviAlarmServis extends IntentService {
 
         //create new alarm
         Intent intent = new Intent(this, alarmReceiver.class);
+        intent.putExtra(glavnaActivity.MESSAGE_ALARM,Integer.toString(newGeneralId));
         PendingIntent pi = PendingIntent.getActivity(this, newGeneralId, intent, 0);
         AlarmManager am = (AlarmManager)getSystemService(Activity.ALARM_SERVICE);
         am.set(AlarmManager.RTC_WAKEUP, (Integer.parseInt(intervl) * 1000) ,pi);
