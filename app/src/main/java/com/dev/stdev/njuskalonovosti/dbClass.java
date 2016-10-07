@@ -13,10 +13,6 @@ import java.util.List;
 
 
 
-/**
- * Created by IW568 on 9/29/2016.
- */
-
 public class dbClass extends SQLiteOpenHelper {
 
     //Database Version
@@ -24,7 +20,7 @@ public class dbClass extends SQLiteOpenHelper {
     //Database Name
     private static final String DATABASE_NAME = "stanovi";
     //Database table
-    private static final String TABLE_ALARMI = "alarmi";
+    private static final String TABLE_ALARMI = "alarm";
     private static final String TABLE_PRETRAGE = "pretrage";
     private static final String TABLE_NOVI_STANOVI = "novistanovi";
 
@@ -140,7 +136,7 @@ public class dbClass extends SQLiteOpenHelper {
 
     // Getting All Apartments by generalid
     public List<flatData> getAllApartments(String generalid) {
-        List<flatData> fldataList = new ArrayList<flatData>();
+        List<flatData> fldataList = new ArrayList<>();
         // Select All Query
 
         //Log.d("get","get apatment at"+generalid);
@@ -174,7 +170,7 @@ public class dbClass extends SQLiteOpenHelper {
 
     // Getting All Alarms
     public List<alarmClass> getAllAlarms() {
-        List<alarmClass> alList = new ArrayList<alarmClass>();
+        List<alarmClass> alList = new ArrayList<>();
         // Select All Query
 
         //Log.d("get","get apatment at"+generalid);
@@ -211,7 +207,7 @@ public class dbClass extends SQLiteOpenHelper {
 
     // Getting All pretrage
     public List<pretrageClass> getPretragaByGenID(String genid) {
-        List<pretrageClass> prdataList = new ArrayList<pretrageClass>();
+        List<pretrageClass> prdataList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_GENID + "='" + genid + "'";
 
@@ -239,7 +235,7 @@ public class dbClass extends SQLiteOpenHelper {
 
     // Getting All pretrage
     public List<pretrageClass> getPretragaByPretraga(String pretraga) {
-        List<pretrageClass> prdataList = new ArrayList<pretrageClass>();
+        List<pretrageClass> prdataList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_PRETRAGE + "='" + pretraga + "'";
 
@@ -267,7 +263,7 @@ public class dbClass extends SQLiteOpenHelper {
 
     // Getting All pretrage
     public List<pretrageClass> getAllPretrage() {
-        List<pretrageClass> prdataList = new ArrayList<pretrageClass>();
+        List<pretrageClass> prdataList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE;
 
@@ -301,6 +297,7 @@ public class dbClass extends SQLiteOpenHelper {
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);
+        mcursor.close();
         db.close();
         return icount <= 0;
     }
@@ -311,6 +308,7 @@ public class dbClass extends SQLiteOpenHelper {
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);
+        mcursor.close();
         db.close();
         return icount <= 0;
     }
