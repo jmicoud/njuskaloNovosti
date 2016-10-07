@@ -13,7 +13,7 @@ import java.util.List;
 
 
 
-public class dbClass extends SQLiteOpenHelper {
+class dbClass extends SQLiteOpenHelper {
 
     //Database Version
     private static final int DATABASE_VERSION = 1;
@@ -37,7 +37,7 @@ public class dbClass extends SQLiteOpenHelper {
     //private static final String COLUMN_ALARM_ID = "interval";
 
 
-    public dbClass(Context context) {
+    dbClass(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -65,7 +65,7 @@ public class dbClass extends SQLiteOpenHelper {
     }
 
 
-    public void addApartment(flatData flat, String generalId) {
+    void addApartment(flatData flat, String generalId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_GENID, generalId);
@@ -80,7 +80,7 @@ public class dbClass extends SQLiteOpenHelper {
     }
 
 
-    public void addPretraga(pretrageClass pretraga) {
+    void addPretraga(pretrageClass pretraga) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_GENID, pretraga.getGeneralId());
@@ -93,7 +93,7 @@ public class dbClass extends SQLiteOpenHelper {
     }
 
 
-    public void addAlarm(alarmClass alarm) {
+    void addAlarm(alarmClass alarm) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_GENID, alarm.getGeneralid());
@@ -106,28 +106,28 @@ public class dbClass extends SQLiteOpenHelper {
 
 
     // Deleting alarm
-    public void deleteAlarm(String generalid) {
+    void deleteAlarm(String generalid) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_ALARMI, COLUMN_GENID + "=" + generalid, null);
         db.close();
     }
 
     // Deleting apartment
-    public void deleteApartment(String generalid) {
+    void deleteApartment(String generalid) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NOVI_STANOVI, COLUMN_GENID + "=" + generalid, null);
         db.close();
     }
 
     // Deleting pretrage on pretraga
-    public void deletePretraga(String pretraga) {
+    void deletePretraga(String pretraga) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PRETRAGE, COLUMN_PRETRAGE + "='" + pretraga + "'", null);
         db.close();
     }
 
     // Deleting pretrage on pretraga
-    public void deletePretragaByGenId(String generalid) {
+    void deletePretragaByGenId(String generalid) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PRETRAGE, COLUMN_GENID + "='" + generalid + "'", null);
         db.close();
@@ -135,7 +135,7 @@ public class dbClass extends SQLiteOpenHelper {
 
 
     // Getting All Apartments by generalid
-    public List<flatData> getAllApartments(String generalid) {
+    List<flatData> getAllApartments(String generalid) {
         List<flatData> fldataList = new ArrayList<>();
         // Select All Query
 
@@ -169,7 +169,7 @@ public class dbClass extends SQLiteOpenHelper {
 
 
     // Getting All Alarms
-    public List<alarmClass> getAllAlarms() {
+    List<alarmClass> getAllAlarms() {
         List<alarmClass> alList = new ArrayList<>();
         // Select All Query
 
@@ -206,7 +206,7 @@ public class dbClass extends SQLiteOpenHelper {
 
 
     // Getting All pretrage
-    public List<pretrageClass> getPretragaByGenID(String genid) {
+    List<pretrageClass> getPretragaByGenID(String genid) {
         List<pretrageClass> prdataList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_GENID + "='" + genid + "'";
@@ -234,7 +234,7 @@ public class dbClass extends SQLiteOpenHelper {
     }
 
     // Getting All pretrage
-    public List<pretrageClass> getPretragaByPretraga(String pretraga) {
+    List<pretrageClass> getPretragaByPretraga(String pretraga) {
         List<pretrageClass> prdataList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_PRETRAGE + "='" + pretraga + "'";
@@ -262,7 +262,7 @@ public class dbClass extends SQLiteOpenHelper {
     }
 
     // Getting All pretrage
-    public List<pretrageClass> getAllPretrage() {
+    List<pretrageClass> getAllPretrage() {
         List<pretrageClass> prdataList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE;
@@ -291,7 +291,7 @@ public class dbClass extends SQLiteOpenHelper {
 
 
 
-    public boolean isApartmentsTableEmpty() {
+    boolean isApartmentsTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
         String count = "SELECT count(*) FROM " + TABLE_NOVI_STANOVI;
         Cursor mcursor = db.rawQuery(count, null);
@@ -302,7 +302,7 @@ public class dbClass extends SQLiteOpenHelper {
         return icount <= 0;
     }
 
-    public boolean isPretrageTableEmpty() {
+    boolean isPretrageTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
         String count = "SELECT count(*) FROM " + TABLE_PRETRAGE;
         Cursor mcursor = db.rawQuery(count, null);
