@@ -52,6 +52,8 @@ public class alarmServis extends IntentService {
             //dbClass db = new dbClass(context);
             Log.d("Alarm TRIGERED: ", ""+alarmGeneralId);
 
+           // doGetApartments(alarmGeneralId);
+
         }
 
     }
@@ -174,12 +176,12 @@ public class alarmServis extends IntentService {
         }
 
 
-        sendMail(mailStr);
+        //sendMail(mailStr, upit);
 
     }
 
 
-    public void sendMail(String completeMessage)
+    public void sendMail(String completeMessage, String upit)
     {
 
         final String username = "username@gmail.com";
@@ -201,7 +203,7 @@ public class alarmServis extends IntentService {
             Message messagem = new MimeMessage(session);
             messagem.setFrom(new InternetAddress("stanovi-email@gmail.com"));
             messagem.setRecipients(Message.RecipientType.TO, InternetAddress.parse("grgo.dadic@gmail.com"));
-            messagem.setSubject("Novi Stanovi Za Pretragu");
+            messagem.setSubject("Novi Stanovi Za Pretragu" + upit);
             messagem.setText(completeMessage);
 
             MimeBodyPart messageBodyPart = new MimeBodyPart();
