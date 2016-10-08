@@ -29,5 +29,6 @@ dependencies {
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
 
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile  'javax.mail:javax.mail-api:1.5.3'
 
 }
