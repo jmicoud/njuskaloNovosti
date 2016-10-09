@@ -10,23 +10,19 @@ import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
+
 import java.net.PasswordAuthentication;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeMultipart;
-import javax.sql.DataSource;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -194,7 +190,7 @@ public class alarmServis extends IntentService {
 
         }
 
-        Log.d("NOVI STANOVI: \n", mailStr);
+        //Log.d("NOVI STANOVI: \n", mailStr);
 
         sendMail(mailStr, upit);
 
@@ -204,49 +200,26 @@ public class alarmServis extends IntentService {
     public void sendMail(String completeMessage, String upit)
     {
 
-        final String username = "obavijest.stanovi@gmail.com";
-        final String password = "obavijest123";
-
-        Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-
-        Session session = Session.getInstance(props,
-                new javax.mail.Authenticator() {
-                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                        return new  javax.mail.PasswordAuthentication(username, password);
+        BackgroundMail.newBuilder(this)
+                .withUsername("obavijest.stanovi@gmail.com")
+                .withPassword("obavijest123")
+                .withMailto("obavijest.stanovi@gmail.com")
+                .withSubject("Obavijest - Stanovi: " + upit)
+                .withBody(completeMessage)
+                .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
+                    @Override
+                    public void onSuccess() {
+                        //do some magic
+                        Log.d("MAIL SENT OK", "MAIL SENT OK");
                     }
-                });
-        try {
-            Message messagem = new MimeMessage(session);
-            messagem.setFrom(new InternetAddress("obavijest.stanovi@gmail.com"));
-            messagem.setRecipients(Message.RecipientType.TO, InternetAddress.parse("obavijest.stanovi@gmail.com"));
-            messagem.setSubject("Novi Stanovi Za Pretragu" + upit);
-            messagem.setText(completeMessage);
-
-            MimeBodyPart messageBodyPart = new MimeBodyPart();
-
-            Multipart multipart = new MimeMultipart();
-
-            messageBodyPart = new MimeBodyPart();
-            String file = "path of file to be attached";
-            String fileName = "attachmentName";
-            FileDataSource source = new FileDataSource(file);
-            messageBodyPart.setDataHandler(new DataHandler(source));
-            messageBodyPart.setFileName(fileName);
-            multipart.addBodyPart(messageBodyPart);
-
-            messagem.setContent(multipart);
-
-            Transport.send(messagem);
-
-            //System.out.println("Done");
-
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
-        }
+                })
+                .withOnFailCallback(new BackgroundMail.OnFailCallback() {
+                    @Override
+                    public void onFail() {
+                        //do some magic
+                    }
+                })
+                .send();
 
 
     }
