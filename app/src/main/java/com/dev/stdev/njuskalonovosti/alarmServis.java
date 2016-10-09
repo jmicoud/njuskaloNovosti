@@ -84,7 +84,7 @@ public class alarmServis extends IntentService {
             dohvatStanovaServis.NjuskaloService service = dohvatStanovaServis.NjuskaloService.retrofit.create(dohvatStanovaServis.NjuskaloService.class);
             Call<ResponseBody> call = service.getTask(ctls,upit,sorts);
 
-            Log.d("ALARM LINK", call.request().url().toString());
+            //Log.d("ALARM LINK", call.request().url().toString());
 
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -92,7 +92,7 @@ public class alarmServis extends IntentService {
                     if (response.isSuccessful()) {
 
                         try {
-                            Log.d("GOT RESPONSE", "GOT RESPONSE");
+                            //Log.d("GOT RESPONSE", "GOT RESPONSE");
 
                             String msg =  response.body().string();
                             //int lnt = msg.length();
@@ -155,12 +155,14 @@ public class alarmServis extends IntentService {
         flatData flRf;
         List<flatData> flNewLs = new ArrayList<>();
 
-        while((i-n) >= 1500)
+        while(true)
         {
 
             i = resp.indexOf("data-ad-id", i+1);
 
-            Log.d("ISPIS I: ", ""+i+","+n);
+           // Log.d("ISPIS I: ", ""+i+","+n);
+
+            if ((i-n) < 1500) break;
 
             flRf = parseAllValues(resp.substring(n, i), upit, generalid);
 
@@ -169,17 +171,21 @@ public class alarmServis extends IntentService {
             {
                 flNewLs.add(flRf);
 
-                Log.d("FLAT DES: ",flRf.getDescription());
+                //Log.d("FLAT DES: ",flRf.getDescription());
                 //Log.d("ISNEW: ", flRf.getIsNewApartment());
                 //Log.d("LISTSIZE: ", ""+flNewLs.size());
 
             }
 
+
+
             n = i;
+
+
 
         }
 
-        Log.d("LISTSIZE1: ", ""+flNewLs.size());
+        //Log.d("LISTSIZE1: ", ""+flNewLs.size());
 
         for(int j=0; j<flNewLs.size(); j++)
         {
@@ -190,7 +196,7 @@ public class alarmServis extends IntentService {
 
         Log.d("NOVI STANOVI: \n", mailStr);
 
-        //sendMail(mailStr, upit);
+        sendMail(mailStr, upit);
 
     }
 
@@ -236,7 +242,7 @@ public class alarmServis extends IntentService {
 
             Transport.send(messagem);
 
-            System.out.println("Done");
+            //System.out.println("Done");
 
         } catch (MessagingException e) {
             throw new RuntimeException(e);
