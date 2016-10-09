@@ -35,6 +35,11 @@ public class pokreniAlarmNakonStartaApServis extends IntentService {
 
         List<alarmClass> al = db.getAllAlarms();
 
+        //if(al.size()>0) //only if there are alarms start service or start service anyway for future creation of services during app run
+        //{
+            startService(new Intent(getBaseContext(), alarmServis.class));
+        //}
+
         for(int i=0; i<al.size(); i++)
         {
 
@@ -45,8 +50,6 @@ public class pokreniAlarmNakonStartaApServis extends IntentService {
             Log.d("ALARM ",Integer.toString(alarmid) + ", " + (1000 * Integer.parseInt(alr.getInterval())));
 
             //sendBroadcastMessage("ALARMREC","ALARMREC");
-
-            startService(new Intent(getBaseContext(), alarmServis.class));
 
             //Calendar cal = Calendar.getInstance();
             //cal.add(Calendar.SECOND, 10);

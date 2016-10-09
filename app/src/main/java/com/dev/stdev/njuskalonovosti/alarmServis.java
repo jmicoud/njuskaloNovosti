@@ -50,9 +50,13 @@ public class alarmServis extends IntentService {
 
             String alarmGeneralId = intent.getStringExtra(glavnaActivity.MESSAGE_ALARM);
             //dbClass db = new dbClass(context);
-            Log.d("Alarm TRIGERED: ", ""+alarmGeneralId);
 
-           // doGetApartments(alarmGeneralId);
+            if(alarmGeneralId!=null)
+            {
+                Log.d("Alarm TRIGERED: ", "" + alarmGeneralId);
+
+                doGetApartments(alarmGeneralId);
+            }
 
         }
 
@@ -88,7 +92,7 @@ public class alarmServis extends IntentService {
                     if (response.isSuccessful()) {
 
                         try {
-                            //Log.d("RESPONSA", response.body().string());
+                            Log.d("GOT RESPONSE", "GOT RESPONSE");
 
                             String msg =  response.body().string();
                             //int lnt = msg.length();
@@ -151,30 +155,40 @@ public class alarmServis extends IntentService {
         flatData flRf;
         List<flatData> flNewLs = new ArrayList<>();
 
-        while(i >= 0)
+        while((i-n) >= 1500)
         {
 
             i = resp.indexOf("data-ad-id", i+1);
 
+            Log.d("ISPIS I: ", ""+i+","+n);
+
             flRf = parseAllValues(resp.substring(n, i), upit, generalid);
+
 
             if(flRf.getIsNewApartment().equals("1")) //only if new apartment put it in list becouse tat list we will send on email
             {
                 flNewLs.add(flRf);
+
+                Log.d("FLAT DES: ",flRf.getDescription());
+                //Log.d("ISNEW: ", flRf.getIsNewApartment());
+                //Log.d("LISTSIZE: ", ""+flNewLs.size());
+
             }
 
             n = i;
 
         }
 
+        Log.d("LISTSIZE1: ", ""+flNewLs.size());
+
         for(int j=0; j<flNewLs.size(); j++)
         {
-
 
             mailStr = mailStr + "ID: " + flNewLs.get(j).getId() + "\n" + "STAN: " + flNewLs.get(j).getDescription() + "\n" + "LINK: " + flNewLs.get(j).getLink() + "\n" + "PRIZE: " + flNewLs.get(j).getPrize() + "\n" + "DATE: " + flNewLs.get(j).getDtm() + "\n\n";
 
         }
 
+        Log.d("NOVI STANOVI: \n", mailStr);
 
         //sendMail(mailStr, upit);
 
@@ -184,8 +198,8 @@ public class alarmServis extends IntentService {
     public void sendMail(String completeMessage, String upit)
     {
 
-        final String username = "username@gmail.com";
-        final String password = "password";
+        final String username = "obavijest.stanovi@gmail.com";
+        final String password = "obavijest123";
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
@@ -201,8 +215,8 @@ public class alarmServis extends IntentService {
                 });
         try {
             Message messagem = new MimeMessage(session);
-            messagem.setFrom(new InternetAddress("stanovi-email@gmail.com"));
-            messagem.setRecipients(Message.RecipientType.TO, InternetAddress.parse("grgo.dadic@gmail.com"));
+            messagem.setFrom(new InternetAddress("obavijest.stanovi@gmail.com"));
+            messagem.setRecipients(Message.RecipientType.TO, InternetAddress.parse("obavijest.stanovi@gmail.com"));
             messagem.setSubject("Novi Stanovi Za Pretragu" + upit);
             messagem.setText(completeMessage);
 
@@ -252,6 +266,7 @@ public class alarmServis extends IntentService {
         fl.setPrize(prize);
         fl.setDescription(description);
 
+        //Log.d("\nFLAT DESC:", description);
 
                 //pretraži stanove na temelju general id-a pretrage, usporedi jesu li novi na temelju id-a dodaj nove stanove u bazu i vrati natrag nove plus prepoznate stare(dio istih)
                 List<flatData> flLs = db.getAllApartments(generalid);
