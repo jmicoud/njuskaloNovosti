@@ -217,6 +217,7 @@ public class alarmServis extends IntentService {
                     @Override
                     public void onFail() {
                         //do some magic
+                        Log.d("MAIL ERROR", "MAIL ERROR");
                     }
                 })
                 .send();
