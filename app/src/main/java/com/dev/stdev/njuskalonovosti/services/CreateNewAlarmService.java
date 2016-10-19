@@ -6,17 +6,20 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
-import com.dev.stdev.njuskalonovosti.classes.AlarmClass;
 import com.dev.stdev.njuskalonovosti.activities.MainActivity;
-import com.dev.stdev.njuskalonovosti.classes.SearchClass;
 import com.dev.stdev.njuskalonovosti.database.DatabaseClass;
+import com.dev.stdev.njuskalonovosti.database.TableAlarm;
+import com.dev.stdev.njuskalonovosti.database.TableSearch;
+import com.dev.stdev.njuskalonovosti.models.AlarmClass;
+import com.dev.stdev.njuskalonovosti.models.SearchClass;
 
 import java.util.List;
 
 
 public class CreateNewAlarmService extends IntentService {
 
-    private DatabaseClass db = new DatabaseClass(this);
+    TableSearch tableSearch = new TableSearch(DatabaseClass.getDatabase());
+    TableAlarm tableAlarm = new TableAlarm(DatabaseClass.getDatabase());
 
     public CreateNewAlarmService() {
         super("CreateNewAlarmService");
@@ -50,11 +53,11 @@ public class CreateNewAlarmService extends IntentService {
 
         int newGeneralId;
 
-        if(!db.isSearchTableEmpty())//==false)
+        if (!tableSearch.isSearchTableEmpty())//==false)
         {
 
 
-            List<SearchClass> lP = db.getAllSearch();
+            List<SearchClass> lP = tableSearch.getAllSearch();
 
             SearchClass prTm;
 
@@ -62,10 +65,10 @@ public class CreateNewAlarmService extends IntentService {
             newGeneralId = Integer.parseInt(prTm.getGeneralId()) + 1; //zadnji plus 1 je id za novu pretragu
 
             ptr.setGeneralId(Integer.toString(newGeneralId));
-            db.addSearch(ptr);
+            tableSearch.addSearch(ptr);
 
             alc.setGeneralid(Integer.toString(newGeneralId));
-            db.addAlarm(alc);
+            tableAlarm.addAlarm(alc);
 
             //dodaj novu pretragu - geerirajnovi general id, pretraži stanove na temelju novog id-a, nema ih naravno jer je nova pretraga, ddaj fld.isnew..
 
@@ -79,10 +82,10 @@ public class CreateNewAlarmService extends IntentService {
             //getFlatsAdvertisments zadnju pretragu jer ima
 
             ptr.setGeneralId(Integer.toString(newGeneralId));
-            db.addSearch(ptr);
+            tableSearch.addSearch(ptr);
 
             alc.setGeneralid(Integer.toString(newGeneralId));
-            db.addAlarm(alc);
+            tableAlarm.addAlarm(alc);
 
         }
 
@@ -104,12 +107,12 @@ public class CreateNewAlarmService extends IntentService {
     public void showAlarms()
     {
 
-        List<AlarmClass> alarmList = db.getAllAlarms();
+        List<AlarmClass> alarmList = tableAlarm.getAllAlarms();
 
         for(int i = 0; i< alarmList.size(); i++)
         {
             AlarmClass al = alarmList.get(i);
-            List<SearchClass> p = db.getSearchByGenID(al.getGeneralid()); //only one in list
+            List<SearchClass> p = tableSearch.getSearchByGenID(al.getGeneralid()); //only one in list
             al.setSearch(p.get(0).getSearch()); //we are doing this so that pretraga string can be shown in activity
             sendBroadcastMessage(MainActivity.MESSAGE_RGAL, al);
         }

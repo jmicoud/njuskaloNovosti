@@ -5,17 +5,22 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Intent;
 
-import com.dev.stdev.njuskalonovosti.classes.AlarmClass;
 import com.dev.stdev.njuskalonovosti.activities.MainActivity;
-import com.dev.stdev.njuskalonovosti.classes.SearchClass;
 import com.dev.stdev.njuskalonovosti.database.DatabaseClass;
+import com.dev.stdev.njuskalonovosti.database.TableAlarm;
+import com.dev.stdev.njuskalonovosti.database.TableFlat;
+import com.dev.stdev.njuskalonovosti.database.TableSearch;
+import com.dev.stdev.njuskalonovosti.models.AlarmClass;
+import com.dev.stdev.njuskalonovosti.models.SearchClass;
 
 import java.util.List;
 
 
 public class FinishAlarmService extends IntentService {
 
-    private DatabaseClass db = new DatabaseClass(this);
+    TableSearch tableSearch = new TableSearch(DatabaseClass.getDatabase());
+    TableFlat tableFlat = new TableFlat(DatabaseClass.getDatabase());
+    TableAlarm tableAlarm = new TableAlarm(DatabaseClass.getDatabase());
 
     public FinishAlarmService() {
         super("zavrsiAlarmServis");
@@ -37,9 +42,9 @@ public class FinishAlarmService extends IntentService {
     {
 
         //delete alarm and its dependencies from database
-        db.deleteAlarm(al);
-        db.deleteFlat(al);
-        db.deleteSearchByGenId(al);
+        tableAlarm.deleteAlarm(al);
+        tableFlat.deleteFlat(al);
+        tableSearch.deleteSearchByGenId(al);
 
         int alarmidn = Integer.parseInt(al);
 
@@ -57,12 +62,12 @@ public class FinishAlarmService extends IntentService {
     public void showAlarms()
     {
 
-        List<AlarmClass> alarmList = db.getAllAlarms();
+        List<AlarmClass> alarmList = tableAlarm.getAllAlarms();
 
         for(int i = 0; i< alarmList.size(); i++)
         {
             AlarmClass al = alarmList.get(i);
-            List<SearchClass> p = db.getSearchByGenID(al.getGeneralid()); //only one in list
+            List<SearchClass> p = tableSearch.getSearchByGenID(al.getGeneralid()); //only one in list
             al.setSearch(p.get(0).getSearch()); //we are doing this so that pretraga string can be shown in activity
             sendBroadcastMessage(MainActivity.MESSAGE_RGAL, al);
         }

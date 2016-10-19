@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
-import com.dev.stdev.njuskalonovosti.classes.FlatAdvertismentClass;
 import com.dev.stdev.njuskalonovosti.activities.MainActivity;
-import com.dev.stdev.njuskalonovosti.classes.SearchClass;
 import com.dev.stdev.njuskalonovosti.database.DatabaseClass;
+import com.dev.stdev.njuskalonovosti.database.TableFlat;
+import com.dev.stdev.njuskalonovosti.database.TableSearch;
+import com.dev.stdev.njuskalonovosti.models.FlatAdvertismentClass;
+import com.dev.stdev.njuskalonovosti.models.SearchClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,8 @@ import retrofit2.http.Query;
 
 public class AlarmConfigurationService extends IntentService {
 
-    DatabaseClass db = new DatabaseClass(this);
+    TableSearch tableSearch = new TableSearch(DatabaseClass.getDatabase());
+    TableFlat tableFlat = new TableFlat(DatabaseClass.getDatabase());
 
     public AlarmConfigurationService() {
         super("AlarmConfigurationService");
@@ -54,8 +57,7 @@ public class AlarmConfigurationService extends IntentService {
 
         try {
 
-
-            List<SearchClass> pr = db.getSearchByGenID(generalid); //samo jedna pretraga se uvijek vraća
+            List<SearchClass> pr = tableSearch.getSearchByGenID(generalid); //samo jedna pretraga se uvijek vraća
 
             final String upit = pr.get(0).getSearch(); //samo jedna pretraga se uvijek vraća
 
@@ -223,7 +225,7 @@ public class AlarmConfigurationService extends IntentService {
         //Log.d("\nFLAT DESC:", description);
 
                 //pretraži stanove na temelju general id-a pretrage, usporedi jesu li novi na temelju id-a dodaj nove stanove u bazu i vrati natrag nove plus prepoznate stare(dio istih)
-                List<FlatAdvertismentClass> flLs = db.getAllApartments(generalid);
+        List<FlatAdvertismentClass> flLs = tableFlat.getAllApartments(generalid);
 
                 //Log.d("BROJSTANOVA","BROJ STANOVA: "+flLs.size());
 
@@ -243,7 +245,7 @@ public class AlarmConfigurationService extends IntentService {
                 if(!nwFlat) //==false) //new apartment recognized
                 {
                     fl.setIsNewFlat("1");
-                    db.addFlat(fl,generalid);
+                    tableFlat.addFlat(fl, generalid);
                 }
                 else
                 {

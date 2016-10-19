@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.dev.stdev.njuskalonovosti.R;
-import com.dev.stdev.njuskalonovosti.classes.FlatAdvertismentClass;
+import com.dev.stdev.njuskalonovosti.models.FlatAdvertismentClass;
 import com.dev.stdev.njuskalonovosti.services.SearchNewFlatAdvertisementsService;
 
 public class SearchNewFlatAdvertisementsActivity extends AppCompatActivity {
