@@ -49,11 +49,11 @@ public class DatabaseClass extends SQLiteOpenHelper {
         String CREATE_ALARMI_TABLE = "CREATE TABLE " + TABLE_ALARMS + "(" + COLUMN_GENID + " TEXT," + COLUMN_INTERVAL + " TEXT" + ");";
         db.execSQL(CREATE_ALARMI_TABLE);
 
-        String CREATE_APARTMENTS_TABLE = "CREATE TABLE " + TABLE_NEW_FLATS + "(" + COLUMN_GENID + " TEXT," + COLUMN_ID + " TEXT," + COLUMN_LINK + " TEXT," + COLUMN_DESCRIPTION + " TEXT," + COLUMN_PRIZE + " TEXT," + COLUMN_DATETM + " TEXT" + ");";
-        db.execSQL(CREATE_APARTMENTS_TABLE);
+        String CREATE_FLATS_TABLE = "CREATE TABLE " + TABLE_NEW_FLATS + "(" + COLUMN_GENID + " TEXT," + COLUMN_ID + " TEXT," + COLUMN_LINK + " TEXT," + COLUMN_DESCRIPTION + " TEXT," + COLUMN_PRIZE + " TEXT," + COLUMN_DATETM + " TEXT" + ");";
+        db.execSQL(CREATE_FLATS_TABLE);
 
-        String CREATE_PRETRAGE_TABLE = "CREATE TABLE " + TABLE_SEARCH + "(" + COLUMN_GENID + " TEXT," + COLUMN_SEARCH + " TEXT," + COLUMN_TYPE + " TEXT" + ");";
-        db.execSQL(CREATE_PRETRAGE_TABLE);
+        String CREATE_SEARCH_TABLE = "CREATE TABLE " + TABLE_SEARCH + "(" + COLUMN_GENID + " TEXT," + COLUMN_SEARCH + " TEXT," + COLUMN_TYPE + " TEXT" + ");";
+        db.execSQL(CREATE_SEARCH_TABLE);
     }
 
     @Override
@@ -123,9 +123,9 @@ public class DatabaseClass extends SQLiteOpenHelper {
     }
 
     // Deleting pretrage on pretraga
-    public void deleteSearch(String pretraga) {
+    public void deleteSearch(String search) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_SEARCH, COLUMN_SEARCH + "='" + pretraga + "'", null);
+        db.delete(TABLE_SEARCH, COLUMN_SEARCH + "='" + search + "'", null);
         db.close();
     }
 
