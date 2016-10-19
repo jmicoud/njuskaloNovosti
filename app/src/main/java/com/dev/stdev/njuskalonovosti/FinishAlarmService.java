@@ -8,12 +8,12 @@ import android.content.Intent;
 import java.util.List;
 
 
-public class zavrsiAlarmServis extends IntentService {
+public class FinishAlarmService extends IntentService {
 
-    private dbClass db = new dbClass(this);
-    private List<alarmClass> alarmiLista;
+    private DatabaseClass db = new DatabaseClass(this);
+    private List<AlarmClass> alarmiLista;
 
-    public zavrsiAlarmServis() {
+    public FinishAlarmService() {
         super("zavrsiAlarmServis");
     }
 
@@ -22,7 +22,7 @@ public class zavrsiAlarmServis extends IntentService {
         if (intent != null) {
 
             //zaustavi alarm
-            String ala = intent.getStringExtra(glavnaActivity.MESSAGE_STPA);
+            String ala = intent.getStringExtra(MainActivity.MESSAGE_STPA);
             zaustaviAlarm(ala);
 
         }
@@ -39,7 +39,7 @@ public class zavrsiAlarmServis extends IntentService {
 
         int alarmidn = Integer.parseInt(al);
 
-        Intent intent = new Intent(this, alarmServis.class);
+        Intent intent = new Intent(this, AlarmConfigurationService.class);
         PendingIntent pendingIntent = PendingIntent.getService(this, alarmidn, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.cancel(pendingIntent);
@@ -57,16 +57,16 @@ public class zavrsiAlarmServis extends IntentService {
 
         for(int i=0; i<alarmiLista.size(); i++)
         {
-            alarmClass al = alarmiLista.get(i);
-            List<pretrageClass> p = db.getPretragaByGenID(al.getGeneralid()); //only one in list
+            AlarmClass al = alarmiLista.get(i);
+            List<SearchClass> p = db.getPretragaByGenID(al.getGeneralid()); //only one in list
             al.setPretraga(p.get(0).getPretraga()); //we are doing this so that pretraga string can be shown in activity
-            sendBroadcastMessage(glavnaActivity.MESSAGE_RGAL, al);
+            sendBroadcastMessage(MainActivity.MESSAGE_RGAL, al);
         }
 
     }
 
 
-    private void sendBroadcastMessage(String intentFilterName, alarmClass al) {
+    private void sendBroadcastMessage(String intentFilterName, AlarmClass al) {
 
         //Log.d("Šaljem Intent","Šaljem Intent");
 

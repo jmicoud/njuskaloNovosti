@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by IW568 on 9/28/2016.
  */
 
-public class flatData implements Serializable {
+public class FlatAdvertismentClass implements Serializable {
 
     private String id;
     private String prize;

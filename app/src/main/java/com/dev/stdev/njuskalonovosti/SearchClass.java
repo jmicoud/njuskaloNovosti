@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by user on 3.10.2016..
  */
 
-public class pretrageClass implements Serializable {
+public class SearchClass implements Serializable {
 
     public String getGeneralId() {
         return generalId;

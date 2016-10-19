@@ -1,30 +1,28 @@
 package com.dev.stdev.njuskalonovosti;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
 
 import java.util.List;
 
 
-public class stvoriNoviAlarmServis extends IntentService {
+public class CreateNewAlarmService extends IntentService {
 
-    private dbClass db = new dbClass(this);
-    private List<alarmClass> alarmiLista;
+    private DatabaseClass db = new DatabaseClass(this);
+    private List<AlarmClass> alarmiLista;
 
-    public stvoriNoviAlarmServis() {
-        super("stvoriNoviAlarmServis");
+    public CreateNewAlarmService() {
+        super("CreateNewAlarmService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
 
-            String alDat = intent.getStringExtra(glavnaActivity.MESSAGE_PNA);
+            String alDat = intent.getStringExtra(MainActivity.MESSAGE_PNA);
             pokreniNoviAlarm(alDat);
 
         }
@@ -35,8 +33,8 @@ public class stvoriNoviAlarmServis extends IntentService {
     {
 
         String[] parts = alarmdata.split("##");
-        alarmClass alc = new alarmClass();
-        pretrageClass ptr = new pretrageClass();
+        AlarmClass alc = new AlarmClass();
+        SearchClass ptr = new SearchClass();
 
         String pretraga = parts[0];
         String intervl = parts[1];
@@ -52,9 +50,9 @@ public class stvoriNoviAlarmServis extends IntentService {
         {
 
 
-            List<pretrageClass> lP = db.getAllPretrage();
+            List<SearchClass> lP = db.getAllPretrage();
 
-            pretrageClass prTm;
+            SearchClass prTm;
 
             prTm = lP.get(lP.size()-1);//take last an generate +1 id for new one
             newGeneralId = Integer.parseInt(prTm.getGeneralId()) + 1; //zadnji plus 1 je id za novu pretragu
@@ -87,8 +85,8 @@ public class stvoriNoviAlarmServis extends IntentService {
         //create new alarm
 
 
-        Intent intent = new Intent(this, alarmServis.class);
-        intent.putExtra(glavnaActivity.MESSAGE_ALARM, Integer.toString(newGeneralId));
+        Intent intent = new Intent(this, AlarmConfigurationService.class);
+        intent.putExtra(MainActivity.MESSAGE_ALARM, Integer.toString(newGeneralId));
         PendingIntent pintent = PendingIntent.getService(this, newGeneralId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), (Integer.parseInt(intervl) * 1000), pintent);
@@ -106,16 +104,16 @@ public class stvoriNoviAlarmServis extends IntentService {
 
         for(int i=0; i<alarmiLista.size(); i++)
         {
-            alarmClass al = alarmiLista.get(i);
-            List<pretrageClass> p = db.getPretragaByGenID(al.getGeneralid()); //only one in list
+            AlarmClass al = alarmiLista.get(i);
+            List<SearchClass> p = db.getPretragaByGenID(al.getGeneralid()); //only one in list
             al.setPretraga(p.get(0).getPretraga()); //we are doing this so that pretraga string can be shown in activity
-            sendBroadcastMessage(glavnaActivity.MESSAGE_RGAL, al);
+            sendBroadcastMessage(MainActivity.MESSAGE_RGAL, al);
         }
 
     }
 
 
-    private void sendBroadcastMessage(String intentFilterName, alarmClass al) {
+    private void sendBroadcastMessage(String intentFilterName, AlarmClass al) {
 
         //Log.d("Šaljem Intent","Šaljem Intent");
 

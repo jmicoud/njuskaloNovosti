@@ -4,40 +4,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.BaseColumns;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Pattern;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
-
-import static android.R.attr.description;
-import static android.R.attr.id;
-
-public class dohvatiActivity extends AppCompatActivity {
+public class SearchNewFlatAdvertisementsActivity extends AppCompatActivity {
 
     //Toast toast;
 
@@ -49,7 +24,7 @@ public class dohvatiActivity extends AppCompatActivity {
     //registerReceiver(bReceiver,progressfilter);
 
 
-    //dbClass db = new dbClass(this);
+    //DatabaseClass db = new DatabaseClass(this);
     //private String lnk = "";
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -62,7 +37,7 @@ public class dohvatiActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dohvati);
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra(glavnaActivity.MESSAGE_GD);
+        String message = intent.getStringExtra(MainActivity.MESSAGE_GD);
 
         //this.lnk = "http://www.njuskalo.hr/index.php?ctl=search_ads&keywords=" + message + "&sort=new";
         //this.lnk = message;
@@ -78,8 +53,8 @@ public class dohvatiActivity extends AppCompatActivity {
         //Log.d("PRIJENOSDOH",message);
 
         //Start Service, du background job in service
-        //Intent srvc = new Intent(this, dohvatStanovaServis.class);
-        srvc = new Intent(this, dohvatStanovaServis.class);
+        //Intent srvc = new Intent(this, SearchNewFlatAdvertisementsService.class);
+        srvc = new Intent(this, SearchNewFlatAdvertisementsService.class);
         srvc.putExtra("LINK",message);
         startService((srvc));
 
@@ -114,9 +89,9 @@ public class dohvatiActivity extends AppCompatActivity {
             //if (intent.get("FLAT_BRD")!=null) {
                 //Bundle bundle = intent.getExtras();
 
-                flatData flD = (flatData) intent.getSerializableExtra("FLAT_OBJECT");
+                FlatAdvertismentClass flD = (FlatAdvertismentClass) intent.getSerializableExtra("FLAT_OBJECT");
 
-                //flatData flD = (flatData) bundle.getSerializable("FLAT_OBJECT");
+                //FlatAdvertismentClass flD = (FlatAdvertismentClass) bundle.getSerializable("FLAT_OBJECT");
 
                 //Do something with the string
 
@@ -131,7 +106,7 @@ public class dohvatiActivity extends AppCompatActivity {
 
                 LinearLayout linearLayout = (LinearLayout) findViewById(R.id.dohvatiLayout);
 
-                TextView tv = new TextView(getApplicationContext());
+                TextView tv = new TextView(SearchNewFlatAdvertisementsActivity.this);
 
                 if(flD.getIsNewApartment().equals("1")) //new flats are in light green color
                 {

@@ -6,14 +6,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 
-class dbClass extends SQLiteOpenHelper {
+class DatabaseClass extends SQLiteOpenHelper {
 
     //Database Version
     private static final int DATABASE_VERSION = 1;
@@ -37,7 +36,7 @@ class dbClass extends SQLiteOpenHelper {
     //private static final String COLUMN_ALARM_ID = "interval";
 
 
-    dbClass(Context context) {
+    DatabaseClass(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -65,7 +64,7 @@ class dbClass extends SQLiteOpenHelper {
     }
 
 
-    void addApartment(flatData flat, String generalId) {
+    void addApartment(FlatAdvertismentClass flat, String generalId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_GENID, generalId);
@@ -80,7 +79,7 @@ class dbClass extends SQLiteOpenHelper {
     }
 
 
-    void addPretraga(pretrageClass pretraga) {
+    void addPretraga(SearchClass pretraga) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_GENID, pretraga.getGeneralId());
@@ -93,7 +92,7 @@ class dbClass extends SQLiteOpenHelper {
     }
 
 
-    void addAlarm(alarmClass alarm) {
+    void addAlarm(AlarmClass alarm) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_GENID, alarm.getGeneralid());
@@ -135,8 +134,8 @@ class dbClass extends SQLiteOpenHelper {
 
 
     // Getting All Apartments by generalid
-    List<flatData> getAllApartments(String generalid) {
-        List<flatData> fldataList = new ArrayList<>();
+    List<FlatAdvertismentClass> getAllApartments(String generalid) {
+        List<FlatAdvertismentClass> fldataList = new ArrayList<>();
         // Select All Query
 
         //Log.d("get","get apatment at"+generalid);
@@ -150,7 +149,7 @@ class dbClass extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                flatData fld = new flatData();
+                FlatAdvertismentClass fld = new FlatAdvertismentClass();
                 fld.setId(cursor.getString(1));
                 fld.setLink(cursor.getString(2));
                 fld.setDescription(cursor.getString(3));
@@ -169,8 +168,8 @@ class dbClass extends SQLiteOpenHelper {
 
 
     // Getting All Alarms
-    List<alarmClass> getAllAlarms() {
-        List<alarmClass> alList = new ArrayList<>();
+    List<AlarmClass> getAllAlarms() {
+        List<AlarmClass> alList = new ArrayList<>();
         // Select All Query
 
         //Log.d("get","get apatment at"+generalid);
@@ -184,7 +183,7 @@ class dbClass extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                alarmClass ac = new alarmClass();
+                AlarmClass ac = new AlarmClass();
                 ac.setGeneralid(cursor.getString(0));
                 ac.setInterval(cursor.getString(1));
                 //ac.setAlarmid(cursor.getString(2));
@@ -206,8 +205,8 @@ class dbClass extends SQLiteOpenHelper {
 
 
     // Getting All pretrage
-    List<pretrageClass> getPretragaByGenID(String genid) {
-        List<pretrageClass> prdataList = new ArrayList<>();
+    List<SearchClass> getPretragaByGenID(String genid) {
+        List<SearchClass> prdataList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_GENID + "='" + genid + "'";
 
@@ -217,7 +216,7 @@ class dbClass extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                pretrageClass prt = new pretrageClass();
+                SearchClass prt = new SearchClass();
                 prt.setGeneralId(cursor.getString(0));
                 prt.setPretraga(cursor.getString(1));
                 prt.setTip(cursor.getString(2));
@@ -234,8 +233,8 @@ class dbClass extends SQLiteOpenHelper {
     }
 
     // Getting All pretrage
-    List<pretrageClass> getPretragaByPretraga(String pretraga) {
-        List<pretrageClass> prdataList = new ArrayList<>();
+    List<SearchClass> getPretragaByPretraga(String pretraga) {
+        List<SearchClass> prdataList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_PRETRAGE + "='" + pretraga + "'";
 
@@ -245,7 +244,7 @@ class dbClass extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                pretrageClass prt = new pretrageClass();
+                SearchClass prt = new SearchClass();
                 prt.setGeneralId(cursor.getString(0));
                 prt.setPretraga(cursor.getString(1));
                 prt.setTip(cursor.getString(2));
@@ -262,8 +261,8 @@ class dbClass extends SQLiteOpenHelper {
     }
 
     // Getting All pretrage
-    List<pretrageClass> getAllPretrage() {
-        List<pretrageClass> prdataList = new ArrayList<>();
+    List<SearchClass> getAllPretrage() {
+        List<SearchClass> prdataList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE;
 
@@ -273,7 +272,7 @@ class dbClass extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                pretrageClass prt = new pretrageClass();
+                SearchClass prt = new SearchClass();
                 prt.setGeneralId(cursor.getString(0));
                 prt.setPretraga(cursor.getString(1));
                 prt.setTip(cursor.getString(2));

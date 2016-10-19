@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by user on 6.10.2016..
  */
 
-public class alarmClass implements Serializable{
+public class AlarmClass implements Serializable{
 
     public String getGeneralid() {
         return generalid;

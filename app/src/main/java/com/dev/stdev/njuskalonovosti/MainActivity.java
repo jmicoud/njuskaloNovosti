@@ -17,7 +17,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class glavnaActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity {
 
     public final static String MESSAGE_GD = "MESSAGE_GD";
     public final static String MESSAGE_GK = "MESSAGE_GK";
@@ -42,27 +42,27 @@ public class glavnaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_glavna);
 
         //Intent intent = getIntent();
-        //String message = intent.getStringExtra(glavnaActivity.EXTRA_MESSAGE);
+        //String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
     //}
 
 
         //Log.d("Prije receivera","prije receivera");
         //Register receiver from service
-        bRec = new glavnaActivity.bReceiver();
+        bRec = new MainActivity.bReceiver();
         IntentFilter filter = new IntentFilter("PRETRAGE_RESP");
         registerReceiver(bRec,filter);
 
 
 
         //Start GET ALL SEARCHES Service
-        Intent srvc = new Intent(this, dohvatiSvePretrageServis.class);
+        Intent srvc = new Intent(this, GetAllSearchService.class);
         srvc.putExtra("PRETRAGA",MESSAGE_GS);
         startService((srvc));
 
 
 
         //Start ALARM START Service
-        Intent srva = new Intent(this, pokreniAlarmNakonStartaApServis.class);
+        Intent srva = new Intent(this, StartAlarmsAfterAppStartService.class);
         //srva.setAction("ja");
         //srva.putExtra("ju","ju");
         startService((srva));
@@ -111,9 +111,9 @@ public class glavnaActivity extends AppCompatActivity {
             //if (intent.get("FLAT_BRD")!=null) {
             //Bundle bundle = intent.getExtras();
 
-            pretrageClass prt = (pretrageClass) intent.getSerializableExtra("PRETRAGA_OBJ");
+            SearchClass prt = (SearchClass) intent.getSerializableExtra("PRETRAGA_OBJ");
 
-            //flatData flD = (flatData) bundle.getSerializable("FLAT_OBJECT");
+            //FlatAdvertismentClass flD = (FlatAdvertismentClass) bundle.getSerializable("FLAT_OBJECT");
 
             //Do something with the string
 
@@ -133,7 +133,7 @@ public class glavnaActivity extends AppCompatActivity {
                 ArrayAdapter<String> adapter;
 
                 list.add(prt.getPretraga()); //prt.getGeneralId()+","+prt.getPretraga()
-                adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
+                adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, list);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 sp.setAdapter(adapter);
             }
@@ -154,7 +154,7 @@ public class glavnaActivity extends AppCompatActivity {
         //Log.d("PORUKALINK",message);
         //search string must not be empty
         if(message!="") {
-            Intent intent = new Intent(this, dohvatiActivity.class);
+            Intent intent = new Intent(this, SearchNewFlatAdvertisementsActivity.class);
             intent.putExtra(MESSAGE_GD, message);
             startActivity(intent);
         }
@@ -181,7 +181,7 @@ public class glavnaActivity extends AppCompatActivity {
             sp.setAdapter(adapter);
 
             //Start Service
-            Intent srvc = new Intent(this, brisiPretraguServis.class);
+            Intent srvc = new Intent(this, DeleteSearchService.class);
             srvc.putExtra(MESSAGE_BS, text);
             startService((srvc));
         }
@@ -198,7 +198,7 @@ public class glavnaActivity extends AppCompatActivity {
 
         //search string must not be empty
         if(message!="") {
-            Intent intent = new Intent(this, konfiguracijaActivity.class);
+            Intent intent = new Intent(this, AlarmConfigurationActivity.class);
             intent.putExtra(MESSAGE_GK, message);
             startActivity(intent);
         }
@@ -212,7 +212,7 @@ public class glavnaActivity extends AppCompatActivity {
 
         //search string must not be empty
        // if(message!="") {
-            Intent intent = new Intent(this, listaAlarmaActivity.class);
+            Intent intent = new Intent(this, AlarmListActivity.class);
             intent.setAction(MESSAGE_GA);
             intent.putExtra(MESSAGE_GA, MESSAGE_GA);
             startActivity(intent);

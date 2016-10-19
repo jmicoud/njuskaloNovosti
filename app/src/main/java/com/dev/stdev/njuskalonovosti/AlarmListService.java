@@ -6,13 +6,13 @@ import android.content.Intent;
 import java.util.List;
 
 
-public class dohvatiAlarmeServis extends IntentService {
+public class AlarmListService extends IntentService {
 
-    private dbClass db = new dbClass(this);
-    private List<alarmClass> alarmiLista;
+    private DatabaseClass db = new DatabaseClass(this);
+    private List<AlarmClass> alarmiLista;
 
-    public dohvatiAlarmeServis() {
-        super("dohvatiAlarmeServis");
+    public AlarmListService() {
+        super("AlarmListService");
     }
 
     @Override
@@ -33,16 +33,16 @@ public class dohvatiAlarmeServis extends IntentService {
 
         for(int i=0; i<alarmiLista.size(); i++)
         {
-            alarmClass al = alarmiLista.get(i);
-            List<pretrageClass> p = db.getPretragaByGenID(al.getGeneralid()); //only one in list
+            AlarmClass al = alarmiLista.get(i);
+            List<SearchClass> p = db.getPretragaByGenID(al.getGeneralid()); //only one in list
             al.setPretraga(p.get(0).getPretraga()); //we are doing this so that pretraga string can be shown in activity
-            sendBroadcastMessage(glavnaActivity.MESSAGE_RGAL, al);
+            sendBroadcastMessage(MainActivity.MESSAGE_RGAL, al);
         }
 
     }
 
 
-    private void sendBroadcastMessage(String intentFilterName, alarmClass al) {
+    private void sendBroadcastMessage(String intentFilterName, AlarmClass al) {
 
         //Log.d("Šaljem Intent","Šaljem Intent");
 

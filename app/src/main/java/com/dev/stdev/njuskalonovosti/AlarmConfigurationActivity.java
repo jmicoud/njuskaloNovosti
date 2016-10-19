@@ -4,12 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class konfiguracijaActivity extends AppCompatActivity {
+public class AlarmConfigurationActivity extends AppCompatActivity {
 
     //public final static String MESSAGE = "MESSAGE";
 
@@ -20,7 +19,7 @@ public class konfiguracijaActivity extends AppCompatActivity {
 
 
         Intent intent = getIntent();
-        String message = intent.getStringExtra(glavnaActivity.MESSAGE_GK);
+        String message = intent.getStringExtra(MainActivity.MESSAGE_GK);
 
         TextView tv = (TextView)findViewById(R.id.editKonfiguracija);
         tv.setText(message);
@@ -41,9 +40,9 @@ public class konfiguracijaActivity extends AppCompatActivity {
 
         //search string must not be empty
         if(message!="") {
-            Intent intent = new Intent(this, listaAlarmaActivity.class);
-            intent.setAction(glavnaActivity.MESSAGE_STRA);
-            intent.putExtra(glavnaActivity.MESSAGE_STRA, messageCo);
+            Intent intent = new Intent(this, AlarmListActivity.class);
+            intent.setAction(MainActivity.MESSAGE_STRA);
+            intent.putExtra(MainActivity.MESSAGE_STRA, messageCo);
             startActivity(intent);
         }
 

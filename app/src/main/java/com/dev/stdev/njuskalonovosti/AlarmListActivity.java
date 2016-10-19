@@ -7,14 +7,12 @@ import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class listaAlarmaActivity extends AppCompatActivity {
+public class AlarmListActivity extends AppCompatActivity {
 
     private bReceiver bRec;
 
@@ -30,26 +28,26 @@ public class listaAlarmaActivity extends AppCompatActivity {
             String action = intent.getAction();
             //Log.d("ACTON",action);
 
-            if (action.equalsIgnoreCase(glavnaActivity.MESSAGE_STRA)) //stvori novi alarm
+            if (action.equalsIgnoreCase(MainActivity.MESSAGE_STRA)) //stvori novi alarm
             {
                 //stvori novi alarm
                 //Log.d("MESSAGE_STRA","Message_STRA");
-                String messa = intent.getStringExtra(glavnaActivity.MESSAGE_STRA);
-                Intent srvc = new Intent(this, stvoriNoviAlarmServis.class);
-                srvc.putExtra(glavnaActivity.MESSAGE_PNA,messa);
+                String messa = intent.getStringExtra(MainActivity.MESSAGE_STRA);
+                Intent srvc = new Intent(this, CreateNewAlarmService.class);
+                srvc.putExtra(MainActivity.MESSAGE_PNA,messa);
                 startService((srvc));
 
-            } else if (action.equalsIgnoreCase(glavnaActivity.MESSAGE_GA)) //prikazi alarme
+            } else if (action.equalsIgnoreCase(MainActivity.MESSAGE_GA)) //prikazi alarme
             {
-                Intent srvc = new Intent(this, dohvatiAlarmeServis.class);
-                srvc.putExtra(glavnaActivity.MESSAGE_GAL,glavnaActivity.MESSAGE_GAL);
+                Intent srvc = new Intent(this, AlarmListService.class);
+                srvc.putExtra(MainActivity.MESSAGE_GAL, MainActivity.MESSAGE_GAL);
                 startService((srvc));
 
             }
 
             //Register receiver from service
             bRec = new bReceiver();
-            IntentFilter filter = new IntentFilter(glavnaActivity.MESSAGE_RGAL);
+            IntentFilter filter = new IntentFilter(MainActivity.MESSAGE_RGAL);
             registerReceiver(bRec, filter);
 
         }
@@ -61,7 +59,7 @@ public class listaAlarmaActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
 
 
-                    alarmClass ald = (alarmClass) intent.getSerializableExtra(glavnaActivity.MESSAGE_RGAL);
+                    AlarmClass ald = (AlarmClass) intent.getSerializableExtra(MainActivity.MESSAGE_RGAL);
 
                     //Do something with the string
 
@@ -89,7 +87,7 @@ public class listaAlarmaActivity extends AppCompatActivity {
                             linearLayout.removeAllViews();
 
                             Intent srvc = new Intent(getApplicationContext(), zavrsiAlarmServis.class);
-                            srvc.putExtra(glavnaActivity.MESSAGE_STPA,Integer.toString(myButton.getId()));
+                            srvc.putExtra(MainActivity.MESSAGE_STPA,Integer.toString(myButton.getId()));
                             startService((srvc));
                         }
                     });

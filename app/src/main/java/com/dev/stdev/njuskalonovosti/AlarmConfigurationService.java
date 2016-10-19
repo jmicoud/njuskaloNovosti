@@ -1,11 +1,12 @@
 package com.dev.stdev.njuskalonovosti;
 
+
 import android.app.IntentService;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 
-import java.io.Serializable;
+import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,42 +18,42 @@ import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public class dohvatStanovaServis extends IntentService {
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
+public class AlarmConfigurationService extends IntentService {
 
-    private dbClass db = new dbClass(this);
+    DatabaseClass db = new DatabaseClass(this);
 
-
-    public dohvatStanovaServis() {
-        super("dohvatStanovaServis");
+    public AlarmConfigurationService() {
+        super("AlarmConfigurationService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        // Gets data from the incoming Intent
-        //String dataString = workIntent.getDataString();
         if (intent != null) {
 
-            //Log.d("U servisu dohvati stae", "U SERVISU DOHVATI ST");
+            String alarmGeneralId = intent.getStringExtra(MainActivity.MESSAGE_ALARM);
+            //DatabaseClass db = new DatabaseClass(context);
 
-            String lnk = intent.getStringExtra("LINK");
+            if(alarmGeneralId!=null)
+            {
+                Log.d("Alarm TRIGERED: ", "" + alarmGeneralId);
 
-            Log.d("LINK", lnk);
+                doGetApartments(alarmGeneralId);
+            }
 
-            doGetApartments(lnk);
-
-            // Do work here, based on the contents of dataString
         }
+
     }
 
 
-    public void doGetApartments(final String upit) {
+
+    public void doGetApartments(final String generalid) {
 
         try {
+
+
+            List<SearchClass> pr = db.getPretragaByGenID(generalid); //samo jedna pretraga se uvijek vraća
+
+            final String upit = pr.get(0).getPretraga(); //samo jedna pretraga se uvijek vraća
 
             String ctls = "search_ads";
             String sorts = "new";
@@ -62,10 +63,10 @@ public class dohvatStanovaServis extends IntentService {
 
             //Log.d("PRIJE","Prija");
 
-            NjuskaloService service = NjuskaloService.retrofit.create(NjuskaloService.class);
+            SearchNewFlatAdvertisementsService.NjuskaloService service = SearchNewFlatAdvertisementsService.NjuskaloService.retrofit.create(SearchNewFlatAdvertisementsService.NjuskaloService.class);
             Call<ResponseBody> call = service.getTask(ctls,upit,sorts);
 
-            Log.d("LINK", call.request().url().toString());
+            //Log.d("ALARM LINK", call.request().url().toString());
 
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -73,12 +74,12 @@ public class dohvatStanovaServis extends IntentService {
                     if (response.isSuccessful()) {
 
                         try {
-                            //Log.d("RESPONSA", response.body().string());
+                            //Log.d("GOT RESPONSE", "GOT RESPONSE");
 
                             String msg =  response.body().string();
                             //int lnt = msg.length();
 
-                            parseRespIntoDatabase(msg, upit);
+                            parseRespIntoDatabase(msg, upit, generalid);
 
 
                         }
@@ -124,7 +125,7 @@ public class dohvatStanovaServis extends IntentService {
 
 
 
-    public void parseRespIntoDatabase(String resp, String upit)
+    public void parseRespIntoDatabase(String resp, String upit, String generalid)
     {
         //int locSt = resp.indexOf("Njuškalo oglasi");
         int i, n;
@@ -132,26 +133,87 @@ public class dohvatStanovaServis extends IntentService {
         i = resp.indexOf("data-ad-id");
         n = i;
 
+        String mailStr="";
+        FlatAdvertismentClass flRf;
+        List<FlatAdvertismentClass> flNewLs = new ArrayList<>();
 
-
-        while(i >= 0)
+        while(true)
         {
 
             i = resp.indexOf("data-ad-id", i+1);
 
-            parseAllValues(resp.substring(n, i), upit);
+           // Log.d("ISPIS I: ", ""+i+","+n);
+
+            if ((i-n) < 1500) break;
+
+            flRf = parseAllValues(resp.substring(n, i), upit, generalid);
+
+
+            if(flRf.getIsNewApartment().equals("1")) //only if new apartment put it in list becouse tat list we will send on email
+            {
+                flNewLs.add(flRf);
+
+                //Log.d("FLAT DES: ",flRf.getDescription());
+                //Log.d("ISNEW: ", flRf.getIsNewApartment());
+                //Log.d("LISTSIZE: ", ""+flNewLs.size());
+
+            }
+
+
+
             n = i;
+
+
 
         }
 
+        //Log.d("LISTSIZE1: ", ""+flNewLs.size());
+
+        for(int j=0; j<flNewLs.size(); j++)
+        {
+
+            mailStr = mailStr + "ID: " + flNewLs.get(j).getId() + "\n" + "STAN: " + flNewLs.get(j).getDescription() + "\n" + "LINK: " + flNewLs.get(j).getLink() + "\n" + "PRIZE: " + flNewLs.get(j).getPrize() + "\n" + "DATE: " + flNewLs.get(j).getDtm() + "\n\n";
+
+        }
+
+        //Log.d("NOVI STANOVI: \n", mailStr);
+
+        sendMail(mailStr, upit);
 
     }
 
 
-    public void parseAllValues(String valStr, String upit)
+    public void sendMail(String completeMessage, String upit)
     {
 
-        flatData fl = new flatData();
+        BackgroundMail.newBuilder(this)
+                .withUsername("obavijest.stanovi@gmail.com")
+                .withPassword("obavijest123")
+                .withMailto("obavijest.stanovi@gmail.com")
+                .withSubject("Obavijest - Stanovi: " + upit)
+                .withBody(completeMessage)
+                .withOnSuccessCallback(new BackgroundMail.OnSuccessCallback() {
+                    @Override
+                    public void onSuccess() {
+                        //do some magic
+                        Log.d("MAIL SENT OK", "MAIL SENT OK");
+                    }
+                })
+                .withOnFailCallback(new BackgroundMail.OnFailCallback() {
+                    @Override
+                    public void onFail() {
+                        //do some magic
+                        Log.d("MAIL ERROR", "MAIL ERROR");
+                    }
+                })
+                .send();
+
+
+    }
+
+    public FlatAdvertismentClass parseAllValues(String valStr, String upit, String generalid)
+    {
+        FlatAdvertismentClass fl = new FlatAdvertismentClass();
         //Bundle bundle = new Bundle();
 
         String id, link, dtm, prize, description;
@@ -170,59 +232,10 @@ public class dohvatStanovaServis extends IntentService {
         fl.setPrize(prize);
         fl.setDescription(description);
 
-        int newGeneralId;
+        //Log.d("\nFLAT DESC:", description);
 
-        if(db.isPretrageTableEmpty()==false)
-        {
-
-            //Log.d("size", "PRETRAGANOTEMPTY");
-            //is this existing search
-            boolean isNs = false;
-            String tempGenId = "";
-            List<pretrageClass> lP = db.getAllPretrage();
-            for(int i=0; i<lP.size(); i++)
-            {
-                if ((upit.equals(lP.get(i).getPretraga())) && ((lP.get(i).getTip())!="1")) //don't take in consideration alarm searches
-                {
-                    isNs = true; //there is existing search, exit loop
-                    //Log.d("EXISTING","YES");
-                    tempGenId = lP.get(i).getGeneralId();
-                    break;
-                }
-            }
-
-
-            //Log.d("size", "PRETRAGASIZE: " + Integer.toString(lP.size()));
-
-            if(isNs==false) //this is new search
-            {
-
-              //Log.d("NEWSEARCH", "NEWSEARCH");
-
-              pretrageClass prTm;
-
-              prTm = lP.get(lP.size()-1);//take last an generate +1 id for new one
-              newGeneralId = Integer.parseInt(prTm.getGeneralId()) + 1; //zadnji plus 1 je id za novu pretragu
-
-              //Log.d("Zadnji","zadnji"+ Integer.toString(newGeneralId));
-                //dohvati zadnju pretragu jer ima
-
-              pretrageClass prNew = new pretrageClass();
-              prNew.setGeneralId(Integer.toString(newGeneralId));
-              prNew.setPretraga(upit);
-              prNew.setTip("0"); //not alarm search
-              db.addPretraga(prNew);
-
-              fl.setIsNewApartment("1"); //this isnew apartment becouse it is new search so value is 1
-
-              db.addApartment(fl,Integer.toString(newGeneralId)); //add apartment to database, novistanovi table
-
-                //dodaj novu pretragu - geerirajnovi general id, pretraži stanove na temelju novog id-a, nema ih naravno jer je nova pretraga, ddaj fld.isnew..
-            }
-            else //isNs=true
-            {
                 //pretraži stanove na temelju general id-a pretrage, usporedi jesu li novi na temelju id-a dodaj nove stanove u bazu i vrati natrag nove plus prepoznate stare(dio istih)
-                List<flatData> flLs = db.getAllApartments(tempGenId);
+                List<FlatAdvertismentClass> flLs = db.getAllApartments(generalid);
 
                 //Log.d("BROJSTANOVA","BROJ STANOVA: "+flLs.size());
 
@@ -242,7 +255,7 @@ public class dohvatStanovaServis extends IntentService {
                 if(nwFlat==false) //new apartment recognized
                 {
                     fl.setIsNewApartment("1");
-                    db.addApartment(fl,tempGenId);
+                    db.addApartment(fl,generalid);
                 }
                 else
                 {
@@ -250,45 +263,11 @@ public class dohvatStanovaServis extends IntentService {
 
                 }
 
-
-            }
-
-        }
-        else //Pretrage table is empty
-        {
-            newGeneralId = 1000; //set initial generalid to 1000
-
-            //dohvati zadnju pretragu jer ima
-
-            pretrageClass prNew = new pretrageClass();
-            prNew.setGeneralId(Integer.toString(newGeneralId));
-            prNew.setPretraga(upit);
-            prNew.setTip("0"); //not alarm search
-            db.addPretraga(prNew);
-
-            fl.setIsNewApartment("1"); //this isnew apartment becouse it is new search so value is 1
-
-            db.addApartment(fl,Integer.toString(newGeneralId)); //add apartment to database, novistanovi table
-
-        }
-
-        sendBroadcastMessage("FLAT_BRD", fl);
-
-
-
+        return (fl);
+        //sendBroadcastMessage("FLAT_BRD", fl);
 
     }
 
-
-   /* public String genNewGenId()
-    {
-        String retStr="";
-
-
-
-        return (retStr);
-
-    }*/
 
 
     public static String substringBetween(String str, String open, String close) {
@@ -305,17 +284,6 @@ public class dohvatStanovaServis extends IntentService {
         return null;
     }
 
-
-
-
-    private void sendBroadcastMessage(String intentFilterName, flatData f) {
-
-       // Log.d("Šaljem Intent","Šaljem Intent");
-
-        Intent intent = new Intent(intentFilterName);
-        intent.putExtra("FLAT_OBJECT", f);
-        sendBroadcast(intent);
-    }
 
 
 
