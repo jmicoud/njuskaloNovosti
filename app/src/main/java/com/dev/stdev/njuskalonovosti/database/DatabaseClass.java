@@ -23,9 +23,9 @@ public class DatabaseClass extends SQLiteOpenHelper {
     //Database Name
     private static final String DATABASE_NAME = "stanovi";
     //Database table
-    private static final String TABLE_ALARMI = "alarm";
-    private static final String TABLE_PRETRAGE = "pretrage";
-    private static final String TABLE_NOVI_STANOVI = "novistanovi";
+    private static final String TABLE_ALARMS = "alarm";
+    private static final String TABLE_SEARCH = "pretrage";
+    private static final String TABLE_NEW_FLATS = "novistanovi";
 
     //Database columns
     private static final String COLUMN_ID = "id";
@@ -34,8 +34,8 @@ public class DatabaseClass extends SQLiteOpenHelper {
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_PRIZE = "prize";
     private static final String COLUMN_DATETM = "datetm";
-    private static final String COLUMN_PRETRAGE = "pretrage";
-    private static final String COLUMN_TIP = "tip";
+    private static final String COLUMN_SEARCH = "pretrage";
+    private static final String COLUMN_TYPE = "tip";
     private static final String COLUMN_INTERVAL = "interval";
     //private static final String COLUMN_ALARM_ID = "interval";
 
@@ -46,22 +46,22 @@ public class DatabaseClass extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_ALARMI_TABLE = "CREATE TABLE " + TABLE_ALARMI + "(" + COLUMN_GENID + " TEXT," + COLUMN_INTERVAL + " TEXT" + ");";
+        String CREATE_ALARMI_TABLE = "CREATE TABLE " + TABLE_ALARMS + "(" + COLUMN_GENID + " TEXT," + COLUMN_INTERVAL + " TEXT" + ");";
         db.execSQL(CREATE_ALARMI_TABLE);
 
-        String CREATE_APARTMENTS_TABLE = "CREATE TABLE " + TABLE_NOVI_STANOVI + "(" + COLUMN_GENID + " TEXT," + COLUMN_ID + " TEXT," + COLUMN_LINK + " TEXT," + COLUMN_DESCRIPTION + " TEXT," + COLUMN_PRIZE + " TEXT," + COLUMN_DATETM + " TEXT" + ");";
+        String CREATE_APARTMENTS_TABLE = "CREATE TABLE " + TABLE_NEW_FLATS + "(" + COLUMN_GENID + " TEXT," + COLUMN_ID + " TEXT," + COLUMN_LINK + " TEXT," + COLUMN_DESCRIPTION + " TEXT," + COLUMN_PRIZE + " TEXT," + COLUMN_DATETM + " TEXT" + ");";
         db.execSQL(CREATE_APARTMENTS_TABLE);
 
-        String CREATE_PRETRAGE_TABLE = "CREATE TABLE " + TABLE_PRETRAGE + "(" + COLUMN_GENID + " TEXT," + COLUMN_PRETRAGE + " TEXT," + COLUMN_TIP + " TEXT" + ");";
+        String CREATE_PRETRAGE_TABLE = "CREATE TABLE " + TABLE_SEARCH + "(" + COLUMN_GENID + " TEXT," + COLUMN_SEARCH + " TEXT," + COLUMN_TYPE + " TEXT" + ");";
         db.execSQL(CREATE_PRETRAGE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ALARMI);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOVI_STANOVI);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRETRAGE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ALARMS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NEW_FLATS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_SEARCH);
 
         // Creating tables again
         onCreate(db);
@@ -78,7 +78,7 @@ public class DatabaseClass extends SQLiteOpenHelper {
         values.put(COLUMN_PRIZE, flat.getPrize());
         values.put(COLUMN_DATETM, flat.getDtm());
         // Inserting Row
-        db.insert(TABLE_NOVI_STANOVI, null, values);
+        db.insert(TABLE_NEW_FLATS, null, values);
         db.close(); // Closing database connection
     }
 
@@ -87,11 +87,11 @@ public class DatabaseClass extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_GENID, pretraga.getGeneralId());
-        values.put(COLUMN_PRETRAGE, pretraga.getSearch());
-        values.put(COLUMN_TIP, pretraga.getType());
+        values.put(COLUMN_SEARCH, pretraga.getSearch());
+        values.put(COLUMN_TYPE, pretraga.getType());
 
         // Inserting Row
-        db.insert(TABLE_PRETRAGE, null, values);
+        db.insert(TABLE_SEARCH, null, values);
         db.close(); // Closing database connection
     }
 
@@ -103,7 +103,7 @@ public class DatabaseClass extends SQLiteOpenHelper {
         values.put(COLUMN_INTERVAL, alarm.getInterval());
 
         // Inserting Row
-        db.insert(TABLE_ALARMI, null, values);
+        db.insert(TABLE_ALARMS, null, values);
         db.close(); // Closing database connection
     }
 
@@ -111,28 +111,28 @@ public class DatabaseClass extends SQLiteOpenHelper {
     // Deleting alarm
     public void deleteAlarm(String generalid) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_ALARMI, COLUMN_GENID + "=" + generalid, null);
+        db.delete(TABLE_ALARMS, COLUMN_GENID + "=" + generalid, null);
         db.close();
     }
 
     // Deleting apartment
     public void deleteFlat(String generalid) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_NOVI_STANOVI, COLUMN_GENID + "=" + generalid, null);
+        db.delete(TABLE_NEW_FLATS, COLUMN_GENID + "=" + generalid, null);
         db.close();
     }
 
     // Deleting pretrage on pretraga
     public void deleteSearch(String pretraga) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_PRETRAGE, COLUMN_PRETRAGE + "='" + pretraga + "'", null);
+        db.delete(TABLE_SEARCH, COLUMN_SEARCH + "='" + pretraga + "'", null);
         db.close();
     }
 
     // Deleting pretrage on pretraga
     public void deleteSearchByGenId(String generalid) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_PRETRAGE, COLUMN_GENID + "='" + generalid + "'", null);
+        db.delete(TABLE_SEARCH, COLUMN_GENID + "='" + generalid + "'", null);
         db.close();
     }
 
@@ -143,7 +143,7 @@ public class DatabaseClass extends SQLiteOpenHelper {
         // Select All Query
 
         //Log.d("get","get apatment at"+generalid);
-        String selectQuery = "SELECT * FROM " + TABLE_NOVI_STANOVI + " WHERE " + COLUMN_GENID + "=" + generalid;
+        String selectQuery = "SELECT * FROM " + TABLE_NEW_FLATS + " WHERE " + COLUMN_GENID + "=" + generalid;
 
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -177,7 +177,7 @@ public class DatabaseClass extends SQLiteOpenHelper {
         // Select All Query
 
         //Log.d("get","get apatment at"+generalid);
-        String selectQuery = "SELECT  * FROM " + TABLE_ALARMI;
+        String selectQuery = "SELECT  * FROM " + TABLE_ALARMS;
 
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -212,7 +212,7 @@ public class DatabaseClass extends SQLiteOpenHelper {
     public List<SearchClass> getSearchByGenID(String genid) {
         List<SearchClass> prdataList = new ArrayList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_GENID + "='" + genid + "'";
+        String selectQuery = "SELECT  * FROM " + TABLE_SEARCH + " WHERE " + COLUMN_GENID + "='" + genid + "'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -240,7 +240,7 @@ public class DatabaseClass extends SQLiteOpenHelper {
     public List<SearchClass> getSearchBySearch(String search) {
         List<SearchClass> prdataList = new ArrayList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_PRETRAGE + "='" + search + "'";
+        String selectQuery = "SELECT  * FROM " + TABLE_SEARCH + " WHERE " + COLUMN_SEARCH + "='" + search + "'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -268,7 +268,7 @@ public class DatabaseClass extends SQLiteOpenHelper {
     public List<SearchClass> getAllSearch() {
         List<SearchClass> prdataList = new ArrayList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE;
+        String selectQuery = "SELECT  * FROM " + TABLE_SEARCH;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -296,7 +296,7 @@ public class DatabaseClass extends SQLiteOpenHelper {
 
     boolean isApartmentsTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
-        String count = "SELECT count(*) FROM " + TABLE_NOVI_STANOVI;
+        String count = "SELECT count(*) FROM " + TABLE_NEW_FLATS;
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);
@@ -307,7 +307,7 @@ public class DatabaseClass extends SQLiteOpenHelper {
 
     public boolean isPretrageTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
-        String count = "SELECT count(*) FROM " + TABLE_PRETRAGE;
+        String count = "SELECT count(*) FROM " + TABLE_SEARCH;
         Cursor mcursor = db.rawQuery(count, null);
         mcursor.moveToFirst();
         int icount = mcursor.getInt(0);
