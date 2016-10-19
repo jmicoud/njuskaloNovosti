@@ -1,4 +1,4 @@
-package com.dev.stdev.njuskalonovosti;
+package com.dev.stdev.njuskalonovosti.database;
 
 //import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
@@ -7,12 +7,16 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.dev.stdev.njuskalonovosti.classes.AlarmClass;
+import com.dev.stdev.njuskalonovosti.classes.FlatAdvertismentClass;
+import com.dev.stdev.njuskalonovosti.classes.SearchClass;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 
-class DatabaseClass extends SQLiteOpenHelper {
+public class DatabaseClass extends SQLiteOpenHelper {
 
     //Database Version
     private static final int DATABASE_VERSION = 1;
@@ -36,7 +40,7 @@ class DatabaseClass extends SQLiteOpenHelper {
     //private static final String COLUMN_ALARM_ID = "interval";
 
 
-    DatabaseClass(Context context) {
+    public DatabaseClass(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -64,7 +68,7 @@ class DatabaseClass extends SQLiteOpenHelper {
     }
 
 
-    void addApartment(FlatAdvertismentClass flat, String generalId) {
+    public void addFlat(FlatAdvertismentClass flat, String generalId) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_GENID, generalId);
@@ -79,12 +83,12 @@ class DatabaseClass extends SQLiteOpenHelper {
     }
 
 
-    void addPretraga(SearchClass pretraga) {
+    public void addSearch(SearchClass pretraga) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_GENID, pretraga.getGeneralId());
-        values.put(COLUMN_PRETRAGE, pretraga.getPretraga());
-        values.put(COLUMN_TIP, pretraga.getTip());
+        values.put(COLUMN_PRETRAGE, pretraga.getSearch());
+        values.put(COLUMN_TIP, pretraga.getType());
 
         // Inserting Row
         db.insert(TABLE_PRETRAGE, null, values);
@@ -92,7 +96,7 @@ class DatabaseClass extends SQLiteOpenHelper {
     }
 
 
-    void addAlarm(AlarmClass alarm) {
+    public void addAlarm(AlarmClass alarm) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_GENID, alarm.getGeneralid());
@@ -105,28 +109,28 @@ class DatabaseClass extends SQLiteOpenHelper {
 
 
     // Deleting alarm
-    void deleteAlarm(String generalid) {
+    public void deleteAlarm(String generalid) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_ALARMI, COLUMN_GENID + "=" + generalid, null);
         db.close();
     }
 
     // Deleting apartment
-    void deleteApartment(String generalid) {
+    public void deleteFlat(String generalid) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NOVI_STANOVI, COLUMN_GENID + "=" + generalid, null);
         db.close();
     }
 
     // Deleting pretrage on pretraga
-    void deletePretraga(String pretraga) {
+    public void deleteSearch(String pretraga) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PRETRAGE, COLUMN_PRETRAGE + "='" + pretraga + "'", null);
         db.close();
     }
 
     // Deleting pretrage on pretraga
-    void deletePretragaByGenId(String generalid) {
+    public void deleteSearchByGenId(String generalid) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_PRETRAGE, COLUMN_GENID + "='" + generalid + "'", null);
         db.close();
@@ -134,7 +138,7 @@ class DatabaseClass extends SQLiteOpenHelper {
 
 
     // Getting All Apartments by generalid
-    List<FlatAdvertismentClass> getAllApartments(String generalid) {
+    public List<FlatAdvertismentClass> getAllApartments(String generalid) {
         List<FlatAdvertismentClass> fldataList = new ArrayList<>();
         // Select All Query
 
@@ -168,7 +172,7 @@ class DatabaseClass extends SQLiteOpenHelper {
 
 
     // Getting All Alarms
-    List<AlarmClass> getAllAlarms() {
+    public List<AlarmClass> getAllAlarms() {
         List<AlarmClass> alList = new ArrayList<>();
         // Select All Query
 
@@ -205,7 +209,7 @@ class DatabaseClass extends SQLiteOpenHelper {
 
 
     // Getting All pretrage
-    List<SearchClass> getPretragaByGenID(String genid) {
+    public List<SearchClass> getSearchByGenID(String genid) {
         List<SearchClass> prdataList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_GENID + "='" + genid + "'";
@@ -218,8 +222,8 @@ class DatabaseClass extends SQLiteOpenHelper {
             do {
                 SearchClass prt = new SearchClass();
                 prt.setGeneralId(cursor.getString(0));
-                prt.setPretraga(cursor.getString(1));
-                prt.setTip(cursor.getString(2));
+                prt.setSearch(cursor.getString(1));
+                prt.setType(cursor.getString(2));
 
                 // Adding contact to list
                 prdataList.add(prt);
@@ -233,10 +237,10 @@ class DatabaseClass extends SQLiteOpenHelper {
     }
 
     // Getting All pretrage
-    List<SearchClass> getPretragaByPretraga(String pretraga) {
+    public List<SearchClass> getSearchBySearch(String search) {
         List<SearchClass> prdataList = new ArrayList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_PRETRAGE + "='" + pretraga + "'";
+        String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE + " WHERE " + COLUMN_PRETRAGE + "='" + search + "'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -246,8 +250,8 @@ class DatabaseClass extends SQLiteOpenHelper {
             do {
                 SearchClass prt = new SearchClass();
                 prt.setGeneralId(cursor.getString(0));
-                prt.setPretraga(cursor.getString(1));
-                prt.setTip(cursor.getString(2));
+                prt.setSearch(cursor.getString(1));
+                prt.setType(cursor.getString(2));
 
                 // Adding contact to list
                 prdataList.add(prt);
@@ -261,7 +265,7 @@ class DatabaseClass extends SQLiteOpenHelper {
     }
 
     // Getting All pretrage
-    List<SearchClass> getAllPretrage() {
+    public List<SearchClass> getAllSearch() {
         List<SearchClass> prdataList = new ArrayList<>();
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_PRETRAGE;
@@ -274,8 +278,8 @@ class DatabaseClass extends SQLiteOpenHelper {
             do {
                 SearchClass prt = new SearchClass();
                 prt.setGeneralId(cursor.getString(0));
-                prt.setPretraga(cursor.getString(1));
-                prt.setTip(cursor.getString(2));
+                prt.setSearch(cursor.getString(1));
+                prt.setType(cursor.getString(2));
 
                 // Adding contact to list
                 prdataList.add(prt);
@@ -301,7 +305,7 @@ class DatabaseClass extends SQLiteOpenHelper {
         return icount <= 0;
     }
 
-    boolean isPretrageTableEmpty() {
+    public boolean isPretrageTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
         String count = "SELECT count(*) FROM " + TABLE_PRETRAGE;
         Cursor mcursor = db.rawQuery(count, null);

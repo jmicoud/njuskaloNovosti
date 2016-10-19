@@ -1,8 +1,12 @@
-package com.dev.stdev.njuskalonovosti;
+package com.dev.stdev.njuskalonovosti.services;
 
 import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
+
+import com.dev.stdev.njuskalonovosti.classes.FlatAdvertismentClass;
+import com.dev.stdev.njuskalonovosti.classes.SearchClass;
+import com.dev.stdev.njuskalonovosti.database.DatabaseClass;
 
 import java.util.List;
 
@@ -34,11 +38,11 @@ public class SearchNewFlatAdvertisementsService extends IntentService {
         //String dataString = workIntent.getDataString();
         if (intent != null) {
 
-            //Log.d("U servisu dohvati stae", "U SERVISU DOHVATI ST");
+            //Log.d("U servisu getFlatsAdvertisments stae", "U SERVISU DOHVATI ST");
 
             String lnk = intent.getStringExtra("LINK");
 
-            Log.d("LINK", lnk);
+            //Log.d("LINK", lnk);
 
             doGetApartments(lnk);
 
@@ -176,10 +180,10 @@ public class SearchNewFlatAdvertisementsService extends IntentService {
             //is this existing search
             boolean isNs = false;
             String tempGenId = "";
-            List<SearchClass> lP = db.getAllPretrage();
+            List<SearchClass> lP = db.getAllSearch();
             for(int i=0; i<lP.size(); i++)
             {
-                if ((upit.equals(lP.get(i).getPretraga())) && ((lP.get(i).getTip())!="1")) //don't take in consideration alarm searches
+                if ((upit.equals(lP.get(i).getSearch())) && ((lP.get(i).getType())!="1")) //don't take in consideration alarm searches
                 {
                     isNs = true; //there is existing search, exit loop
                     //Log.d("EXISTING","YES");
@@ -202,17 +206,17 @@ public class SearchNewFlatAdvertisementsService extends IntentService {
               newGeneralId = Integer.parseInt(prTm.getGeneralId()) + 1; //zadnji plus 1 je id za novu pretragu
 
               //Log.d("Zadnji","zadnji"+ Integer.toString(newGeneralId));
-                //dohvati zadnju pretragu jer ima
+                //getFlatsAdvertisments zadnju pretragu jer ima
 
               SearchClass prNew = new SearchClass();
               prNew.setGeneralId(Integer.toString(newGeneralId));
-              prNew.setPretraga(upit);
-              prNew.setTip("0"); //not alarm search
-              db.addPretraga(prNew);
+              prNew.setSearch(upit);
+              prNew.setType("0"); //not alarm search
+              db.addSearch(prNew);
 
-              fl.setIsNewApartment("1"); //this isnew apartment becouse it is new search so value is 1
+              fl.setIsNewFlat("1"); //this isnew apartment becouse it is new search so value is 1
 
-              db.addApartment(fl,Integer.toString(newGeneralId)); //add apartment to database, novistanovi table
+              db.addFlat(fl,Integer.toString(newGeneralId)); //add apartment to database, novistanovi table
 
                 //dodaj novu pretragu - geerirajnovi general id, pretraži stanove na temelju novog id-a, nema ih naravno jer je nova pretraga, ddaj fld.isnew..
             }
@@ -238,12 +242,12 @@ public class SearchNewFlatAdvertisementsService extends IntentService {
 
                 if(nwFlat==false) //new apartment recognized
                 {
-                    fl.setIsNewApartment("1");
-                    db.addApartment(fl,tempGenId);
+                    fl.setIsNewFlat("1");
+                    db.addFlat(fl,tempGenId);
                 }
                 else
                 {
-                    fl.setIsNewApartment("0");
+                    fl.setIsNewFlat("0");
 
                 }
 
@@ -255,17 +259,17 @@ public class SearchNewFlatAdvertisementsService extends IntentService {
         {
             newGeneralId = 1000; //set initial generalid to 1000
 
-            //dohvati zadnju pretragu jer ima
+            //getFlatsAdvertisments zadnju pretragu jer ima
 
             SearchClass prNew = new SearchClass();
             prNew.setGeneralId(Integer.toString(newGeneralId));
-            prNew.setPretraga(upit);
-            prNew.setTip("0"); //not alarm search
-            db.addPretraga(prNew);
+            prNew.setSearch(upit);
+            prNew.setType("0"); //not alarm search
+            db.addSearch(prNew);
 
-            fl.setIsNewApartment("1"); //this isnew apartment becouse it is new search so value is 1
+            fl.setIsNewFlat("1"); //this isnew apartment becouse it is new search so value is 1
 
-            db.addApartment(fl,Integer.toString(newGeneralId)); //add apartment to database, novistanovi table
+            db.addFlat(fl,Integer.toString(newGeneralId)); //add apartment to database, novistanovi table
 
         }
 

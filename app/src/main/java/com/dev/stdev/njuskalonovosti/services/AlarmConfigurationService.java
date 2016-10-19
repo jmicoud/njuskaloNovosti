@@ -1,4 +1,4 @@
-package com.dev.stdev.njuskalonovosti;
+package com.dev.stdev.njuskalonovosti.services;
 
 
 import android.app.IntentService;
@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
+import com.dev.stdev.njuskalonovosti.classes.FlatAdvertismentClass;
+import com.dev.stdev.njuskalonovosti.activities.MainActivity;
+import com.dev.stdev.njuskalonovosti.classes.SearchClass;
+import com.dev.stdev.njuskalonovosti.database.DatabaseClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,9 +39,9 @@ public class AlarmConfigurationService extends IntentService {
 
             if(alarmGeneralId!=null)
             {
-                Log.d("Alarm TRIGERED: ", "" + alarmGeneralId);
+                //Log.d("Alarm TRIGERED: ", "" + alarmGeneralId);
 
-                doGetApartments(alarmGeneralId);
+                doGetFlatAdvertisement(alarmGeneralId);
             }
 
         }
@@ -46,14 +50,14 @@ public class AlarmConfigurationService extends IntentService {
 
 
 
-    public void doGetApartments(final String generalid) {
+    public void doGetFlatAdvertisement(final String generalid) {
 
         try {
 
 
-            List<SearchClass> pr = db.getPretragaByGenID(generalid); //samo jedna pretraga se uvijek vraća
+            List<SearchClass> pr = db.getSearchByGenID(generalid); //samo jedna pretraga se uvijek vraća
 
-            final String upit = pr.get(0).getPretraga(); //samo jedna pretraga se uvijek vraća
+            final String upit = pr.get(0).getSearch(); //samo jedna pretraga se uvijek vraća
 
             String ctls = "search_ads";
             String sorts = "new";
@@ -149,12 +153,12 @@ public class AlarmConfigurationService extends IntentService {
             flRf = parseAllValues(resp.substring(n, i), upit, generalid);
 
 
-            if(flRf.getIsNewApartment().equals("1")) //only if new apartment put it in list becouse tat list we will send on email
+            if(flRf.getIsNewFlat().equals("1")) //only if new apartment put it in list becouse tat list we will send on email
             {
                 flNewLs.add(flRf);
 
                 //Log.d("FLAT DES: ",flRf.getDescription());
-                //Log.d("ISNEW: ", flRf.getIsNewApartment());
+                //Log.d("ISNEW: ", flRf.getIsNewFlat());
                 //Log.d("LISTSIZE: ", ""+flNewLs.size());
 
             }
@@ -254,12 +258,12 @@ public class AlarmConfigurationService extends IntentService {
 
                 if(nwFlat==false) //new apartment recognized
                 {
-                    fl.setIsNewApartment("1");
-                    db.addApartment(fl,generalid);
+                    fl.setIsNewFlat("1");
+                    db.addFlat(fl,generalid);
                 }
                 else
                 {
-                    fl.setIsNewApartment("0");
+                    fl.setIsNewFlat("0");
 
                 }
 

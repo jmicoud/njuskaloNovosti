@@ -1,4 +1,4 @@
-package com.dev.stdev.njuskalonovosti;
+package com.dev.stdev.njuskalonovosti.classes;
 
 import java.io.Serializable;
 
@@ -24,28 +24,18 @@ public class AlarmClass implements Serializable{
         this.interval = interval;
     }
 
-    /*public String getAlarmid() {
-        return alarmid;
-    }*/
-
-    /*public void setAlarmid(String alarmid) {
-        this.alarmid = alarmid;
-    }*/
-
     private String generalid;
     private String interval;
 
-    public String getPretraga() {
-        return pretraga;
+    public String getSearch() {
+        return search;
     }
 
-    public void setPretraga(String pretraga) {
-        this.pretraga = pretraga;
+    public void setSearch(String search) {
+        this.search = search;
     }
 
-    private String pretraga;
-    //private String alarmid;
-
+    private String search;
 
 
 }

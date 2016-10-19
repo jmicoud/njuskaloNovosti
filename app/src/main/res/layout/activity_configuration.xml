@@ -5,18 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/konfiguracijaLayout">
+    android:id="@+id/configurationLayout">
 
-    <EditText android:id="@+id/editKonfiguracija"
+    <EditText android:id="@+id/configurationEdit"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:hint="@string/editKonfiguracija" />
+        android:hint="@string/configurationEdit" />
 
 
     <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/spinnerKonfiguracija"
+        android:id="@+id/configurationSpinner"
         android:entries="@array/timeArray" />
 
 
@@ -25,8 +25,8 @@
         android:layout_marginTop="60dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/button_Konfiguracija"
-        android:id="@+id/buttonKonfiguracija"
-        android:onClick="stvorialarm" />
+        android:text="@string/configureButton"
+        android:id="@+id/configureButton"
+        android:onClick="createAlarm" />
 
 </LinearLayout>

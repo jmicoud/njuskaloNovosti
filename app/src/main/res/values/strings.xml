@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">Novi Stanovi Njuskalo</string>
-    <string name="edit_message">Unesi pretragu..</string>
-    <string name="dohvatiButton">Dohvati..</string>
-    <string name="button_Konfiguracija">Napravi</string>
-    <string name="buttonListaAlarma">Lista Alarma</string>
-    <string name="buttonKonf">Konfiguracija</string>
-    <string name="editKonfiguracija">Upit..</string>
-    <string name="brisiOdabranuPretraguButton">Brisi Pretragu</string>
+    <string name="app_name">New Flats Njuskalo</string>
+    <string name="messageEdit">Enter search..</string>
+    <string name="getButton">Get Flats..</string>
+    <string name="configureButton">Configure</string>
+    <string name="listAlarmButton">Alarm List</string>
+    <string name="configurationButton">Configuration</string>
+    <string name="configurationEdit">Enter..</string>
+    <string name="deleteSelectedSearchButton">Delete Search</string>
 
 
     <string-array name="timeArray">

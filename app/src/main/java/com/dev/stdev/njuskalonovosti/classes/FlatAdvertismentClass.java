@@ -1,4 +1,4 @@
-package com.dev.stdev.njuskalonovosti;
+package com.dev.stdev.njuskalonovosti.classes;
 
 import java.io.Serializable;
 
@@ -13,17 +13,15 @@ public class FlatAdvertismentClass implements Serializable {
     private String description;
     private String link;
     private String dtm;
-    private String isNewApartment;
+    private String isNewFlat;
 
-    public String getIsNewApartment() {
-        return isNewApartment;
+    public String getIsNewFlat() {
+        return isNewFlat;
     }
 
-    public void setIsNewApartment(String isNewApartment) {
-        this.isNewApartment = isNewApartment;
+    public void setIsNewFlat(String isNewFlat) {
+        this.isNewFlat = isNewFlat;
     }
-
-
 
 
     public String getPrize() {

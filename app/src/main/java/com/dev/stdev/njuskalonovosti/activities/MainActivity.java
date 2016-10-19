@@ -1,4 +1,4 @@
-package com.dev.stdev.njuskalonovosti;
+package com.dev.stdev.njuskalonovosti.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -13,6 +13,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.dev.stdev.njuskalonovosti.R;
+import com.dev.stdev.njuskalonovosti.classes.SearchClass;
+import com.dev.stdev.njuskalonovosti.services.DeleteSearchService;
+import com.dev.stdev.njuskalonovosti.services.GetAllSearchService;
+import com.dev.stdev.njuskalonovosti.services.StartAlarmsAfterAppStartService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,19 +45,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_glavna);
+        setContentView(R.layout.activity_main);
 
-        //Intent intent = getIntent();
-        //String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-    //}
-
-
-        //Log.d("Prije receivera","prije receivera");
-        //Register receiver from service
         bRec = new MainActivity.bReceiver();
         IntentFilter filter = new IntentFilter("PRETRAGE_RESP");
         registerReceiver(bRec,filter);
-
 
 
         //Start GET ALL SEARCHES Service
@@ -60,13 +58,10 @@ public class MainActivity extends AppCompatActivity {
         startService((srvc));
 
 
-
         //Start ALARM START Service
         Intent srva = new Intent(this, StartAlarmsAfterAppStartService.class);
-        //srva.setAction("ja");
-        //srva.putExtra("ju","ju");
         startService((srva));
-        //Log.d("Poslije Alarm servisa","poslije Alarm servisa");
+
 
         //------------------spinner select value------------------------------------
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
@@ -102,37 +97,19 @@ public class MainActivity extends AppCompatActivity {
    private class bReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            //if(intent.getStringExtra("RETSTRNG").equals("")) {
-            //    String serviceJsonString = intent.getStringExtra("RETSTRING");
-
-
-            //Log.d("TU SAM U Receiveru","evo me");
-
-            //if (intent.get("FLAT_BRD")!=null) {
-            //Bundle bundle = intent.getExtras();
 
             SearchClass prt = (SearchClass) intent.getSerializableExtra("PRETRAGA_OBJ");
 
-            //FlatAdvertismentClass flD = (FlatAdvertismentClass) bundle.getSerializable("FLAT_OBJECT");
-
-            //Do something with the string
-
-
-            //Log.d("ID", prt.getGeneralId());
-            //Log.d("PRETRAGA", prt.getPretraga());
-            //Log.d("TIP", prt.getTip());
-            //Log.d("NEWLINE", "-----------------------------------");
-
-            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.glavnaLayout);
+            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.mainLayout);
 
             Spinner sp = (Spinner) findViewById(R.id.spinner);
 
             //not alarm pretraga, 0-not alarm, 1 yes alarm
-            if(prt.getTip().equals("0")) {
+            if(prt.getType().equals("0")) {
 
                 ArrayAdapter<String> adapter;
 
-                list.add(prt.getPretraga()); //prt.getGeneralId()+","+prt.getPretraga()
+                list.add(prt.getSearch()); //prt.getGeneralId()+","+prt.getSearch()
                 adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, list);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 sp.setAdapter(adapter);
@@ -145,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     /** Called when the user clicks the Dohvati button */
-    public void dohvati(View view) {
+    public void getFlatsAdvertisments(View view) {
         // Do something in response to button
 
         EditText editText = (EditText) findViewById(R.id.edit_message);
@@ -162,11 +139,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void brisipretragu(View view)
+    public void deleteSearch(View view)
     {
 
         Spinner spinner = (Spinner)findViewById(R.id.spinner);
-        String text = spinner.getSelectedItem().toString(); //dohvati oznacenu pretragu
+        String text = spinner.getSelectedItem().toString(); //getFlatsAdvertisments oznacenu pretragu
 
         if(text!="") {
 
@@ -175,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
             Spinner sp = (Spinner) findViewById(R.id.spinner);
             ArrayAdapter<String> adapter;
 
-            list.clear();; //prt.getGeneralId()+","+prt.getPretraga()
+            list.clear();; //prt.getGeneralId()+","+prt.getSearch()
             adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             sp.setAdapter(adapter);
@@ -190,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void konfiguriraj(View view) {
+    public void configure(View view) {
         // Do something in response to button
 
         EditText editText = (EditText) findViewById(R.id.edit_message);
@@ -205,18 +182,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void ListaAlarma(View view) {
-        // Do something in response to button
+    public void alarmList(View view) {
 
-        //String message = "DOHVATI_LISTU_ALARMA";
-
-        //search string must not be empty
-       // if(message!="") {
             Intent intent = new Intent(this, AlarmListActivity.class);
             intent.setAction(MESSAGE_GA);
             intent.putExtra(MESSAGE_GA, MESSAGE_GA);
             startActivity(intent);
-        //}
 
     }
 

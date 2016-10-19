@@ -5,12 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/glavnaLayout">
+    android:id="@+id/mainLayout">
 
     <EditText android:id="@+id/edit_message"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:hint="@string/edit_message" />
+        android:hint="@string/messageEdit" />
 
 
     <Spinner
@@ -20,37 +20,37 @@
 
     <Button
         android:layout_marginTop="60dp"
-        android:id="@+id/dohvatiButton"
+        android:id="@+id/getButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/dohvatiButton"
-        android:onClick="dohvati" />
+        android:text="@string/getButton"
+        android:onClick="getFlatsAdvertisments" />
 
     <Button
-        android:id="@+id/brisiOdabranuPretraguButton"
+        android:id="@+id/deleteSelectedSearchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginTop="-50dp"
-        android:onClick="brisipretragu"
-        android:text="@string/brisiOdabranuPretraguButton" />
+        android:onClick="deleteSearch"
+        android:text="@string/deleteSelectedSearchButton" />
 
 
     <Button
         android:layout_marginTop="60dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/buttonKonf"
-        android:id="@+id/buttonKonf"
-        android:onClick="konfiguriraj" />
+        android:text="@string/configurationButton"
+        android:id="@+id/configurationButton"
+        android:onClick="configure" />
 
     <Button
         android:layout_marginTop="60dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/buttonListaAlarma"
-        android:id="@+id/buttonListaAlarma"
-        android:onClick="ListaAlarma" />
+        android:text="@string/listAlarmButton"
+        android:id="@+id/alarmListButton"
+        android:onClick="alarmList" />
 
 
     <!-- android:visibility="gone" -->

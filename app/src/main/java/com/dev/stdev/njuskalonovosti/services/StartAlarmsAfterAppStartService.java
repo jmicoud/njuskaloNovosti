@@ -1,4 +1,4 @@
-package com.dev.stdev.njuskalonovosti;
+package com.dev.stdev.njuskalonovosti.services;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -7,6 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.SystemClock;
 import android.util.Log;
+
+import com.dev.stdev.njuskalonovosti.classes.AlarmClass;
+import com.dev.stdev.njuskalonovosti.activities.MainActivity;
+import com.dev.stdev.njuskalonovosti.database.DatabaseClass;
 
 import java.util.List;
 
@@ -23,13 +27,13 @@ public class StartAlarmsAfterAppStartService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
 
-            pokreniAlarme();
+            startAlarms();
         }
     }
 
 
 
-    public void pokreniAlarme()
+    public void startAlarms()
     {
 
         List<AlarmClass> al = db.getAllAlarms();
@@ -46,7 +50,7 @@ public class StartAlarmsAfterAppStartService extends IntentService {
             long intrvl = SystemClock.elapsedRealtime() + 1000 * Integer.parseInt(alr.getInterval()); //interval is in seconds in database but alarm demands miliseconds
             int alarmid = Integer.parseInt(alr.getGeneralid());
 
-            Log.d("ALARM ",Integer.toString(alarmid) + ", " + (1000 * Integer.parseInt(alr.getInterval())));
+            //Log.d("ALARM ",Integer.toString(alarmid) + ", " + (1000 * Integer.parseInt(alr.getInterval())));
 
             //sendBroadcastMessage("ALARMREC","ALARMREC");
 

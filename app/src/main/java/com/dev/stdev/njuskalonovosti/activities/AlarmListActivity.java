@@ -1,4 +1,4 @@
-package com.dev.stdev.njuskalonovosti;
+package com.dev.stdev.njuskalonovosti.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,6 +12,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.dev.stdev.njuskalonovosti.R;
+import com.dev.stdev.njuskalonovosti.classes.AlarmClass;
+import com.dev.stdev.njuskalonovosti.services.AlarmListService;
+import com.dev.stdev.njuskalonovosti.services.CreateNewAlarmService;
+import com.dev.stdev.njuskalonovosti.services.FinishAlarmService;
+
 public class AlarmListActivity extends AppCompatActivity {
 
     private bReceiver bRec;
@@ -19,7 +25,7 @@ public class AlarmListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lista_alarma);
+        setContentView(R.layout.activity_alarm_list);
 
         Intent intent = getIntent();
 
@@ -65,7 +71,7 @@ public class AlarmListActivity extends AppCompatActivity {
 
                     //Log.d("GENERALID", ald.getGeneralid());
                     //Log.d("INTERVAL", ald.getInterval());
-                    //Log.d("PRETRAGA", ald.getPretraga());
+                    //Log.d("PRETRAGA", ald.getSearch());
 
                     //Log.d("NEWLINE", "-----------------------------------");
 
@@ -86,14 +92,14 @@ public class AlarmListActivity extends AppCompatActivity {
 
                             linearLayout.removeAllViews();
 
-                            Intent srvc = new Intent(getApplicationContext(), zavrsiAlarmServis.class);
+                            Intent srvc = new Intent(getApplicationContext(), FinishAlarmService.class);
                             srvc.putExtra(MainActivity.MESSAGE_STPA,Integer.toString(myButton.getId()));
                             startService((srvc));
                         }
                     });
 
                     tv.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    String showStr = "GENID: " + ald.getGeneralid() + "\n" + "INTERVAL: " + ald.getInterval() + "\n" + "PRETRAGA: " + ald.getPretraga() + "\n\n";
+                    String showStr = "GENID: " + ald.getGeneralid() + "\n" + "INTERVAL: " + ald.getInterval() + "\n" + "PRETRAGA: " + ald.getSearch() + "\n\n";
                     tv.setText(showStr);
 
                     linearLayout.addView(myButton);
@@ -104,8 +110,6 @@ public class AlarmListActivity extends AppCompatActivity {
 
 
     private void sendBroadcastMessage(String intentFilterName, String s) {
-
-        //Log.d("Šaljem Intent","Šaljem Intent");
 
         Intent intent = new Intent(intentFilterName);
         intent.setAction(intentFilterName);

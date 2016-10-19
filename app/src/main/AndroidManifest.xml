@@ -12,14 +12,14 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".glavnaActivity">
+        <activity android:name=".activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".dohvatiActivity" />
+        <activity android:name=".activities.SearchNewFlatAdvertisementsActivity" />
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -29,32 +29,32 @@
             android:value="@integer/google_play_services_version" />
 
         <service
-            android:name=".dohvatiSvePretrageServis"
+            android:name=".services.GetAllSearchService"
             android:exported="false" />
 
-        <activity android:name=".konfiguracijaActivity" />
-        <activity android:name=".listaAlarmaActivity" />
+        <activity android:name=".activities.AlarmConfigurationActivity" />
+        <activity android:name=".activities.AlarmListActivity" />
 
         <service
-            android:name=".dohvatStanovaServis"
+            android:name=".services.SearchNewFlatAdvertisementsService"
             android:exported="false" />
         <service
-            android:name=".brisiPretraguServis"
+            android:name=".services.DeleteSearchService"
             android:exported="false" />
         <service
-            android:name=".pokreniAlarmNakonStartaApServis"
+            android:name=".services.StartAlarmsAfterAppStartService"
             android:exported="false" />
         <service
             android:name=".zavrsiAlarmServis"
             android:exported="false" />
         <service
-            android:name=".dohvatiAlarmeServis"
+            android:name=".services.AlarmListService"
             android:exported="false" />
         <service
-            android:name=".stvoriNoviAlarmServis"
+            android:name=".services.CreateNewAlarmService"
             android:exported="false"></service>
         <service
-            android:name=".alarmServis"
+            android:name=".services.AlarmConfigurationService"
             android:exported="false"></service>
     </application>
 

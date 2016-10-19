@@ -1,4 +1,4 @@
-package com.dev.stdev.njuskalonovosti;
+package com.dev.stdev.njuskalonovosti.classes;
 
 import java.io.Serializable;
 
@@ -16,25 +16,25 @@ public class SearchClass implements Serializable {
         this.generalId = generalId;
     }
 
-    public String getPretraga() {
-        return pretraga;
+    public String getSearch() {
+        return search;
     }
 
-    public void setPretraga(String pretraga) {
-        this.pretraga = pretraga;
+    public void setSearch(String search) {
+        this.search = search;
     }
 
-    public String getTip() {
-        return tip;
+    public String getType() {
+        return type;
     }
 
-    public void setTip(String tip) {
-        this.tip = tip;
+    public void setType(String type) {
+        this.type = type;
     }
 
     private String generalId;
-    private String pretraga;
-    private String tip;
+    private String search;
+    private String type;
 
 
 

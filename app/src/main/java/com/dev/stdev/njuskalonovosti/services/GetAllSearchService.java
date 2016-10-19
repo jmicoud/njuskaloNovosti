@@ -1,7 +1,10 @@
-package com.dev.stdev.njuskalonovosti;
+package com.dev.stdev.njuskalonovosti.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+
+import com.dev.stdev.njuskalonovosti.classes.SearchClass;
+import com.dev.stdev.njuskalonovosti.database.DatabaseClass;
 
 import java.util.List;
 
@@ -16,7 +19,7 @@ public class GetAllSearchService extends IntentService {
 
 
     private DatabaseClass db = new DatabaseClass(this);
-    private List<SearchClass> pretrageLista;
+    private List<SearchClass> searchList;
 
     public GetAllSearchService() {
         super("GetAllSearchService");
@@ -26,13 +29,13 @@ public class GetAllSearchService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
 
-            //Log.d("U servisu dohvati","U servisu dohvati");
+            //Log.d("U servisu getFlatsAdvertisments","U servisu getFlatsAdvertisments");
 
-            pretrageLista = db.getAllPretrage();
+            searchList = db.getAllSearch();
 
-            for(int i=0; i<pretrageLista.size(); i++)
+            for(int i = 0; i< searchList.size(); i++)
             {
-                SearchClass pr = pretrageLista.get(i);
+                SearchClass pr = searchList.get(i);
                 sendBroadcastMessage("PRETRAGE_RESP", pr);
 
             }

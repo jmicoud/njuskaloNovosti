@@ -1,4 +1,4 @@
-package com.dev.stdev.njuskalonovosti;
+package com.dev.stdev.njuskalonovosti.services;
 
 import android.app.AlarmManager;
 import android.app.IntentService;
@@ -6,13 +6,18 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 
+import com.dev.stdev.njuskalonovosti.classes.AlarmClass;
+import com.dev.stdev.njuskalonovosti.activities.MainActivity;
+import com.dev.stdev.njuskalonovosti.classes.SearchClass;
+import com.dev.stdev.njuskalonovosti.database.DatabaseClass;
+
 import java.util.List;
 
 
 public class CreateNewAlarmService extends IntentService {
 
     private DatabaseClass db = new DatabaseClass(this);
-    private List<AlarmClass> alarmiLista;
+    private List<AlarmClass> alarmList;
 
     public CreateNewAlarmService() {
         super("CreateNewAlarmService");
@@ -23,13 +28,13 @@ public class CreateNewAlarmService extends IntentService {
         if (intent != null) {
 
             String alDat = intent.getStringExtra(MainActivity.MESSAGE_PNA);
-            pokreniNoviAlarm(alDat);
+            startNewAlarm(alDat);
 
         }
     }
 
 
-    public void pokreniNoviAlarm(String alarmdata)
+    public void startNewAlarm(String alarmdata)
     {
 
         String[] parts = alarmdata.split("##");
@@ -41,16 +46,16 @@ public class CreateNewAlarmService extends IntentService {
         String tipPretrage = "1";
 
         alc.setInterval(intervl);
-        ptr.setPretraga(pretraga);
-        ptr.setTip(tipPretrage);
+        ptr.setSearch(pretraga);
+        ptr.setType(tipPretrage);
 
         int newGeneralId;
 
-        if(db.isPretrageTableEmpty()==false)
+        if(!db.isPretrageTableEmpty())//==false)
         {
 
 
-            List<SearchClass> lP = db.getAllPretrage();
+            List<SearchClass> lP = db.getAllSearch();
 
             SearchClass prTm;
 
@@ -58,7 +63,7 @@ public class CreateNewAlarmService extends IntentService {
             newGeneralId = Integer.parseInt(prTm.getGeneralId()) + 1; //zadnji plus 1 je id za novu pretragu
 
             ptr.setGeneralId(Integer.toString(newGeneralId));
-            db.addPretraga(ptr);
+            db.addSearch(ptr);
 
             alc.setGeneralid(Integer.toString(newGeneralId));
             db.addAlarm(alc);
@@ -72,10 +77,10 @@ public class CreateNewAlarmService extends IntentService {
         {
             newGeneralId = 1000; //set initial generalid to 1000
 
-            //dohvati zadnju pretragu jer ima
+            //getFlatsAdvertisments zadnju pretragu jer ima
 
             ptr.setGeneralId(Integer.toString(newGeneralId));
-            db.addPretraga(ptr);
+            db.addSearch(ptr);
 
             alc.setGeneralid(Integer.toString(newGeneralId));
             db.addAlarm(alc);
@@ -92,21 +97,21 @@ public class CreateNewAlarmService extends IntentService {
         alarm.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), (Integer.parseInt(intervl) * 1000), pintent);
 
         //---------------show new alarm/refresh alarm list in listaAlarmaactivity---------------
-        prikazialarme();
+        showAlarms();
         //-------------------------------------------------------------------
 
     }
 
-    public void prikazialarme()
+    public void showAlarms()
     {
 
-        alarmiLista = db.getAllAlarms();
+        alarmList = db.getAllAlarms();
 
-        for(int i=0; i<alarmiLista.size(); i++)
+        for(int i = 0; i< alarmList.size(); i++)
         {
-            AlarmClass al = alarmiLista.get(i);
-            List<SearchClass> p = db.getPretragaByGenID(al.getGeneralid()); //only one in list
-            al.setPretraga(p.get(0).getPretraga()); //we are doing this so that pretraga string can be shown in activity
+            AlarmClass al = alarmList.get(i);
+            List<SearchClass> p = db.getSearchByGenID(al.getGeneralid()); //only one in list
+            al.setSearch(p.get(0).getSearch()); //we are doing this so that pretraga string can be shown in activity
             sendBroadcastMessage(MainActivity.MESSAGE_RGAL, al);
         }
 
