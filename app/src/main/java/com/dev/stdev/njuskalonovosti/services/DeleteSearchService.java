@@ -4,15 +4,18 @@ import android.app.IntentService;
 import android.content.Intent;
 
 import com.dev.stdev.njuskalonovosti.activities.MainActivity;
-import com.dev.stdev.njuskalonovosti.classes.SearchClass;
 import com.dev.stdev.njuskalonovosti.database.DatabaseClass;
+import com.dev.stdev.njuskalonovosti.database.TableFlat;
+import com.dev.stdev.njuskalonovosti.database.TableSearch;
+import com.dev.stdev.njuskalonovosti.models.SearchClass;
 
 import java.util.List;
 
 
 public class DeleteSearchService extends IntentService {
 
-    private DatabaseClass db = new DatabaseClass(this);
+    TableSearch tableSearch = new TableSearch(DatabaseClass.getDatabase());
+    TableFlat tableFlat = new TableFlat(DatabaseClass.getDatabase());
 
     public DeleteSearchService() {
         super("DeleteSearchService");
@@ -24,14 +27,14 @@ public class DeleteSearchService extends IntentService {
 
             String search = intent.getStringExtra(MainActivity.MESSAGE_BS);
 
-            List<SearchClass> prc = db.getSearchBySearch(search);//only one element will be in list
+            List<SearchClass> prc = tableSearch.getSearchBySearch(search);//only one element will be in list
 
-            db.deleteSearch(search); //delete pretraga
-            db.deleteFlat(prc.get(0).getGeneralId()); //delete apartment
+            tableSearch.deleteSearch(search); //delete pretraga
+            tableFlat.deleteFlat(prc.get(0).getGeneralId()); //delete apartment
 
             //Log.d("U servisu getFlatsAdvertisments","U servisu getFlatsAdvertisments");
 
-            List<SearchClass> searchList = db.getAllSearch();
+            List<SearchClass> searchList = tableSearch.getAllSearch();
 
             for(int i = 0; i< searchList.size(); i++)
             {

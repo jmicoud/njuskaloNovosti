@@ -4,8 +4,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,7 +14,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.dev.stdev.njuskalonovosti.R;
-import com.dev.stdev.njuskalonovosti.classes.SearchClass;
+import com.dev.stdev.njuskalonovosti.models.SearchClass;
 import com.dev.stdev.njuskalonovosti.services.DeleteSearchService;
 import com.dev.stdev.njuskalonovosti.services.GetAllSearchService;
 import com.dev.stdev.njuskalonovosti.services.StartAlarmsAfterAppStartService;

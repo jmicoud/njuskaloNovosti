@@ -1,4 +1,4 @@
-package com.dev.stdev.njuskalonovosti.classes;
+package com.dev.stdev.njuskalonovosti.models;
 
 import java.io.Serializable;
 
