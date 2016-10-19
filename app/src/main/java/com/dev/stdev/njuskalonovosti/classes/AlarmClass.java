@@ -2,9 +2,6 @@ package com.dev.stdev.njuskalonovosti.classes;
 
 import java.io.Serializable;
 
-/**
- * Created by user on 6.10.2016..
- */
 
 public class AlarmClass implements Serializable{
 

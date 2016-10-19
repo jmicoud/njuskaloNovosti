@@ -13,7 +13,6 @@ import java.util.List;
 public class DeleteSearchService extends IntentService {
 
     private DatabaseClass db = new DatabaseClass(this);
-    private List<SearchClass> searchList;
 
     public DeleteSearchService() {
         super("DeleteSearchService");
@@ -32,7 +31,7 @@ public class DeleteSearchService extends IntentService {
 
             //Log.d("U servisu getFlatsAdvertisments","U servisu getFlatsAdvertisments");
 
-            searchList = db.getAllSearch();
+            List<SearchClass> searchList = db.getAllSearch();
 
             for(int i = 0; i< searchList.size(); i++)
             {

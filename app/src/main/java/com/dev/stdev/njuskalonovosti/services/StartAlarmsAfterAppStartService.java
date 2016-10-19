@@ -5,8 +5,6 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.SystemClock;
-import android.util.Log;
 
 import com.dev.stdev.njuskalonovosti.classes.AlarmClass;
 import com.dev.stdev.njuskalonovosti.activities.MainActivity;
@@ -47,15 +45,8 @@ public class StartAlarmsAfterAppStartService extends IntentService {
         {
 
             AlarmClass alr = al.get(i);
-            long intrvl = SystemClock.elapsedRealtime() + 1000 * Integer.parseInt(alr.getInterval()); //interval is in seconds in database but alarm demands miliseconds
+            //long intrvl = SystemClock.elapsedRealtime() + 1000 * Integer.parseInt(alr.getInterval()); //interval is in seconds in database but alarm demands miliseconds
             int alarmid = Integer.parseInt(alr.getGeneralid());
-
-            //Log.d("ALARM ",Integer.toString(alarmid) + ", " + (1000 * Integer.parseInt(alr.getInterval())));
-
-            //sendBroadcastMessage("ALARMREC","ALARMREC");
-
-            //Calendar cal = Calendar.getInstance();
-            //cal.add(Calendar.SECOND, 10);
 
             Intent intent = new Intent(this, AlarmConfigurationService.class);
             intent.putExtra(MainActivity.MESSAGE_ALARM, Integer.toString(alarmid));
@@ -69,14 +60,14 @@ public class StartAlarmsAfterAppStartService extends IntentService {
 
 
 
-    private void sendBroadcastMessage(String intentFilterName, String f) {
+   /* private void sendBroadcastMessage(String intentFilterName, String f) {
 
         //Log.d("Šaljem Intent","Šaljem Intent");
 
         Intent intent = new Intent(intentFilterName);
         intent.putExtra(MainActivity.MESSAGE_ALARM, f);
         sendBroadcast(intent);
-    }
+    }*/
 
 
 

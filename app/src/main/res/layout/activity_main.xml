@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/mainLayout">
 
-    <EditText android:id="@+id/edit_message"
+    <EditText android:id="@+id/messageEdit"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:hint="@string/messageEdit" />

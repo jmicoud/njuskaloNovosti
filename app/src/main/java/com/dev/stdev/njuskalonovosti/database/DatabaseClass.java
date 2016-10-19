@@ -1,6 +1,5 @@
 package com.dev.stdev.njuskalonovosti.database;
 
-//import android.database.sqlite.SQLiteDatabase;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -293,8 +292,7 @@ public class DatabaseClass extends SQLiteOpenHelper {
     }
 
 
-
-    boolean isApartmentsTableEmpty() {
+    /*boolean isApartmentsTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
         String count = "SELECT count(*) FROM " + TABLE_NEW_FLATS;
         Cursor mcursor = db.rawQuery(count, null);
@@ -303,9 +301,9 @@ public class DatabaseClass extends SQLiteOpenHelper {
         mcursor.close();
         db.close();
         return icount <= 0;
-    }
+    }*/
 
-    public boolean isPretrageTableEmpty() {
+    public boolean isSearchTableEmpty() {
         SQLiteDatabase db = this.getWritableDatabase();
         String count = "SELECT count(*) FROM " + TABLE_SEARCH;
         Cursor mcursor = db.rawQuery(count, null);

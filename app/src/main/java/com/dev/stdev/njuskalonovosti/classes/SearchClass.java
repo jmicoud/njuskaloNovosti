@@ -2,9 +2,6 @@ package com.dev.stdev.njuskalonovosti.classes;
 
 import java.io.Serializable;
 
-/**
- * Created by user on 3.10.2016..
- */
 
 public class SearchClass implements Serializable {
 

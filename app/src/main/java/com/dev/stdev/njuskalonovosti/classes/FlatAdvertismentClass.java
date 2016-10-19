@@ -2,9 +2,6 @@ package com.dev.stdev.njuskalonovosti.classes;
 
 import java.io.Serializable;
 
-/**
- * Created by IW568 on 9/28/2016.
- */
 
 public class FlatAdvertismentClass implements Serializable {
 

@@ -8,18 +8,11 @@ import com.dev.stdev.njuskalonovosti.database.DatabaseClass;
 
 import java.util.List;
 
-/**
- * An {@link IntentService} subclass for handling asynchronous task requests in
- * a service on a separate handler thread.
- * <p>
- * TODO: Customize class - update intent actions, extra parameters and static
- * helper methods.
- */
+
 public class GetAllSearchService extends IntentService {
 
 
     private DatabaseClass db = new DatabaseClass(this);
-    private List<SearchClass> searchList;
 
     public GetAllSearchService() {
         super("GetAllSearchService");
@@ -31,7 +24,7 @@ public class GetAllSearchService extends IntentService {
 
             //Log.d("U servisu getFlatsAdvertisments","U servisu getFlatsAdvertisments");
 
-            searchList = db.getAllSearch();
+            List<SearchClass> searchList = db.getAllSearch();
 
             for(int i = 0; i< searchList.size(); i++)
             {

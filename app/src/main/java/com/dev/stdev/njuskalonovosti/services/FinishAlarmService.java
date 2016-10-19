@@ -16,7 +16,6 @@ import java.util.List;
 public class FinishAlarmService extends IntentService {
 
     private DatabaseClass db = new DatabaseClass(this);
-    private List<AlarmClass> alarmList;
 
     public FinishAlarmService() {
         super("zavrsiAlarmServis");
@@ -58,7 +57,7 @@ public class FinishAlarmService extends IntentService {
     public void showAlarms()
     {
 
-        alarmList = db.getAllAlarms();
+        List<AlarmClass> alarmList = db.getAllAlarms();
 
         for(int i = 0; i< alarmList.size(); i++)
         {

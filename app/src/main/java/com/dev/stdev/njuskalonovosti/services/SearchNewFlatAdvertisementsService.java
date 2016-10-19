@@ -19,11 +19,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public class SearchNewFlatAdvertisementsService extends IntentService {
-    /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
-     */
+
 
     private DatabaseClass db = new DatabaseClass(this);
 
@@ -86,13 +82,11 @@ public class SearchNewFlatAdvertisementsService extends IntentService {
                         catch(Exception ex)
                         {
 
+                           Log.d("Exception", ex.getMessage());
 
                         }
 
-                        //toast.show();
-                        // tasks available
-                    } else {
-                        // error response, no access to resource?
+
                     }
                 }
 
@@ -105,7 +99,7 @@ public class SearchNewFlatAdvertisementsService extends IntentService {
         }
         catch (Exception e)
         {
-            Log.d("ERROR",  e.getMessage().toString());
+            //Log.d("ERROR",  e.getMessage().toString());
         }
 
     }
@@ -173,7 +167,7 @@ public class SearchNewFlatAdvertisementsService extends IntentService {
 
         int newGeneralId;
 
-        if(db.isPretrageTableEmpty()==false)
+        if(!db.isSearchTableEmpty()) //==false)
         {
 
             //Log.d("size", "PRETRAGANOTEMPTY");
@@ -183,7 +177,7 @@ public class SearchNewFlatAdvertisementsService extends IntentService {
             List<SearchClass> lP = db.getAllSearch();
             for(int i=0; i<lP.size(); i++)
             {
-                if ((upit.equals(lP.get(i).getSearch())) && ((lP.get(i).getType())!="1")) //don't take in consideration alarm searches
+                if ((upit.equals(lP.get(i).getSearch())) && !((lP.get(i).getType()).equals("1"))) //don't take in consideration alarm searches
                 {
                     isNs = true; //there is existing search, exit loop
                     //Log.d("EXISTING","YES");
@@ -195,7 +189,7 @@ public class SearchNewFlatAdvertisementsService extends IntentService {
 
             //Log.d("size", "PRETRAGASIZE: " + Integer.toString(lP.size()));
 
-            if(isNs==false) //this is new search
+            if(!isNs) //==false) //this is new search
             {
 
               //Log.d("NEWSEARCH", "NEWSEARCH");
@@ -240,7 +234,7 @@ public class SearchNewFlatAdvertisementsService extends IntentService {
                     }
                 }
 
-                if(nwFlat==false) //new apartment recognized
+                if(!nwFlat) //==false) //new apartment recognized
                 {
                     fl.setIsNewFlat("1");
                     db.addFlat(fl,tempGenId);

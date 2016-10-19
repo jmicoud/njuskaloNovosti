@@ -62,11 +62,6 @@ public class AlarmConfigurationService extends IntentService {
             String ctls = "search_ads";
             String sorts = "new";
 
-            //toast = Toast.makeText(this, "0", Toast.LENGTH_SHORT);
-            //toast.show();
-
-            //Log.d("PRIJE","Prija");
-
             SearchNewFlatAdvertisementsService.NjuskaloService service = SearchNewFlatAdvertisementsService.NjuskaloService.retrofit.create(SearchNewFlatAdvertisementsService.NjuskaloService.class);
             Call<ResponseBody> call = service.getTask(ctls,upit,sorts);
 
@@ -90,13 +85,10 @@ public class AlarmConfigurationService extends IntentService {
                         catch(Exception ex)
                         {
 
+                            Log.d("Exception", ex.getMessage());
 
                         }
 
-                        //toast.show();
-                        // tasks available
-                    } else {
-                        // error response, no access to resource?
                     }
                 }
 
@@ -109,7 +101,7 @@ public class AlarmConfigurationService extends IntentService {
         }
         catch (Exception e)
         {
-            Log.d("ERROR",  e.getMessage().toString());
+            Log.d("ERROR",  e.getMessage());
         }
 
     }
@@ -146,27 +138,19 @@ public class AlarmConfigurationService extends IntentService {
 
             i = resp.indexOf("data-ad-id", i+1);
 
-           // Log.d("ISPIS I: ", ""+i+","+n);
 
             if ((i-n) < 1500) break;
 
-            flRf = parseAllValues(resp.substring(n, i), upit, generalid);
+            flRf = parseAllValues(resp.substring(n, i), generalid);
 
 
             if(flRf.getIsNewFlat().equals("1")) //only if new apartment put it in list becouse tat list we will send on email
             {
                 flNewLs.add(flRf);
 
-                //Log.d("FLAT DES: ",flRf.getDescription());
-                //Log.d("ISNEW: ", flRf.getIsNewFlat());
-                //Log.d("LISTSIZE: ", ""+flNewLs.size());
-
             }
 
-
-
             n = i;
-
 
 
         }
@@ -215,7 +199,7 @@ public class AlarmConfigurationService extends IntentService {
 
     }
 
-    public FlatAdvertismentClass parseAllValues(String valStr, String upit, String generalid)
+    public FlatAdvertismentClass parseAllValues(String valStr, String generalid)
     {
         FlatAdvertismentClass fl = new FlatAdvertismentClass();
         //Bundle bundle = new Bundle();
@@ -256,7 +240,7 @@ public class AlarmConfigurationService extends IntentService {
                     }
                 }
 
-                if(nwFlat==false) //new apartment recognized
+                if(!nwFlat) //==false) //new apartment recognized
                 {
                     fl.setIsNewFlat("1");
                     db.addFlat(fl,generalid);

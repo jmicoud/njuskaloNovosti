@@ -17,7 +17,6 @@ import java.util.List;
 public class CreateNewAlarmService extends IntentService {
 
     private DatabaseClass db = new DatabaseClass(this);
-    private List<AlarmClass> alarmList;
 
     public CreateNewAlarmService() {
         super("CreateNewAlarmService");
@@ -51,7 +50,7 @@ public class CreateNewAlarmService extends IntentService {
 
         int newGeneralId;
 
-        if(!db.isPretrageTableEmpty())//==false)
+        if(!db.isSearchTableEmpty())//==false)
         {
 
 
@@ -105,7 +104,7 @@ public class CreateNewAlarmService extends IntentService {
     public void showAlarms()
     {
 
-        alarmList = db.getAllAlarms();
+        List<AlarmClass> alarmList = db.getAllAlarms();
 
         for(int i = 0; i< alarmList.size(); i++)
         {

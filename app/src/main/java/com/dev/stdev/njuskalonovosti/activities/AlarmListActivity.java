@@ -64,23 +64,18 @@ public class AlarmListActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-
                     AlarmClass ald = (AlarmClass) intent.getSerializableExtra(MainActivity.MESSAGE_RGAL);
 
                     //Do something with the string
 
                     //Log.d("GENERALID", ald.getGeneralid());
-                    //Log.d("INTERVAL", ald.getInterval());
-                    //Log.d("PRETRAGA", ald.getSearch());
-
-                    //Log.d("NEWLINE", "-----------------------------------");
 
                     final LinearLayout linearLayout = (LinearLayout) findViewById(R.id.alarmLayout);
 
                     TextView tv = new TextView(getApplicationContext());
 
                     final Button myButton = new Button(getApplicationContext());
-                    myButton.setText("Zaustavi");
+                    myButton.setText("Stop");
                     int btId = Integer.parseInt(ald.getGeneralid());
                     myButton.setId(btId);
                     myButton.setLayoutParams(new LinearLayoutCompat.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -109,13 +104,13 @@ public class AlarmListActivity extends AppCompatActivity {
     }
 
 
-    private void sendBroadcastMessage(String intentFilterName, String s) {
+    /*private void sendBroadcastMessage(String intentFilterName, String s) {
 
         Intent intent = new Intent(intentFilterName);
         intent.setAction(intentFilterName);
         intent.putExtra(intentFilterName, s);
         sendBroadcast(intent);
-    }
+    }*/
 
 
     @Override

@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -32,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public final static String MESSAGE_GAL = "MESSAGE_GAL";
     public final static String MESSAGE_RGAL = "MESSAGE_RGAL";
     public final static String MESSAGE_BS = "MESSAGE_BS";
-    public final static String MESSAGE_PA = "MESSAGE_PA";
+    //public final static String MESSAGE_PA = "MESSAGE_PA";
     public final static String MESSAGE_PNA = "MESSAGE_PNA";
     public final static String MESSAGE_STRA = "MESSAGE_STRA";
     public final static String MESSAGE_STPA = "MESSAGE_STPA";
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     private bReceiver bRec;
 
-    private List<String> list = new ArrayList<String>();
+    private List<String> list = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +72,14 @@ public class MainActivity extends AppCompatActivity {
 
                 // On selecting a spinner item
                 String item = parent.getItemAtPosition(position).toString();
-                TextView tv = (TextView) findViewById(R.id.edit_message);
+                TextView tv = (TextView) findViewById(R.id.messageEdit);
                 tv.setText(item);
 
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
-                // TODO Auto-generated method stub
+
 
             }
 
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
             SearchClass prt = (SearchClass) intent.getSerializableExtra("PRETRAGA_OBJ");
 
-            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.mainLayout);
+            //LinearLayout linearLayout = (LinearLayout) findViewById(R.id.mainLayout);
 
             Spinner sp = (Spinner) findViewById(R.id.spinner);
 
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayAdapter<String> adapter;
 
                 list.add(prt.getSearch()); //prt.getGeneralId()+","+prt.getSearch()
-                adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_spinner_item, list);
+                adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_spinner_item, list);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 sp.setAdapter(adapter);
             }
@@ -125,12 +124,12 @@ public class MainActivity extends AppCompatActivity {
     public void getFlatsAdvertisments(View view) {
         // Do something in response to button
 
-        EditText editText = (EditText) findViewById(R.id.edit_message);
+        EditText editText = (EditText) findViewById(R.id.messageEdit);
         String message = editText.getText().toString();
 
         //Log.d("PORUKALINK",message);
         //search string must not be empty
-        if(message!="") {
+        if (!(message.equals(""))) {
             Intent intent = new Intent(this, SearchNewFlatAdvertisementsActivity.class);
             intent.putExtra(MESSAGE_GD, message);
             startActivity(intent);
@@ -145,17 +144,14 @@ public class MainActivity extends AppCompatActivity {
         Spinner spinner = (Spinner)findViewById(R.id.spinner);
         String text = spinner.getSelectedItem().toString(); //getFlatsAdvertisments oznacenu pretragu
 
-        if(text!="") {
+        if (!(text.equals(""))) {
 
-
-            //isprazni listu
-            Spinner sp = (Spinner) findViewById(R.id.spinner);
             ArrayAdapter<String> adapter;
 
-            list.clear();; //prt.getGeneralId()+","+prt.getSearch()
-            adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
+            list.clear();
+            adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, list);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            sp.setAdapter(adapter);
+            spinner.setAdapter(adapter);
 
             //Start Service
             Intent srvc = new Intent(this, DeleteSearchService.class);
@@ -170,11 +166,11 @@ public class MainActivity extends AppCompatActivity {
     public void configure(View view) {
         // Do something in response to button
 
-        EditText editText = (EditText) findViewById(R.id.edit_message);
+        EditText editText = (EditText) findViewById(R.id.messageEdit);
         String message = editText.getText().toString();
 
         //search string must not be empty
-        if(message!="") {
+        if(!(message.equals(""))) {
             Intent intent = new Intent(this, AlarmConfigurationActivity.class);
             intent.putExtra(MESSAGE_GK, message);
             startActivity(intent);

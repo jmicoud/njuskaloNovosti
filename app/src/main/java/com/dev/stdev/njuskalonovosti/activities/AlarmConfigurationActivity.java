@@ -41,7 +41,7 @@ public class AlarmConfigurationActivity extends AppCompatActivity {
         String messageCo = message + "##" + selitem;
 
         //search string must not be empty
-        if(message!="") {
+        if(!(message.equals(""))) {
             Intent intent = new Intent(this, AlarmListActivity.class);
             intent.setAction(MainActivity.MESSAGE_STRA);
             intent.putExtra(MainActivity.MESSAGE_STRA, messageCo);
